@@ -177,6 +177,7 @@ class Optimizer():
 		self.log = []
 		self.save = True
 		self.start_time = datetime.datetime.now()
+		self.time = time.time()
 		self.file_name_str = "{method}_{year}_{month}_{day}_{hour}{minute}".format(
 			method = method,
             year = self.start_time.year,
@@ -196,7 +197,7 @@ class Optimizer():
 
 		energy_errors = np.array(energy_errors)
 		energy_errors *= 27.2114 #hartree to eV
-		mean = np.mean(energy_errors)
+		mean = np.mean(np.abs(energy_errors))
 
 		return mean		
 
@@ -211,7 +212,7 @@ class Optimizer():
 		"""
 		results = generate_results(self.ref_data, params)
 
-		return fitness_function(results)
+		return self.fitness_function(results)
 
 
 	def callback(self, params):
@@ -230,9 +231,13 @@ k_T : {6:3.3f}".format(*params.tolist())
 
 		fitness_str = "fitness : {0:3.3f}".format(fitness)
 
-		log_string = "{iter} {param} {fitness}\n".format(iter=iter_str,
-												param=param_str,
-												fitness=fitness_str)
+		time_str = "time/s : {0:3.6f}".format(time.time() - self.time)
+		self.time = time.time()
+
+		log_string = "{iter_} {param} {fitness} {time}\n".format(iter_=iter_str,
+									param=param_str,
+									fitness=fitness_str,
+									time=time_str)
 
 		self.log.append(log_string)
 
@@ -287,10 +292,7 @@ if __name__ == '__main__':
 	ref_data = make_ref_data()
 
 	#make optimizer
-	optimizer = Optimizer("validate", ref_data)
+	#optimizer = Optimizer("optimize", ref_data, 500)
+	optimizer = Optimizer("validate", ref_data, 500)
 	optimizer.run()
-
-	#log and print results
-
-	#finish
 
