@@ -52,7 +52,7 @@ def make_ref_data():
 
 	return data
 
-def run_qcore(input_str : str):
+def run_qcore(input_str):
 	"""
 	runs qcore with the input string
 	"""
@@ -63,7 +63,7 @@ def run_qcore(input_str : str):
 					universal_newlines=True).stdout)
 
 
-def generate_result(input_tuple : tuple):
+def generate_result(input_tuple):
 	chromophore, input_str = input_tuple
 
 	try:
@@ -73,7 +73,7 @@ def generate_result(input_tuple : tuple):
 	else:
 		return [chromophore, result]
 
-def generate_results(ref_data : dict, params):
+def generate_results(ref_data, params):
 	"""
 	runs exc-xtb for each chlorophyll molecule, sanitizing results
 
@@ -86,7 +86,8 @@ def generate_results(ref_data : dict, params):
 	"""
 	params_dict = dict(zip(["k_S", "k_P", "k_D", "k_EN_S", "k_EN_P", "k_EN_D", "k_T"], params))
 
-	qcore_path = "/Users/of15641/qcore/cmake-build-debug/bin/qcore"
+	#qcore_path = "/Users/of15641/qcore/cmake-build-debug/bin/qcore"
+	qcore_path = "~/.local/src/Qcore/release/qcore"
 	input_str = ' -n 1 -f json -s "{chromophore} := excited_scf(structure(file = \'xyz_files/{chromophore}.xyz\') xtb(model=\'gfn0\' input_params={params}))" '
 
 	chromophores = list(ref_data.keys())
@@ -127,25 +128,25 @@ class Optimizer():
 	"""
 	test_set = [
 						'step_101_chromophore_10', 'step_151_chromophore_02', 'step_251_chromophore_09', 'step_151_chromophore_16', 'step_351_chromophore_09',
-#						'step_301_chromophore_22', 'step_51_chromophore_19', 'step_351_chromophore_15', 'step_351_chromophore_21', 'step_501_chromophore_18',
-#						'step_1_chromophore_21', 'step_301_chromophore_02', 'step_301_chromophore_05', 'step_451_chromophore_22', 'step_251_chromophore_06',
-#						'step_251_chromophore_02', 'step_101_chromophore_04', 'step_1_chromophore_10', 'step_351_chromophore_13', 'step_51_chromophore_18',
-#						'step_1_chromophore_26', 'step_251_chromophore_21', 'step_351_chromophore_05', 'step_101_chromophore_26', 'step_101_chromophore_02',
-#						'step_151_chromophore_04', 'step_451_chromophore_27', 'step_301_chromophore_03', 'step_201_chromophore_01', 'step_351_chromophore_04',
-#						'step_451_chromophore_14', 'step_101_chromophore_08', 'step_301_chromophore_24', 'step_301_chromophore_10', 'step_201_chromophore_26',
-#						'step_101_chromophore_05', 'step_301_chromophore_04', 'step_401_chromophore_05', 'step_51_chromophore_10', 'step_101_chromophore_22',
-#						'step_451_chromophore_26', 'step_451_chromophore_09', 'step_101_chromophore_15', 'step_201_chromophore_14', 'step_151_chromophore_09',
-#						'step_451_chromophore_15', 'step_151_chromophore_25', 'step_501_chromophore_23', 'step_201_chromophore_25', 'step_101_chromophore_17',
-#						'step_351_chromophore_01', 'step_351_chromophore_17', 'step_301_chromophore_20', 'step_401_chromophore_09', 'step_501_chromophore_14',
-#						'step_401_chromophore_11', 'step_451_chromophore_01', 'step_51_chromophore_26', 'step_1_chromophore_22', 'step_51_chromophore_21',
-#						'step_201_chromophore_05', 'step_1_chromophore_01', 'step_451_chromophore_03', 'step_201_chromophore_27', 'step_101_chromophore_12',
-#						'step_351_chromophore_03', 'step_1_chromophore_03', 'step_301_chromophore_19', 'step_501_chromophore_20', 'step_501_chromophore_06',
-#						'step_101_chromophore_25', 'step_451_chromophore_07', 'step_101_chromophore_11', 'step_301_chromophore_17', 'step_301_chromophore_27',
-#						'step_201_chromophore_21', 'step_501_chromophore_17', 'step_401_chromophore_17', 'step_101_chromophore_20', 'step_501_chromophore_10',
-#						'step_301_chromophore_11', 'step_151_chromophore_22', 'step_151_chromophore_05', 'step_151_chromophore_14', 'step_151_chromophore_24',
-#						'step_51_chromophore_04', 'step_201_chromophore_10', 'step_1_chromophore_05', 'step_51_chromophore_16', 'step_451_chromophore_06',
-#						'step_51_chromophore_22', 'step_401_chromophore_20', 'step_351_chromophore_10', 'step_251_chromophore_17', 'step_351_chromophore_25',
-#						'step_251_chromophore_19', 'step_301_chromophore_15', 'step_101_chromophore_14', 'step_1_chromophore_25', 'step_101_chromophore_09'
+						'step_301_chromophore_22', 'step_51_chromophore_19', 'step_351_chromophore_15', 'step_351_chromophore_21', 'step_501_chromophore_18',
+						'step_1_chromophore_21', 'step_301_chromophore_02', 'step_301_chromophore_05', 'step_451_chromophore_22', 'step_251_chromophore_06',
+						'step_251_chromophore_02', 'step_101_chromophore_04', 'step_1_chromophore_10', 'step_351_chromophore_13', 'step_51_chromophore_18',
+						'step_1_chromophore_26', 'step_251_chromophore_21', 'step_351_chromophore_05', 'step_101_chromophore_26', 'step_101_chromophore_02',
+						'step_151_chromophore_04', 'step_451_chromophore_27', 'step_301_chromophore_03', 'step_201_chromophore_01', 'step_351_chromophore_04',
+						'step_451_chromophore_14', 'step_101_chromophore_08', 'step_301_chromophore_24', 'step_301_chromophore_10', 'step_201_chromophore_26',
+						'step_101_chromophore_05', 'step_301_chromophore_04', 'step_401_chromophore_05', 'step_51_chromophore_10', 'step_101_chromophore_22',
+						'step_451_chromophore_26', 'step_451_chromophore_09', 'step_101_chromophore_15', 'step_201_chromophore_14', 'step_151_chromophore_09',
+						'step_451_chromophore_15', 'step_151_chromophore_25', 'step_501_chromophore_23', 'step_201_chromophore_25', 'step_101_chromophore_17',
+						'step_351_chromophore_01', 'step_351_chromophore_17', 'step_301_chromophore_20', 'step_401_chromophore_09', 'step_501_chromophore_14',
+						'step_401_chromophore_11', 'step_451_chromophore_01', 'step_51_chromophore_26', 'step_1_chromophore_22', 'step_51_chromophore_21',
+						'step_201_chromophore_05', 'step_1_chromophore_01', 'step_451_chromophore_03', 'step_201_chromophore_27', 'step_101_chromophore_12',
+						'step_351_chromophore_03', 'step_1_chromophore_03', 'step_301_chromophore_19', 'step_501_chromophore_20', 'step_501_chromophore_06',
+						'step_101_chromophore_25', 'step_451_chromophore_07', 'step_101_chromophore_11', 'step_301_chromophore_17', 'step_301_chromophore_27',
+						'step_201_chromophore_21', 'step_501_chromophore_17', 'step_401_chromophore_17', 'step_101_chromophore_20', 'step_501_chromophore_10',
+						'step_301_chromophore_11', 'step_151_chromophore_22', 'step_151_chromophore_05', 'step_151_chromophore_14', 'step_151_chromophore_24',
+						'step_51_chromophore_04', 'step_201_chromophore_10', 'step_1_chromophore_05', 'step_51_chromophore_16', 'step_451_chromophore_06',
+						'step_51_chromophore_22', 'step_401_chromophore_20', 'step_351_chromophore_10', 'step_251_chromophore_17', 'step_351_chromophore_25',
+						'step_251_chromophore_19', 'step_301_chromophore_15', 'step_101_chromophore_14', 'step_1_chromophore_25', 'step_101_chromophore_09'
 	]
 
 	def make_test_set(self, ref_data):
