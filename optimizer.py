@@ -218,9 +218,9 @@ class Optimizer():
 	def callback(self, params):
 		iter_str = "iter : {0:4d}".format(self.iter)
 		
-		param_str = "k_S : {0:3.3f} \
-k_P : {1:3.3f} \
-k_D : {2:3.3f} \
+		param_str = "k_s : {0:3.3f} \
+k_p : {1:3.3f} \
+k_d : {2:3.3f} \
 k_EN_s : {3:3.3f} \
 k_EN_p : {4:3.3f} \
 k_EN_d : {5:3.3f} \
@@ -292,7 +292,7 @@ if __name__ == '__main__':
 	ref_data = make_ref_data()
 
 	#make optimizer
-	#optimizer = Optimizer("optimize", ref_data, 500)
-	optimizer = Optimizer("validate", ref_data, 500)
+	optimizer = Optimizer("optimize", ref_data, 500)
+	#optimizer = Optimizer("validate", ref_data, 500)
 	optimizer.run()
 
