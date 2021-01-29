@@ -152,6 +152,9 @@ class Optimizer():
 	def make_test_set(self, ref_data):
 		result = {}
 
+		if self.method == "validate":
+			return ref_data
+
 		for c in list(ref_data.keys()):
 			if c in self.test_set:
 				result[c] = ref_data[c]
@@ -160,6 +163,7 @@ class Optimizer():
 
 
 	def __init__(self, method, ref_data=None, max_iter=1):
+		self.method = method
 		self.ref_data = self.make_test_set(ref_data)
 		self.iter = 1
 		self.initial_guess = {
@@ -172,7 +176,6 @@ class Optimizer():
 			"k_T" : 0.0,
 		}
 
-		self.method = method
 		self.max_iter = max_iter
 		self.log = []
 		self.save = True
