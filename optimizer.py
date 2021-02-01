@@ -109,7 +109,8 @@ def generate_results(ref_data, params):
 			"tddft_dipole" : ref_data[c]["transition_dipole"],
 			"xtb_dipole" : xtb[c]["transition_dipole"],
 			"dipole_error" : angle_error(ref_data[c]["transition_dipole"], xtb[c]["transition_dipole"]),
-			"self_interaction" : xtb[c]["self-interaction"]
+			"coloumb" : xtb[c]["coloumb"]
+			"exchange" : xtb[c]["exchange"]
 			}
 
 			results[c] = package
