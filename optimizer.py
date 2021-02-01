@@ -88,7 +88,7 @@ def generate_results(ref_data, params):
 
 	#qcore_path = "/Users/of15641/qcore/cmake-build-debug/bin/qcore"
 	qcore_path = "~/.local/src/Qcore/release/qcore"
-	input_str = ' -n 1 -f json -s "{chromophore} := excited_scf(structure(file = \'xyz_files/{chromophore}.xyz\') xtb(model=\'gfn0\' input_params={params}))" '
+	input_str = ' -n 1 -f json -s "{chromophore} := excited_scf(structure(file = \'xyz_files/{chromophore}.xyz\') xtb(temperature = 0 kelvin model=\'gfn0\' input_params={params}))" '
 
 	chromophores = list(ref_data.keys())
 	input_strs = list(map(lambda x : qcore_path + input_str.format(chromophore=x, params=params_dict), chromophores))
