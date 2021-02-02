@@ -169,13 +169,13 @@ class Optimizer():
 		self.ref_data = self.make_test_set(ref_data)
 		self.iter = 1
 		self.initial_guess = {
-			"k_S" : 1.942,
-			"k_P" : 3.790,
-			"k_D" : 0.630,
-			"k_EN_s" : -0.034,
-			"k_EN_p" : 0.003,
+			"k_S" : 1.764,
+			"k_P" : 4.281,
+			"k_D" : 0.745,
+			"k_EN_s" : -0.032,
+			"k_EN_p" : 0.001,
 			"k_EN_d" : 0.001,
-			"k_T" : 0.0013,
+			"k_T" : 0.001,
 		}
 
 		self.max_iter = max_iter
