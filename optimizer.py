@@ -84,7 +84,7 @@ def generate_results(ref_data, params):
 	>>> test
 	{'step_1_chromophore_01': {'tddft_energy': 0.067717, 'xtb_energy': 0.029292343886254457, 'energy_error': 0.03842465611374554, 'tddft_dipole': [0.305422706, -2.699393089, 0.410750669], 'xtb_dipole': [0.5124307476124165, -4.498082315965987, 0.218572342605373], 'dipole_error': 5.8340260552349354}, 'step_1_chromophore_02': {'tddft_energy': 0.069685, 'xtb_energy': 0.031652590077129616, 'energy_error': 0.03803240992287038, 'tddft_dipole': [-2.43839633, 0.294525704, -0.899224337], 'xtb_dipole': [-4.022174469548795, 0.8850977027546133, -1.60640001070345], 'dipole_error': 5.303504105038609}, 'step_1_chromophore_03': {'tddft_energy': 0.069472, 'xtb_energy': 0.03186119181447111, 'energy_error': 0.03761080818552889, 'tddft_dipole': [0.108963122, -2.698943706, -0.009963017], 'xtb_dipole': [-0.2097896114822028, 4.360348315008915, -0.5581703233391183], 'dipole_error': 7.51076667604526}}
 	"""
-	params_dict = dict(zip(["k_s", "k_p", "k_d", "k_EN_s", "k_EN_p", "k_EN_d", "k_T"], params))
+	params_dict = dict(zip(["k_s", "k_p", "k_d", "k_EN_s", "k_EN_p", "k_EN_d", "k_T", "Mg_s", "Mg_p", "Mg_d", "N_s", "N_p"], params))
 
 	#qcore_path = "/Users/of15641/qcore/cmake-build-debug/bin/qcore"
 	qcore_path = "~/.local/src/Qcore/release/qcore"
@@ -176,6 +176,11 @@ class Optimizer():
 			"k_EN_p" : 0.001,
 			"k_EN_d" : 0.001,
 			"k_T" : 0.001,
+			"Mg_s" : 1,
+			"Mg_p" : 1,
+			"Mg_d" : 1,
+			"N_s" : 1, 
+			"N_p" : 1, 
 		}
 
 		self.max_iter = max_iter
@@ -229,7 +234,13 @@ k_d : {2:3.3f} \
 k_EN_s : {3:3.3f} \
 k_EN_p : {4:3.3f} \
 k_EN_d : {5:3.3f} \
-k_T : {6:3.3f}".format(*params.tolist())
+k_T : {6:3.3f} \
+Mg_s : {6:3.3f} \
+Mg_p : {6:3.3f} \
+Mg_d : {6:3.3f} \
+N_s : {6:3.3f} \
+N_p : {6:3.3f} \
+".format(*params.tolist())
 		
 		results = generate_results(self.ref_data, params)
 		fitness = self.fitness_function(results)
