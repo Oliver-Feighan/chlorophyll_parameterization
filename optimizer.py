@@ -169,18 +169,18 @@ class Optimizer():
 		self.ref_data = self.make_test_set(ref_data)
 		self.iter = 1
 		self.initial_guess = {
-			"k_S" : 1.764,
-			"k_P" : 4.281,
-			"k_D" : 0.745,
-			"k_EN_s" : -0.032,
+			"k_S" : 2.443,
+			"k_P" : 3.551,
+			"k_D" : 0.238,
+			"k_EN_s" : -0.024,
 			"k_EN_p" : 0.001,
 			"k_EN_d" : 0.001,
 			"k_T" : 0.001,
-			"Mg_s" : 1,
-			"Mg_p" : 1,
-			"Mg_d" : 1,
-			"N_s" : 1, 
-			"N_p" : 1, 
+			"Mg_s" : 0.573,
+			"Mg_p" : 3.067,
+			"Mg_d" : 1.189,
+			"N_s" : 1.160, 
+			"N_p" : 1.166, 
 		}
 
 		self.max_iter = max_iter
@@ -308,7 +308,7 @@ if __name__ == '__main__':
 	ref_data = make_ref_data()
 
 	#make optimizer
-	optimizer = Optimizer("optimize", ref_data, 500)
-	#optimizer = Optimizer("validate", ref_data, 500)
+	#optimizer = Optimizer("optimize", ref_data, 500)
+	optimizer = Optimizer("validate", ref_data, 500)
 	optimizer.run()
 
