@@ -1,0 +1,28 @@
+ 
+ University of Bristol ACRC HPC Bluepebble Service
+ -------------------------------------------------
+ Job chlorophyll_parameterization, jobid 629251.bp1, username of15641 - started execution at 12 :41:57 Fri 02/05/21 on node bp1-compute00106.data.bp.acrc.priv
+ 
+ 
+ University of Bristol ACRC HPC Bluepebble Service
+ -------------------------------------------------
+ Job chlorophyll_parameterization, jobid 629251.bp1, username of15641 - started execution at 12 :41:57 Fri 02/05/21 on node bp1-compute00106.data.bp.acrc.priv
+ 
+Traceback (most recent call last):
+  File "optimizer.py", line 313, in <module>
+    optimizer.run()
+  File "optimizer.py", line 282, in run
+    minimize(
+  File "/sw/lang/anaconda.3.8-2020.07/lib/python3.8/site-packages/scipy/optimize/_minimize.py", line 598, in minimize
+    return _minimize_neldermead(fun, x0, args, callback, **options)
+  File "/sw/lang/anaconda.3.8-2020.07/lib/python3.8/site-packages/scipy/optimize/optimize.py", line 586, in _minimize_neldermead
+    fsim[k] = func(sim[k])
+  File "/sw/lang/anaconda.3.8-2020.07/lib/python3.8/site-packages/scipy/optimize/optimize.py", line 327, in function_wrapper
+    return function(*(wrapper_args + args))
+  File "optimizer.py", line 275, in <lambda>
+    return lambda x : self.step(x)
+  File "optimizer.py", line 223, in step
+    results = generate_results(self.ref_data, params)
+  File "optimizer.py", line 112, in generate_results
+    "coloumb" : xtb[c]["coloumb"],
+KeyError: 'coloumb'

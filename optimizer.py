@@ -109,8 +109,8 @@ def generate_results(ref_data, params):
 			"tddft_dipole" : ref_data[c]["transition_dipole"],
 			"xtb_dipole" : xtb[c]["transition_dipole"],
 			"dipole_error" : angle_error(ref_data[c]["transition_dipole"], xtb[c]["transition_dipole"]),
-			"coloumb" : xtb[c]["coloumb"],
-			"exchange" : xtb[c]["exchange"]
+			#"coloumb" : xtb[c]["coloumb"],
+			#"exchange" : xtb[c]["exchange"]
 			}
 
 			results[c] = package
@@ -235,11 +235,11 @@ k_EN_s : {3:3.3f} \
 k_EN_p : {4:3.3f} \
 k_EN_d : {5:3.3f} \
 k_T : {6:3.3f} \
-Mg_s : {6:3.3f} \
-Mg_p : {6:3.3f} \
-Mg_d : {6:3.3f} \
-N_s : {6:3.3f} \
-N_p : {6:3.3f} \
+Mg_s : {7:3.3f} \
+Mg_p : {8:3.3f} \
+Mg_d : {9:3.3f} \
+N_s : {10:3.3f} \
+N_p : {11:3.3f} \
 ".format(*params.tolist())
 		
 		results = generate_results(self.ref_data, params)
@@ -308,7 +308,7 @@ if __name__ == '__main__':
 	ref_data = make_ref_data()
 
 	#make optimizer
-	#optimizer = Optimizer("optimize", ref_data, 500)
-	optimizer = Optimizer("validate", ref_data, 500)
+	optimizer = Optimizer("optimize", ref_data, 500)
+	#optimizer = Optimizer("validate", ref_data, 500)
 	optimizer.run()
 
