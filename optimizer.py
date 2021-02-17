@@ -1,5 +1,6 @@
 import scipy.optimize
 from scipy.optimize import minimize
+from scipy.stats import linregress
 
 import subprocess
 import random
@@ -198,18 +199,26 @@ class Optimizer():
         )
 
 	def fitness_function(self, results):
+		tddft_energies = []
+		xtb_energies = [] 
 		energy_errors = []
 		angle_errors  = []
 
 		for i in results.values():
+			tddft_energies.append(i["tddft_energy"])
+			xtb_energies.append(i["xtb_energy"])
 			 energy_errors.append(i["energy_error"])
 			 angle_errors.append(i["dipole_error"])
 
+		slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(df["xtb_energy"], df["tddft_energy"])
+
 		energy_errors = np.array(energy_errors)
 		energy_errors *= 27.2114 #hartree to eV
-		mean = np.mean(np.abs(energy_errors))
+		RMSD = np.sqrt(np.mean(energy_errors**2))
 
-		return mean		
+		correlation = 1 - r_value**2
+
+		return (RMSD, correlation)
 
 	def step(self, params):
 		"""	
@@ -222,7 +231,9 @@ class Optimizer():
 		"""
 		results = generate_results(self.ref_data, params)
 
-		return self.fitness_function(results)
+		RMSD, correlation = self.fitness_function(results)
+
+		return RMSD + correlation
 
 
 	def callback(self, params):
@@ -243,9 +254,9 @@ N_p : {11:3.3f} \
 ".format(*params.tolist())
 		
 		results = generate_results(self.ref_data, params)
-		fitness = self.fitness_function(results)
+		RMSD, correlation = self.fitness_function(results)
 
-		fitness_str = "fitness : {0:3.3f}".format(fitness)
+		fitness_str = "RMSD : {0:3.3f} R**2 : {1:3.3f}".format(fitness, 1-correlation)
 
 		time_str = "time/s : {0:3.6f}".format(time.time() - self.time)
 		self.time = time.time()
