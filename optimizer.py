@@ -169,6 +169,7 @@ class Optimizer():
 		self.method = method
 		self.ref_data = self.make_test_set(ref_data)
 		self.iter = 1
+		'''	
 		self.initial_guess = {
 			"k_S" : 2.443,
 			"k_P" : 3.551,
@@ -183,7 +184,38 @@ class Optimizer():
 			"N_s" : 1.160, 
 			"N_p" : 1.166, 
 		}
-
+		'''
+		'''
+		defaults
+		self.initial_guess = {
+			"k_S" : 2.0,
+			"k_P" : 2.48,
+			"k_D" : 2.27,
+			"k_EN_s" : 0.006,
+			"k_EN_p" : -0.001,
+			"k_EN_d" : -0.002,
+			"k_T" : 0.000,
+			"Mg_s" : 1.0,
+			"Mg_p" : 1.0,
+			"Mg_d" : 1.0,
+			"N_s" : 1.0, 
+			"N_p" : 1.0, 
+		}
+		'''
+		self.initial_guess = {
+			"k_S" : 1.647,
+			"k_P" : 2.947,
+			"k_D" : 2.059,
+			"k_EN_s" : 0.005,
+			"k_EN_p" : -0.001,
+			"k_EN_d" : -0.000,
+			"k_T" : -0.001,
+			"Mg_s" : 0.752,
+			"Mg_p" : 2.704,
+			"Mg_d" : 0.982,
+			"N_s" : 1.169, 
+			"N_p" : 0.948, 
+		}
 		self.max_iter = max_iter
 		self.log = []
 		self.save = True
@@ -207,10 +239,10 @@ class Optimizer():
 		for i in results.values():
 			tddft_energies.append(i["tddft_energy"])
 			xtb_energies.append(i["xtb_energy"])
-			 energy_errors.append(i["energy_error"])
-			 angle_errors.append(i["dipole_error"])
+			energy_errors.append(i["energy_error"])
+			angle_errors.append(i["dipole_error"])
 
-		slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(df["xtb_energy"], df["tddft_energy"])
+		slope, intercept, r_value, p_value, std_err = linregress(xtb_energies, tddft_energies)
 
 		energy_errors = np.array(energy_errors)
 		energy_errors *= 27.2114 #hartree to eV
@@ -256,7 +288,7 @@ N_p : {11:3.3f} \
 		results = generate_results(self.ref_data, params)
 		RMSD, correlation = self.fitness_function(results)
 
-		fitness_str = "RMSD : {0:3.3f} R**2 : {1:3.3f}".format(fitness, 1-correlation)
+		fitness_str = "RMSD : {0:3.3f} R**2 : {1:3.3f}".format(RMSD, 1-correlation)
 
 		time_str = "time/s : {0:3.6f}".format(time.time() - self.time)
 		self.time = time.time()
