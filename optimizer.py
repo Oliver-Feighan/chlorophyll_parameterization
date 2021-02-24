@@ -184,9 +184,9 @@ class Optimizer():
 			"N_s" : 1.160, 
 			"N_p" : 1.166, 
 		}
-		'''
-		'''
-		defaults
+		
+		
+		#defaults
 		self.initial_guess = {
 			"k_S" : 2.0,
 			"k_P" : 2.48,
@@ -203,19 +203,20 @@ class Optimizer():
 		}
 		'''
 		self.initial_guess = {
-			"k_S" : 1.647,
-			"k_P" : 2.947,
-			"k_D" : 2.059,
-			"k_EN_s" : 0.005,
+			"k_S" : 1.635,
+			"k_P" : 2.922,
+			"k_D" : 0.785,
+			"k_EN_s" : 0.006,
 			"k_EN_p" : -0.001,
-			"k_EN_d" : -0.000,
-			"k_T" : -0.001,
-			"Mg_s" : 0.752,
-			"Mg_p" : 2.704,
-			"Mg_d" : 0.982,
-			"N_s" : 1.169, 
-			"N_p" : 0.948, 
+			"k_EN_d" : -0.002,
+			"k_T" : 0.002,
+			"Mg_s" : 0.834,
+			"Mg_p" : 2.565,
+			"Mg_d" : 1.343,
+			"N_s" : 1.025, 
+			"N_p" : 0.958, 
 		}
+		
 		self.max_iter = max_iter
 		self.log = []
 		self.save = True
@@ -246,11 +247,11 @@ class Optimizer():
 
 		energy_errors = np.array(energy_errors)
 		energy_errors *= 27.2114 #hartree to eV
-		RMSD = np.sqrt(np.mean(energy_errors**2))
+		MAE = (np.mean(abs(energy_errors)))
 
 		correlation = 1 - r_value**2
 
-		return (RMSD, correlation)
+		return (MAE, correlation)
 
 	def step(self, params):
 		"""	
@@ -263,9 +264,10 @@ class Optimizer():
 		"""
 		results = generate_results(self.ref_data, params)
 
-		RMSD, correlation = self.fitness_function(results)
+		MAE, correlation = self.fitness_function(results)
 
-		return RMSD + correlation
+		#return correlation
+		return MAE + correlation
 
 
 	def callback(self, params):
@@ -286,9 +288,9 @@ N_p : {11:3.3f} \
 ".format(*params.tolist())
 		
 		results = generate_results(self.ref_data, params)
-		RMSD, correlation = self.fitness_function(results)
+		MAE, correlation = self.fitness_function(results)
 
-		fitness_str = "RMSD : {0:3.3f} R**2 : {1:3.3f}".format(RMSD, 1-correlation)
+		fitness_str = "MAE : {0:3.3f} R^2 : {1:3.3f}".format(MAE, 1-correlation)
 
 		time_str = "time/s : {0:3.6f}".format(time.time() - self.time)
 		self.time = time.time()
