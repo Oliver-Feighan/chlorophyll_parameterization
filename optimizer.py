@@ -225,7 +225,7 @@ class Optimizer():
 		self.initial_guess = {
 			"k_S" : 1.85,
 			"k_P" : 2.25,
-			"K_SP" : 2.8
+			"K_SP" : 2.8,
 			"k_D" : 2.00,
 		}
 		
@@ -374,7 +374,7 @@ if __name__ == '__main__':
 	ref_data = make_ref_data()
 
 	#make optimizer
-	#optimizer = Optimizer("optimize", ref_data, 500)
-	optimizer = Optimizer("validate", ref_data, 500)
+	optimizer = Optimizer("optimize", ref_data, 5000)
+	#optimizer = Optimizer("validate", ref_data, 500)
 	optimizer.run()
 
