@@ -85,11 +85,11 @@ def generate_results(ref_data, params):
 	>>> test
 	{'step_1_chromophore_01': {'tddft_energy': 0.067717, 'xtb_energy': 0.029292343886254457, 'energy_error': 0.03842465611374554, 'tddft_dipole': [0.305422706, -2.699393089, 0.410750669], 'xtb_dipole': [0.5124307476124165, -4.498082315965987, 0.218572342605373], 'dipole_error': 5.8340260552349354}, 'step_1_chromophore_02': {'tddft_energy': 0.069685, 'xtb_energy': 0.031652590077129616, 'energy_error': 0.03803240992287038, 'tddft_dipole': [-2.43839633, 0.294525704, -0.899224337], 'xtb_dipole': [-4.022174469548795, 0.8850977027546133, -1.60640001070345], 'dipole_error': 5.303504105038609}, 'step_1_chromophore_03': {'tddft_energy': 0.069472, 'xtb_energy': 0.03186119181447111, 'energy_error': 0.03761080818552889, 'tddft_dipole': [0.108963122, -2.698943706, -0.009963017], 'xtb_dipole': [-0.2097896114822028, 4.360348315008915, -0.5581703233391183], 'dipole_error': 7.51076667604526}}
 	"""
-	params_dict = dict(zip(["k_s", "k_p", "k_d", "k_EN_s", "k_EN_p", "k_EN_d", "k_T", "Mg_s", "Mg_p", "Mg_d", "N_s", "N_p"], params))
+	params_dict = dict(zip(["k_s", "k_p", "k_sp", "k_d"], params))
 
 	#qcore_path = "/Users/of15641/qcore/cmake-build-debug/bin/qcore"
 	qcore_path = "~/.local/src/Qcore/release/qcore"
-	input_str = ' -n 1 -f json -s "{chromophore} := excited_scf(structure(file = \'xyz_files/{chromophore}.xyz\') xtb(temperature = 0 kelvin model=\'gfn0\' input_params={params}))" '
+	input_str = ' -n 1 -f json -s "{chromophore} := xtb(structure(file = \'xyz_files/{chromophore}.xyz\') model=\'gfn1\' input_params={params})" '
 
 	chromophores = list(ref_data.keys())
 	input_strs = list(map(lambda x : qcore_path + input_str.format(chromophore=x, params=params_dict), chromophores))
@@ -103,15 +103,17 @@ def generate_results(ref_data, params):
 		if i is not None:
 			c = i[0]
 			xtb = i[1]
+
+			xtb_energy = xtb[c]["lumo"] - xtb[c]["homo"]
+
 			package = {
 			"tddft_energy" : ref_data[c]["energy"],
-			"xtb_energy" : xtb[c]["excitation_energy"],
-			"energy_error" : ref_data[c]["energy"] - xtb[c]["excitation_energy"],
-			"tddft_dipole" : ref_data[c]["transition_dipole"],
-			"xtb_dipole" : xtb[c]["transition_dipole"],
-			"dipole_error" : angle_error(ref_data[c]["transition_dipole"], xtb[c]["transition_dipole"]),
-			#"coloumb" : xtb[c]["coloumb"],
-			#"exchange" : xtb[c]["exchange"]
+			#"xtb_energy" : xtb[c]["excitation_energy"],
+			"xtb_energy" : xtb_energy,
+			"energy_error" : ref_data[c]["energy"] - xtb_energy,
+			#"tddft_dipole" : ref_data[c]["transition_dipole"],
+			#"xtb_dipole" : xtb[c]["transition_dipole"],
+			#"dipole_error" : angle_error(ref_data[c]["transition_dipole"], xtb[c]["transition_dipole"]),
 			}
 
 			results[c] = package
@@ -186,7 +188,7 @@ class Optimizer():
 		}
 		
 		
-		#defaults
+		#defaults GFN0
 		self.initial_guess = {
 			"k_S" : 2.0,
 			"k_P" : 2.48,
@@ -201,7 +203,8 @@ class Optimizer():
 			"N_s" : 1.0, 
 			"N_p" : 1.0, 
 		}
-		'''
+
+		#validation GFN0
 		self.initial_guess = {
 			"k_S" : 1.635,
 			"k_P" : 2.922,
@@ -215,6 +218,15 @@ class Optimizer():
 			"Mg_d" : 1.343,
 			"N_s" : 1.025, 
 			"N_p" : 0.958, 
+		}
+		'''
+
+		#defaults GFN1 
+		self.initial_guess = {
+			"k_S" : 1.85,
+			"k_P" : 2.25,
+			"K_SP" : 2.8
+			"k_D" : 2.00,
 		}
 		
 		self.max_iter = max_iter
@@ -241,7 +253,7 @@ class Optimizer():
 			tddft_energies.append(i["tddft_energy"])
 			xtb_energies.append(i["xtb_energy"])
 			energy_errors.append(i["energy_error"])
-			angle_errors.append(i["dipole_error"])
+			#angle_errors.append(i["dipole_error"])
 
 		slope, intercept, r_value, p_value, std_err = linregress(xtb_energies, tddft_energies)
 
@@ -273,6 +285,8 @@ class Optimizer():
 	def callback(self, params):
 		iter_str = "iter : {0:4d}".format(self.iter)
 		
+		'''
+		GFN0
 		param_str = "k_s : {0:3.3f} \
 k_p : {1:3.3f} \
 k_d : {2:3.3f} \
@@ -286,7 +300,14 @@ Mg_d : {9:3.3f} \
 N_s : {10:3.3f} \
 N_p : {11:3.3f} \
 ".format(*params.tolist())
+		'''
 		
+		param_str = "k_s : {0:3.3f} \
+k_p : {1:3.3f} \
+k_sp : {2:3.3f} \
+k_d : {3:3.3f} \
+".format(*params.tolist())
+
 		results = generate_results(self.ref_data, params)
 		MAE, correlation = self.fitness_function(results)
 
