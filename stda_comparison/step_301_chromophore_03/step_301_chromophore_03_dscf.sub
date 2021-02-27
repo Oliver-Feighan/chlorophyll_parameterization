@@ -1,0 +1,12 @@
+#!/bin/bash -l 
+#PBS -l walltime=30:00:00
+#PBS -l select=1:ncpus=20:mem=80gb
+#PBS -N step_301_chromophore_03
+#PBS -j oe
+
+export OMP_NUM_THREADS=1
+export MKL_THREADING_LAYER=TBB
+
+cd ~/chlorophyll_parameterization/stda_comparison/step_301_chromophore_03
+
+~/.local/src/Qcore/release/qcore -n 15 -s "step_301_chromophore_03 := excited_scf(structure(file='step_301_chromophore_03.xyz') dft(ansatz=u ao='Def2-SVP' xc=PBE0))" > step_301_chromophore_03_dft_dscf.out
