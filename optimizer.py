@@ -185,7 +185,7 @@ class Optimizer():
 		}
 		
 
-		'''		
+				
 		#defaults GFN0
 		self.initial_guess = {
 			"k_S" : 2.0,
@@ -205,22 +205,21 @@ class Optimizer():
 
 		#validation
 		self.initial_guess = {
-			"k_S" : 1.635,
-			"k_P" : 2.922,
-			"k_D" : 0.785,
-			"k_EN_s" : 0.006,
+			"k_S" : 1.620,
+			"k_P" : 2.944,
+			"k_D" : 3.158,
+			"k_EN_s" : 0.002,
 			"k_EN_p" : -0.001,
 			"k_EN_d" : -0.002,
 			"k_T" : 0.002,
-			"Mg_s" : 0.834,
-			"Mg_p" : 2.565,
-			"Mg_d" : 1.343,
-			"N_s" : 1.025, 
-			"N_p" : 0.958, 
+			"Mg_s" : 0.810,
+			"Mg_p" : 2.276,
+			"Mg_d" : 0.781,
+			"N_s" : 1.246, 
+			"N_p" : 0.946, 
 		}
 
-
-	
+		'''
 		self.initial_guess = {
 			"grnd_k_S" : 1.942,
 			"grnd_k_P" : 3.790,
@@ -410,7 +409,7 @@ if __name__ == '__main__':
 	ref_data = make_ref_data()
 
 	#make optimizer
-	optimizer = Optimizer("optimize", ref_data, 5000)
-	#optimizer = Optimizer("validate", ref_data, 500)
+	#optimizer = Optimizer("optimize", ref_data, 5000)
+	optimizer = Optimizer("validate", ref_data, 500)
 	optimizer.run()
 
