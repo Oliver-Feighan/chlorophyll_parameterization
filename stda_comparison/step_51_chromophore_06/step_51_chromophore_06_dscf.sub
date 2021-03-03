@@ -9,4 +9,4 @@ export MKL_THREADING_LAYER=TBB
 
 cd ~/chlorophyll_parameterization/stda_comparison/step_51_chromophore_06
 
-~/.local/src/Qcore/release/qcore -n 15 -s "step_51_chromophore_06 := excited_scf(structure(file='step_51_chromophore_06.xyz') dft(ansatz=u ao='Def2-SVP' xc=PBE0))" > step_51_chromophore_06_dft_dscf.out
+~/.local/src/Qcore/release/qcore -n 15 -s "step_51_chromophore_06 := excited_scf(structure(file='step_51_chromophore_06.xyz') dft(ao = 'def2-svp' xc = 'pbe0' ansatz = u df = 'def2-universal-jkfit' diis = cdiis) start_from_average = true symmetric_orthogonalization_correction = true)" > step_51_chromophore_06_dft_dscf.out

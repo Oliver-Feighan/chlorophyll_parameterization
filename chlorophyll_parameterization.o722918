@@ -1,0 +1,26 @@
+ 
+ University of Bristol ACRC HPC Bluepebble Service
+ -------------------------------------------------
+ Job chlorophyll_parameterization, jobid 722918.bp1, username of15641 - started execution at 11 :33:20 Tue 03/02/21 on node bp1-11-02-03.data.bp.acrc.priv
+ 
+ 
+ University of Bristol ACRC HPC Bluepebble Service
+ -------------------------------------------------
+ Job chlorophyll_parameterization, jobid 722918.bp1, username of15641 - started execution at 11 :33:20 Tue 03/02/21 on node bp1-11-02-03.data.bp.acrc.priv
+ 
+Traceback (most recent call last):
+  File "optimizer.py", line 414, in <module>
+    optimizer.run()
+  File "optimizer.py", line 392, in run
+    self.callback(np.array(IG_as_list))
+  File "optimizer.py", line 346, in callback
+    results = generate_results(self.ref_data, params)
+  File "optimizer.py", line 113, in generate_results
+    "dipole_error" : angle_error(ref_data[c]["transition_dipole"], xtb[c]["transition_dipole"]),
+  File "optimizer.py", line 25, in angle_error
+    elif(np.linalg.norm(vector_1) < 1e-6 or np.linalg.norm(vector_2) < 1e-6):
+  File "<__array_function__ internals>", line 5, in norm
+  File "/sw/lang/anaconda.3.8-2020.07/lib/python3.8/site-packages/numpy/linalg/linalg.py", line 2476, in norm
+    sqnorm = dot(x, x)
+  File "<__array_function__ internals>", line 5, in dot
+TypeError: unsupported operand type(s) for *: 'dict' and 'dict'

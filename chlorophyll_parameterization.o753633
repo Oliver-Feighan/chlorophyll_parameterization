@@ -1,0 +1,20 @@
+ 
+ University of Bristol ACRC HPC Bluepebble Service
+ -------------------------------------------------
+ Job chlorophyll_parameterization, jobid 753633.bp1, username of15641 - started execution at 14:04:21 Tue 02/03/21 on node bp1-compute00133.data.bp.acrc.priv
+ 
+ 
+ University of Bristol ACRC HPC Bluepebble Service
+ -------------------------------------------------
+ Job chlorophyll_parameterization, jobid 753633.bp1, username of15641 - started execution at 14:04:22 Tue 02/03/21 on node bp1-compute00133.data.bp.acrc.priv
+ 
+Traceback (most recent call last):
+  File "optimizer.py", line 416, in <module>
+    optimizer.run()
+  File "optimizer.py", line 394, in run
+    self.callback(np.array(IG_as_list))
+  File "optimizer.py", line 348, in callback
+    results = generate_results(self.ref_data, params)
+  File "optimizer.py", line 107, in generate_results
+    xtb_transition_dipole = np.frombuffer(bytes.fromhex(" ".join([format(n, "02x") for n in xtb[c]["transition_dipole"]["data"]["bytes"]]), dtype=xtb[c]["transition_dipole"]["dtype"]))
+TypeError: fromhex() takes no keyword arguments
