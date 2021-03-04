@@ -162,7 +162,7 @@ class Optimizer():
 			return ref_data
 
 		for c in list(ref_data.keys()):
-			if c in self.test_set3:
+			if c in self.test_set1:
 				result[c] = ref_data[c]
 
 		return result
@@ -172,24 +172,7 @@ class Optimizer():
 		self.method = method
 		self.ref_data = self.make_test_set(ref_data)
 		self.iter = 1
-		'''	
-		self.initial_guess = {
-			"k_S" : 2.443,
-			"k_P" : 3.551,
-			"k_D" : 0.238,
-			"k_EN_s" : -0.024,
-			"k_EN_p" : 0.001,
-			"k_EN_d" : 0.001,
-			"k_T" : 0.001,
-			"Mg_s" : 0.573,
-			"Mg_p" : 3.067,
-			"Mg_d" : 1.189,
-			"N_s" : 1.160, 
-			"N_p" : 1.166, 
-		}
-		
-
-		'''				
+		'''
 		#defaults GFN0
 		self.initial_guess = {
 			"k_S" : 2.0,
@@ -208,43 +191,55 @@ class Optimizer():
 		'''
 
 		#validation
-		self.initial_guess = {
-			"k_S" : 1.620,
-			"k_P" : 2.944,
-			"k_D" : 3.158,
-			"k_EN_s" : 0.002,
-			"k_EN_p" : -0.001,
-			"k_EN_d" : -0.002,
-			"k_T" : 0.002,
-			"Mg_s" : 0.810,
-			"Mg_p" : 2.276,
-			"Mg_d" : 0.781,
-			"N_s" : 1.246, 
-			"N_p" : 0.946, 
-		}
+		#test_set1
+		#self.initial_guess = {
+		#	"k_S" : 1.710,
+		#	"k_P" : 2.916,
+		#	"k_D" : -0.881,
+		#	"k_EN_s" : 0.002,
+		#	"k_EN_p" : -0.001,
+		#	"k_EN_d" : 0.001,
+		#	"k_T" : 0.003,
+		#	"Mg_s" : 0.775,
+		#	"Mg_p" : 3.414,
+		#	"Mg_d" : 2.488,
+		#	"N_s" : 1.048, 
+		#	"N_p" : 0.962, 
+		#}
 
+		#test_set2
+                self.initial_guess = {
+			"k_S" : 3.308,
+			"k_P" : 2.866,
+			"k_D" : 3.776,
+			"k_EN_s" : 0.001,
+			"k_EN_p" : 0.001,
+			"k_EN_d" : -0.001,
+			"k_T" : -0.005,
+			"Mg_s" : 0.554,
+			"Mg_p" : 8.351,
+			"Mg_d" : 0.765,
+			"N_s" : 0.594, 
+			"N_p" : 0.998, 
+                }
 		
-		self.initial_guess = {
-			"grnd_k_S" : 1.942,
-			"grnd_k_P" : 3.790,
-			"grnd_k_D" : 0.630,
-			"grnd_k_EN_s" : -0.034,
-			"grnd_k_EN_p" : 0.003,
-			"grnd_k_EN_d" : 0.001,
-			"extd_k_S" : 1.942,
-			"extd_k_P" : 3.790,
-			"extd_k_D" : 0.630,
-			"extd_k_EN_s" : -0.034,
-			"extd_k_EN_p" : 0.003,
-			"extd_k_EN_d" : 0.001,
-			#"k_T" : 0.000,
-			#"Mg_s" : 1.0,
-			#"Mg_p" : 1.0,
-			#"Mg_d" : 1.0,
-			#"N_s" : 1.0, 
-			#"N_p" : 1.0, 
-		}
-
+		#test_set3
+                #self.initial_guess = {
+                #        "k_S" : 2.428,
+                #        "k_P" : 3.012,
+                #        "k_D" : -2.199,
+                #        "k_EN_s" : 0.001,
+                #        "k_EN_p" : -0.004,
+                #        "k_EN_d" : 0.010,
+                #        "k_T" : 0.008,
+                #        "Mg_s" : 0.630,
+                #        "Mg_p" : 5.187,
+                #        "Mg_d" : 5.084,
+                #        "N_s" : 1.231, 
+                #        "N_p" : 0.930, 
+                #}
+	
+		'''	
 		#defaults GFN1 
 		self.initial_guess = {
 			"k_S" : 1.85,
@@ -413,7 +408,7 @@ if __name__ == '__main__':
 	ref_data = make_ref_data()
 
 	#make optimizer
-	optimizer = Optimizer("optimize", ref_data, 5000)
-	#optimizer = Optimizer("validate", ref_data, 500)
+	#optimizer = Optimizer("optimize", ref_data, 5000)
+	optimizer = Optimizer("validate", ref_data, 500)
 	optimizer.run()
 
