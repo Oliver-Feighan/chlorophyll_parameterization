@@ -162,7 +162,7 @@ class Optimizer():
 			return ref_data
 
 		for c in list(ref_data.keys()):
-			if c in self.test_set1:
+			if c in self.test_set3:
 				result[c] = ref_data[c]
 
 		return result
@@ -172,73 +172,73 @@ class Optimizer():
 		self.method = method
 		self.ref_data = self.make_test_set(ref_data)
 		self.iter = 1
-		'''
+		
 		#defaults GFN0
-		self.initial_guess = {
-			"k_S" : 2.0,
-			"k_P" : 2.48,
-			"k_D" : 2.27,
-			"k_EN_s" : 0.006,
-			"k_EN_p" : -0.001,
-			"k_EN_d" : -0.002,
-			"k_T" : 0.000,
-			"Mg_s" : 1.0,
-			"Mg_p" : 1.0,
-			"Mg_d" : 1.0,
-			"N_s" : 1.0, 
-			"N_p" : 1.0, 
-		}
-		'''
+		#self.initial_guess = {
+		#	"k_S" : 2.0,
+		#	"k_P" : 2.48,
+		#	"k_D" : 2.27,
+		#	"k_EN_s" : 0.006,
+		#	"k_EN_p" : -0.001,
+		#	"k_EN_d" : -0.002,
+		#	"k_T" : 0.000,
+		#	"Mg_s" : 1.0,
+		#	"Mg_p" : 1.0,
+		#	"Mg_d" : 1.0,
+		#	"N_s" : 1.0, 
+		#	"N_p" : 1.0, 
+		#}
+		
 
 		#validation
 		#test_set1
 		#self.initial_guess = {
-		#	"k_S" : 1.710,
-		#	"k_P" : 2.916,
-		#	"k_D" : -0.881,
-		#	"k_EN_s" : 0.002,
-		#	"k_EN_p" : -0.001,
-		#	"k_EN_d" : 0.001,
-		#	"k_T" : 0.003,
-		#	"Mg_s" : 0.775,
-		#	"Mg_p" : 3.414,
-		#	"Mg_d" : 2.488,
-		#	"N_s" : 1.048, 
-		#	"N_p" : 0.962, 
+		#"k_S" : 1.680,
+		#"k_P" : 3.952,
+		#"k_D" : 2.372,
+		#"k_EN_s" : 0.005,
+		#"k_EN_p" : -0.001,
+		#"k_EN_d" : -0.001,
+		#"k_T" : 0.001,
+		#"Mg_s" : 1.039,
+		#"Mg_p" : 1.449,
+		#"Mg_d" : 0.571,
+		#"N_s" : 0.991, 
+		#"N_p" : 0.910, 
 		#}
-
+		
 		#test_set2
 		#self.initial_guess = {
-		#"k_S" : 3.308,
-		#"k_P" : 2.866,
-		#"k_D" : 3.776,
-		#"k_EN_s" : 0.001,
-		#"k_EN_p" : 0.001,
-		#"k_EN_d" : -0.001,
+		#"k_S" : 1.930,
+		#"k_P" : 3.797,
+		#"k_D" : 3.943,
+		#"k_EN_s" : 0.007,
+		#"k_EN_p" : -0.001,
+		#"k_EN_d" : -0.003,
 		#"k_T" : -0.005,
-		#"Mg_s" : 0.554,
-		#"Mg_p" : 8.351,
-		#"Mg_d" : 0.765,
-		#"N_s" : 0.594, 
-		#"N_p" : 0.998, 
+		#"Mg_s" : 0.637,
+		#"Mg_p" : 3.065,
+		#"Mg_d" : 0.485,
+		#"N_s" : 0.892, 
+		#"N_p" : 0.968, 
 		#}
 		
 		#test_set3
 		self.initial_guess = {
-		"k_S" : 2.428,
-		"k_P" : 3.012,
-		"k_D" : -2.199,
-		"k_EN_s" : 0.001,
-		"k_EN_p" : -0.004,
-		"k_EN_d" : 0.010,
-		"k_T" : 0.008,
-		"Mg_s" : 0.630,
-		"Mg_p" : 5.187,
-		"Mg_d" : 5.084,
-		"N_s" : 1.231, 
-		"N_p" : 0.930, 
+		"k_S" : 2.246,
+		"k_P" : 4.007,
+		"k_D" : 1.927,
+		"k_EN_s" : 0.006,
+		"k_EN_p" : -0.001,
+		"k_EN_d" : -0.002,
+		"k_T" : 0.001,
+		"Mg_s" : 0.980,
+		"Mg_p" : 0.989,
+		"Mg_d" : 0.911,
+		"N_s" : 0.900, 
+		"N_p" : 0.913, 
 		}
-	
+		
 		'''	
 		#defaults GFN1 
 		self.initial_guess = {
