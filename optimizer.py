@@ -162,8 +162,8 @@ class Optimizer():
 		return results
 
 	def dipole_error(result):
-		xtb = np.array(i['xtb_dipole'])
-		tddft = np.array(i['tddft_dipole'])
+		xtb = np.array(result['xtb_dipole'])
+		tddft = np.array(result['tddft_dipole'])
 
 		phase1 = np.linalg.norm(xtb - tddft)
 		phase2 = np.linalg.norm(xtb - tddft)
