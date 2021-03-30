@@ -16,9 +16,17 @@ def calc_dipole_error(vec1, vec2):
 	"""
 	find the error between two vectors as the norm of the difference.
 	Altered due to arbitary phase of transition dipoles
+
+	>>> calc_dipole_error([0,3,3], [0,1,1])
+	2.8284271247461903
+	
+	>>> calc_dipole_error([0,3,3], [0,-1,-1])
+	2.8284271247461903
+	
+
 	"""
-	phase1 = np.linalg.norm(vec2 - vec1)
-	phase2 = np.linalg.norm(vec2 - vec1)
+	phase1 = np.linalg.norm(np.array(vec2) - np.array(vec1))
+	phase2 = np.linalg.norm(np.array(vec2) + np.array(vec1))
 
 	return min(phase1, phase2)
 
@@ -29,6 +37,9 @@ def calc_angle_error(vector_1, vector_2):
 
 	>>> calc_angle_error([0,0,1], [0,1,1])
 	45.00000000000001
+
+	>>> calc_angle_error([0,0,1], [0,-1,-1])
+	45.0
 	"""
 	if(np.linalg.norm(vector_1) < 1e-6 and np.linalg.norm(vector_2) < 1e-6):
 		return 0.0
@@ -77,12 +88,23 @@ def run_qcore(input_str):
 
 class Optimizer():
 	def make_active_param_list(self, active_params=[]):
+		"""
+		make the list of active parameters, being optimized
+
+		>>> o.make_active_param_list(active_params=["k_s", "k_p", "k_d"])
+		['k_s', 'k_p', 'k_d']
+
+		>>> o.make_active_param_list([])
+		['k_s', 'k_p', 'k_d', 'k_EN_s', 'k_EN_p', 'k_EN_d', 'k_T', 'Mg_s', 'Mg_p', 'Mg_d', 'N_s', 'N_p']
+
+		"""
 		all_params = ["k_s", "k_p", "k_d", "k_EN_s", "k_EN_p", "k_EN_d", "k_T", "Mg_s", "Mg_p", "Mg_d", "N_s", "N_p"]
 		if not active_params:
 			return all_params
 		else:
 			assert(set(active_params).issubset(all_params))
-			assert(len(set(active_params)) == len(all_params))
+			assert(len(set(active_params)) == len(active_params))
+				
 			return active_params
 
 	"""
@@ -173,6 +195,28 @@ class Optimizer():
 		return results
 
 	def fitness_function(self, results):
+		"""
+		Parses results from generate results. Appends all errors into lists for error
+		calculation.
+
+		>>> test_results = { \
+"step_1_chromophore_1" : { \
+"tddft_energy" : 1.0, \
+"xtb_energy" : 1.5, \
+"tddft_dipole" : [0., 1., 1.], \
+"xtb_dipole" : [0., 3., 3.] \
+}, \
+"step_1_chromophore_2" : { \
+"tddft_energy" : 1.0, \
+"xtb_energy" : 1.0, \
+"tddft_dipole" : [0., 1., 1.], \
+"xtb_dipole" : [0., 1., 1.] \
+} \
+}
+		>>> o.fitness_function(test_results)				
+		(6.80285, 1.0, 1.4142135623730951)
+
+		"""
 		tddft_energies = []
 		xtb_energies = [] 
 		energy_errors = []
@@ -181,17 +225,20 @@ class Optimizer():
 
 		for i in results.values():
 			angle_error = calc_angle_error(i["tddft_dipole"], i["xtb_dipole"])
-			if i["dipole_error"] < 20:
+			if angle_error < 20:
 				tddft_energies.append(i["tddft_energy"])
 				xtb_energies.append(i["xtb_energy"])
-				energy_errors.append(i["energy_error"])
+				energy_errors.append(i["xtb_energy"] - i["tddft_energy"])
 				dipole_errors.append(calc_dipole_error(i["xtb_dipole"], i["tddft_dipole"]))
-				angle_errors.append(i["dipole_error"])
+				angle_errors.append(angle_error)
 
 		slope, intercept, r_value, p_value, std_err = linregress(xtb_energies, tddft_energies)
 
 		energy_errors = np.array(energy_errors)
 		energy_errors *= 27.2114 #hartree to eV
+
+		dipole_errors = np.array(dipole_errors)
+
 		energy_MAE = np.mean(abs(energy_errors))
 
 		energy_correlation = 1 - r_value**2
@@ -214,10 +261,13 @@ class Optimizer():
 	def param_string(self, params):
 		"""
 		writes the parameter string for logging and printing
+
+		>>> o.param_string([1, 2, 3])
+		'k_s : 1.000 k_p : 2.000 k_d : 3.000 '
 		"""
 		result = ""
-		for enum, key in enumerate(self.active_params.keys()):
-			result += "%s : %3.3f" % (key, params[enum])
+		for enum, key in enumerate(self.active_params):
+			result += "%s : %3.3f " % (key, params[enum])
 
 		return result
 
@@ -330,9 +380,10 @@ class Optimizer():
 if __name__ == '__main__':
 	try:
 		if sys.argv[1] == "test":
+			ref_data = make_ref_data()
 			print("running doctests")
 			import doctest
-			doctest.testmod()
+			doctest.testmod(extraglobs={'o' : Optimizer(ref_data, method='testing', active_params=['k_s', 'k_p', 'k_d'], max_iter=50)})
 			print("doctests finished")
 			exit(0)
 	
