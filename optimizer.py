@@ -2,6 +2,7 @@ import scipy.optimize
 from scipy.optimize import minimize
 from scipy.stats import linregress
 
+import argparse
 import subprocess
 import random
 import json
@@ -11,6 +12,28 @@ import time
 import datetime
 import sys
 from concurrent.futures import ProcessPoolExecutor
+
+CLI=argparse.ArgumentParser()
+CLI.add_argument(
+	"--params",
+	nargs="*",
+	type=str,
+	default=[]
+)
+
+CLI.add_argument(
+	"--ref_data",
+	nargs=1,
+	type=str,
+	default='tddft_results.json'
+)
+
+CLI.add_argument(
+	"--run_tests",
+	nargs=1,
+	type=bool,
+	default=False
+)
 
 def calc_dipole_error(vec1, vec2):
 	"""
@@ -56,11 +79,11 @@ def calc_angle_error(vector_1, vector_2):
 	return np.rad2deg(angle)
 
 
-def make_ref_data():
+def make_ref_data(file_name):
 	"""
 	make dictionary object of the TD-DFT reference data
 
-	>>> data = make_ref_data()
+	>>> data = make_ref_data("tddft_results.json")
 	>>> data["step_1_chromophore_01"]["energy"]
 	0.067717
 	>>> data["step_1_chromophore_01"]["transition_dipole"]
@@ -70,7 +93,7 @@ def make_ref_data():
 	<class 'dict'>
 
 	"""
-	data = open("tddft_results.json")
+	data = open(file_name)
 	data = json.load(data)
 
 	return data
@@ -102,7 +125,7 @@ class Optimizer():
 		if not active_params:
 			return all_params
 		else:
-			assert(set(active_params).issubset(all_params))
+			assert(set(active_params).issubset(set(all_params)))
 			assert(len(set(active_params)) == len(active_params))
 				
 			return active_params
@@ -378,28 +401,45 @@ class Optimizer():
 
 
 if __name__ == '__main__':
+	args = CLI.parse_args()
 	try:
-		if sys.argv[1] == "test":
-			ref_data = make_ref_data()
+		if args.run_tests:
+			ref_data = make_ref_data(args.ref_data)
 			print("running doctests")
 			import doctest
-			doctest.testmod(extraglobs={'o' : Optimizer(ref_data, method='testing', active_params=['k_s', 'k_p', 'k_d'], max_iter=50)})
+			doctest.testmod(verbose=True, extraglobs={'o' : Optimizer(ref_data, method='testing', active_params=['k_s', 'k_p', 'k_d'], max_iter=50)})
 			print("doctests finished")
 			exit(0)
 	
 	except:
 		pass
 	else:
+		print()
+		print("#" * 20)
+		print("BChla-xTB optimizer")
+		print("#" * 20)
+
+		print()
+
+		print("start time: ", time.ctime())
+
+		print()
+		
+		active_params = args.params
+		print("active parameters from python argument input : ", end="")
+		print(active_params)
+
 		#construct reference data
-		ref_data = make_ref_data()
+		ref_data = make_ref_data(args.ref_data)
+		print("reference data constructed from : \"%s\"" % args.ref_data)
 
 		#make optimizer
-		optimizer = Optimizer(ref_data, method="Nelder-Mead", max_iter=5000)
+		optimizer = Optimizer(ref_data, method="Nelder-Mead", active_params=active_params, max_iter=5000)
 
 		#run optimization
-		optimized_params = optimizer.optimize()
+		#optimized_params = optimizer.optimize()
 
 		#run validation
-		Optimizer.test_result(optimized_params)
+		#Optimizer.test_result(optimized_params)
 
 
