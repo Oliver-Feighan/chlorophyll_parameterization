@@ -65,9 +65,9 @@ def run_qcore(input_str):
 					universal_newlines=True).stdout)
 
 class Optimizer():
-	def make_active_param_list(self, active_params=""):
+	def make_active_param_list(self, active_params=[]):
 		all_params = ["k_s", "k_p", "k_d", "k_EN_s", "k_EN_p", "k_EN_d", "k_T", "Mg_s", "Mg_p", "Mg_d", "N_s", "N_p"]
-		if active_params == "":
+		if not active_params:
 			return all_params
 		else:
 			assert(set(active_params).issubset(all_params))
@@ -76,14 +76,8 @@ class Optimizer():
 
 	"""
 	store functions and data for optimization
-	>>> ref_data=make_ref_data()
-	>>> keys = list(ref_data.keys())[:3]
-	>>> ref_data = {keys[0] : ref_data[keys[0]], keys[1] : ref_data[keys[1]], keys[2] : ref_data[keys[2]]}
-	>>> test=Optimizer(ref_data)
-	>>> test.run_opt()
-	iter :    2 k_S : 1.827 k_P : 3.089 k_D : 1.531 k_EN_s : -0.029 k_EN_p : 0.013 k_EN_d : 0.001 k_T : 0.000 fitness : 1.034
 	"""
-	def __init__(self, method, active_params="", ref_data=None, max_iter=1):
+	def __init__(self, ref_data, method, active_params=[], max_iter=1):
 		self.method = method
 		self.ref_data = ref_data
 		
@@ -136,15 +130,8 @@ class Optimizer():
 	def generate_results(self, params):
 		"""
 		runs exc-xtb for each chlorophyll molecule, sanitizing results
-
-		>>> ref_data = make_ref_data()
-		>>> keys = list(ref_data.keys())[:3]
-		>>> ref_data = {keys[0] : ref_data[keys[0]], keys[1] : ref_data[keys[1]], keys[2] : ref_data[keys[2]]}
-		>>> test=generate_results(ref_data, params=[1.827, 3.089, 1.531, -0.029, 0.013, 0.001, 0.0])
-		>>> test
-		{'step_1_chromophore_01': {'tddft_energy': 0.067717, 'xtb_energy': 0.029292343886254457, 'energy_error': 0.03842465611374554, 'tddft_dipole': [0.305422706, -2.699393089, 0.410750669], 'xtb_dipole': [0.5124307476124165, -4.498082315965987, 0.218572342605373], 'dipole_error': 5.8340260552349354}, 'step_1_chromophore_02': {'tddft_energy': 0.069685, 'xtb_energy': 0.031652590077129616, 'energy_error': 0.03803240992287038, 'tddft_dipole': [-2.43839633, 0.294525704, -0.899224337], 'xtb_dipole': [-4.022174469548795, 0.8850977027546133, -1.60640001070345], 'dipole_error': 5.303504105038609}, 'step_1_chromophore_03': {'tddft_energy': 0.069472, 'xtb_energy': 0.03186119181447111, 'energy_error': 0.03761080818552889, 'tddft_dipole': [0.108963122, -2.698943706, -0.009963017], 'xtb_dipole': [-0.2097896114822028, 4.360348315008915, -0.5581703233391183], 'dipole_error': 7.51076667604526}}
 		"""
-		params_dict  = dict(zip([self.active_params], params))
+		params_dict = dict(zip(self.active_params, params))
 
 		#qcore_path = "/Users/of15641/qcore/cmake-build-debug/bin/qcore"
 		qcore_path = "~/.local/src/Qcore/release/qcore"
@@ -154,7 +141,7 @@ class Optimizer():
 		input_strs = list(map(lambda x : qcore_path + input_str.format(chromophore=x, params=params_dict), chromophores))
 
 		with ProcessPoolExecutor(max_workers=20) as pool:
-			xtb_results = list(pool.map(generate_result, list(zip(chromophores, input_strs))))
+			xtb_results = list(pool.map(self.generate_result, list(zip(chromophores, input_strs))))
 		
 		results = {}
 
@@ -213,14 +200,9 @@ class Optimizer():
 
 	def step(self, params):
 		"""	
-	 	>>> ref_data=make_ref_data()
-		>>> keys = list(ref_data.keys())[:3]
-		>>> ref_data = {keys[0] : ref_data[keys[0]], keys[1] : ref_data[keys[1]], keys[2] : ref_data[keys[2]]}
-		>>> test=Optimizer(ref_data)
-		>>> test.step([1.827, 3.089, 1.531, -0.029, 0.013, 0.001, 0.0])
-		1.0346488508694904
+		run the fitness function, and give back single fitness value
 		"""
-		results = generate_results(self.ref_data, params)
+		results = self.generate_results(params)
 
 		energy_MAE, energy_correlation, dipole_MAE = self.fitness_function(results)
 
@@ -229,7 +211,7 @@ class Optimizer():
 
 	def param_string(self, params):
 		"""
-
+		writes the parameter string for logging and printing
 		"""
 		result = ""
 		for enum, key in enumerate(self.active_params.keys()):
@@ -239,6 +221,10 @@ class Optimizer():
 
 
 	def callback(self, params):
+		"""
+		callback function to be run after iterations steps. Prints/stores the parameter strings
+		along with the single fitness value.
+		"""
 		iter_str = "iter : {0:4d}".format(self.iter)
 		
 		params_list = None
@@ -246,11 +232,11 @@ class Optimizer():
 		if type(params) == list:
 			params_list = params
 		else:
-			params_list == *params.tolist()
+			params_list = params.tolist()
 
 		params_str = self.params_string(params_list)
 
-		results = generate_results(self.ref_data, params)
+		results = self.generate_results(params)
 		MAE, correlation = self.fitness_function(results)
 
 		fitness_str = "MAE : {0:3.3f} R^2 : {1:3.3f}".format(MAE, 1-correlation)
@@ -265,9 +251,7 @@ class Optimizer():
 
 		self.log.append(log_string)
 
-		if self.save:
-			with open(self.file_name_str + ".txt", "a") as output_file:
-				output_file.write(log_string)
+		print(log_string)
 		
 		self.iter += 1
 
@@ -281,6 +265,9 @@ class Optimizer():
 		
 
 	def optimize(self):
+		"""
+		run the optimization method
+		"""
 		IG_as_list = list(self.initial_guess.values())
 
 		if self.method == "Nelder-Mead":
@@ -329,8 +316,12 @@ class Optimizer():
 			]
 			)
 
-	def validate_result(self, params):
-			self.callback(np.array(params))
+	def test_result(self, params):
+		"""
+		given a list of parameters, will run the full test set. 
+		DIFFERENT to the validation set!
+		"""
+		self.callback(np.array(params))
 
 
 
@@ -345,18 +336,17 @@ if __name__ == '__main__':
 	
 	except:
 		pass
+	else:
+		#construct reference data
+		ref_data = make_ref_data()
 
-	#construct reference data
-	ref_data = make_ref_data()
+		#make optimizer
+		optimizer = Optimizer(ref_data, method="Nelder-Mead", max_iter=5000)
 
-	#make optimizer
-	#optimizer = Optimizer("Nelder-Mead", ref_data, 5000)
-	optimizer = Optimizer("Nelder-Mead", ref_data, 5000)
+		#run optimization
+		optimized_params = optimizer.optimize()
 
-	#run optimization
-	optimized_params = optimizer.run()
-
-	#run validation
-	Optimizer.validate_result(optimized_params)
+		#run validation
+		Optimizer.test_result(optimized_params)
 
 
