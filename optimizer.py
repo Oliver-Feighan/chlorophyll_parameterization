@@ -12,9 +12,20 @@ import datetime
 import sys
 from concurrent.futures import ProcessPoolExecutor
 
+def calc_dipole_error(vec1, vec2):
+	"""
+	find the error between two vectors as the norm of the difference.
+	Altered due to arbitary phase of transition dipoles
+	"""
+	phase1 = np.linalg.norm(vec2 - vec1)
+	phase2 = np.linalg.norm(vec2 - vec1)
+
+	return min(phase1, phase2)
+
 def calc_angle_error(vector_1, vector_2):
 	"""
 	computes the angle between two transition dipoles.
+	Altered due to arbitary phase of transition dipoles
 
 	>>> calc_angle_error([0,0,1], [0,1,1])
 	45.00000000000001
@@ -161,15 +172,6 @@ class Optimizer():
 
 		return results
 
-	def dipole_error(result):
-		xtb = np.array(result['xtb_dipole'])
-		tddft = np.array(result['tddft_dipole'])
-
-		phase1 = np.linalg.norm(xtb - tddft)
-		phase2 = np.linalg.norm(xtb - tddft)
-
-		return min(phase1, phase2)
-
 	def fitness_function(self, results):
 		tddft_energies = []
 		xtb_energies = [] 
@@ -234,7 +236,7 @@ class Optimizer():
 		else:
 			params_list = params.tolist()
 
-		params_str = self.params_string(params_list)
+		param_str = self.params_string(params_list)
 
 		results = self.generate_results(params)
 		MAE, correlation = self.fitness_function(results)
