@@ -185,7 +185,7 @@ class Optimizer():
 				tddft_energies.append(i["tddft_energy"])
 				xtb_energies.append(i["xtb_energy"])
 				energy_errors.append(i["energy_error"])
-				dipole_errors.append(dipole_error(i["xtb_dipole"], i["tddft_dipole"]))
+				dipole_errors.append(calc_dipole_error(i["xtb_dipole"], i["tddft_dipole"]))
 				angle_errors.append(i["dipole_error"])
 
 		slope, intercept, r_value, p_value, std_err = linregress(xtb_energies, tddft_energies)
