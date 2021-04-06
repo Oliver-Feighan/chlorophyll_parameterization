@@ -76,7 +76,7 @@ for file in output_files:
 
 	Na_Nc = Na-Nc
 
-	results[file] = {
+	results[file.replace(".out", "")] = {
 			"energy" : homo_lumo_energy, 
 			"transition_dipole" : [float(x), float(y), float(z)],
 			"Na_Nc" : Na_Nc.tolist()

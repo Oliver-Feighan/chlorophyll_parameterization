@@ -42,7 +42,7 @@ CLI.add_argument(
 	"--ref_data",
 	nargs=1,
 	type=str,
-	default='tddft_data/tddft_results.json',
+	default='tddft_data/tddft_data.json',
 	help="json file that stores reference data, used to optimize against"
 )
 
@@ -129,6 +129,92 @@ def run_qcore(input_str):
 					universal_newlines=True).stdout)
 
 class Optimizer():
+
+	#validation set data - do not use!
+	validation_set = ['step_1801_chromophore_25', 'step_1801_chromophore_27', 'step_1801_chromophore_3', 'step_1801_chromophore_4', 'step_1801_chromophore_5',
+ 'step_1801_chromophore_6', 'step_1801_chromophore_8', 'step_1851_chromophore_1', 'step_1851_chromophore_10', 'step_1851_chromophore_11',
+ 'step_1851_chromophore_13', 'step_1851_chromophore_14', 'step_1851_chromophore_16', 'step_1851_chromophore_17', 'step_1851_chromophore_18',
+ 'step_1851_chromophore_2', 'step_1851_chromophore_20', 'step_1851_chromophore_21', 'step_1851_chromophore_24', 'step_1851_chromophore_25',
+ 'step_1851_chromophore_27', 'step_1851_chromophore_3', 'step_1851_chromophore_4', 'step_1851_chromophore_6', 'step_1851_chromophore_7',
+ 'step_1851_chromophore_9', 'step_1_chromophore_11', 'step_1_chromophore_12', 'step_1_chromophore_14', 'step_1_chromophore_15',
+ 'step_1_chromophore_16', 'step_1_chromophore_18', 'step_1_chromophore_19', 'step_1_chromophore_20', 'step_1_chromophore_21', 'step_1_chromophore_23',
+ 'step_1_chromophore_24', 'step_1_chromophore_25', 'step_1_chromophore_27', 'step_1_chromophore_3', 'step_1_chromophore_4', 'step_1_chromophore_5',
+ 'step_1_chromophore_7', 'step_1_chromophore_8', 'step_201_chromophore_1', 'step_201_chromophore_10', 'step_201_chromophore_11',
+ 'step_201_chromophore_12', 'step_201_chromophore_14', 'step_201_chromophore_16', 'step_201_chromophore_17', 'step_201_chromophore_18',
+ 'step_201_chromophore_2', 'step_201_chromophore_20', 'step_201_chromophore_21', 'step_201_chromophore_23', 'step_201_chromophore_24',
+ 'step_201_chromophore_26', 'step_201_chromophore_3', 'step_201_chromophore_5', 'step_201_chromophore_6', 'step_201_chromophore_7',
+ 'step_201_chromophore_8', 'step_251_chromophore_1', 'step_251_chromophore_10', 'step_251_chromophore_11', 'step_251_chromophore_13',
+ 'step_251_chromophore_15', 'step_251_chromophore_16', 'step_251_chromophore_17', 'step_251_chromophore_18', 'step_251_chromophore_19',
+ 'step_251_chromophore_2', 'step_251_chromophore_21', 'step_251_chromophore_23', 'step_251_chromophore_25', 'step_251_chromophore_26',
+ 'step_251_chromophore_3', 'step_251_chromophore_4', 'step_251_chromophore_5', 'step_251_chromophore_6', 'step_251_chromophore_7',
+ 'step_251_chromophore_8', 'step_301_chromophore_10', 'step_301_chromophore_12', 'step_301_chromophore_13', 'step_301_chromophore_14',
+ 'step_301_chromophore_15', 'step_301_chromophore_16', 'step_301_chromophore_18', 'step_301_chromophore_19', 'step_301_chromophore_20',
+ 'step_301_chromophore_21', 'step_301_chromophore_24', 'step_301_chromophore_25', 'step_301_chromophore_26', 'step_301_chromophore_27',
+ 'step_301_chromophore_3', 'step_301_chromophore_4', 'step_301_chromophore_5', 'step_301_chromophore_7', 'step_301_chromophore_8',
+ 'step_351_chromophore_1', 'step_351_chromophore_10', 'step_351_chromophore_11', 'step_351_chromophore_13', 'step_351_chromophore_15',
+ 'step_351_chromophore_16', 'step_351_chromophore_17', 'step_351_chromophore_18', 'step_351_chromophore_2', 'step_351_chromophore_20',
+ 'step_351_chromophore_22', 'step_351_chromophore_23', 'step_351_chromophore_25', 'step_351_chromophore_26', 'step_351_chromophore_3',
+ 'step_351_chromophore_4', 'step_351_chromophore_6', 'step_351_chromophore_7', 'step_351_chromophore_8', 'step_401_chromophore_1',
+ 'step_401_chromophore_10', 'step_401_chromophore_11', 'step_401_chromophore_12', 'step_401_chromophore_15', 'step_401_chromophore_16',
+ 'step_401_chromophore_17', 'step_401_chromophore_19', 'step_401_chromophore_2', 'step_401_chromophore_20', 'step_401_chromophore_21',
+ 'step_401_chromophore_23', 'step_401_chromophore_24', 'step_401_chromophore_3', 'step_401_chromophore_6', 'step_401_chromophore_7',
+ 'step_401_chromophore_8', 'step_401_chromophore_9', 'step_451_chromophore_1', 'step_451_chromophore_10', 'step_451_chromophore_11',
+ 'step_451_chromophore_14', 'step_451_chromophore_16', 'step_451_chromophore_18', 'step_451_chromophore_19', 'step_451_chromophore_2',
+ 'step_451_chromophore_20', 'step_451_chromophore_21', 'step_451_chromophore_22', 'step_451_chromophore_24', 'step_451_chromophore_25',
+ 'step_451_chromophore_4', 'step_451_chromophore_6', 'step_451_chromophore_7', 'step_451_chromophore_8', 'step_451_chromophore_9',
+ 'step_501_chromophore_1', 'step_501_chromophore_10', 'step_501_chromophore_11', 'step_501_chromophore_12', 'step_501_chromophore_14',
+ 'step_501_chromophore_16', 'step_501_chromophore_18', 'step_501_chromophore_2', 'step_501_chromophore_20', 'step_501_chromophore_21',
+ 'step_501_chromophore_22', 'step_501_chromophore_23', 'step_501_chromophore_24', 'step_501_chromophore_26', 'step_501_chromophore_5',
+ 'step_501_chromophore_6', 'step_501_chromophore_7', 'step_501_chromophore_8', 'step_501_chromophore_9', 'step_51_chromophore_1',
+ 'step_51_chromophore_10', 'step_51_chromophore_11', 'step_51_chromophore_13', 'step_51_chromophore_14', 'step_51_chromophore_17',
+ 'step_51_chromophore_18', 'step_51_chromophore_20', 'step_51_chromophore_21', 'step_51_chromophore_22', 'step_51_chromophore_23',
+ 'step_51_chromophore_24', 'step_51_chromophore_26', 'step_51_chromophore_3', 'step_51_chromophore_4', 'step_51_chromophore_6',
+ 'step_51_chromophore_7', 'step_51_chromophore_8', 'step_51_chromophore_9', 'step_551_chromophore_1', 'step_551_chromophore_11',
+ 'step_551_chromophore_12', 'step_551_chromophore_14', 'step_551_chromophore_16', 'step_551_chromophore_17', 'step_551_chromophore_19',
+ 'step_551_chromophore_2', 'step_551_chromophore_20', 'step_551_chromophore_21', 'step_551_chromophore_23', 'step_551_chromophore_24',
+ 'step_551_chromophore_26', 'step_551_chromophore_27', 'step_551_chromophore_5', 'step_551_chromophore_6', 'step_551_chromophore_7',
+ 'step_551_chromophore_8', 'step_551_chromophore_9', 'step_601_chromophore_1', 'step_601_chromophore_10', 'step_601_chromophore_11',
+ 'step_601_chromophore_13', 'step_601_chromophore_15', 'step_601_chromophore_16', 'step_601_chromophore_18', 'step_601_chromophore_19',
+ 'step_601_chromophore_2', 'step_601_chromophore_20', 'step_601_chromophore_21', 'step_601_chromophore_22', 'step_601_chromophore_23',
+ 'step_601_chromophore_25', 'step_601_chromophore_26', 'step_601_chromophore_27', 'step_601_chromophore_3', 'step_601_chromophore_4',
+ 'step_601_chromophore_5', 'step_601_chromophore_6', 'step_601_chromophore_7', 'step_601_chromophore_8', 'step_601_chromophore_9',
+ 'step_651_chromophore_1', 'step_651_chromophore_10', 'step_651_chromophore_11', 'step_651_chromophore_12', 'step_651_chromophore_13',
+ 'step_651_chromophore_14', 'step_651_chromophore_15', 'step_651_chromophore_16', 'step_651_chromophore_17', 'step_651_chromophore_18',
+ 'step_651_chromophore_19', 'step_651_chromophore_2', 'step_651_chromophore_20', 'step_651_chromophore_21', 'step_651_chromophore_22',
+ 'step_651_chromophore_23', 'step_651_chromophore_24', 'step_651_chromophore_25', 'step_651_chromophore_26', 'step_651_chromophore_27',
+ 'step_651_chromophore_3', 'step_651_chromophore_4', 'step_651_chromophore_5', 'step_651_chromophore_7', 'step_651_chromophore_8',
+ 'step_651_chromophore_9', 'step_701_chromophore_10', 'step_701_chromophore_12', 'step_701_chromophore_13', 'step_701_chromophore_14',
+ 'step_701_chromophore_15', 'step_701_chromophore_17', 'step_701_chromophore_18', 'step_701_chromophore_19', 'step_701_chromophore_2',
+ 'step_701_chromophore_20', 'step_701_chromophore_21', 'step_701_chromophore_22', 'step_701_chromophore_23', 'step_701_chromophore_24',
+ 'step_701_chromophore_25', 'step_701_chromophore_26', 'step_701_chromophore_27', 'step_701_chromophore_3', 'step_701_chromophore_4',
+ 'step_701_chromophore_5', 'step_701_chromophore_6', 'step_701_chromophore_7', 'step_701_chromophore_8', 'step_701_chromophore_9',
+ 'step_751_chromophore_1', 'step_751_chromophore_10', 'step_751_chromophore_11', 'step_751_chromophore_12', 'step_751_chromophore_13',
+ 'step_751_chromophore_14', 'step_751_chromophore_15', 'step_751_chromophore_16', 'step_751_chromophore_17', 'step_751_chromophore_18',
+ 'step_751_chromophore_19', 'step_751_chromophore_2', 'step_751_chromophore_20', 'step_751_chromophore_21', 'step_751_chromophore_22',
+ 'step_751_chromophore_23', 'step_751_chromophore_24', 'step_751_chromophore_25', 'step_751_chromophore_26', 'step_751_chromophore_27',
+ 'step_751_chromophore_3', 'step_751_chromophore_4', 'step_751_chromophore_5', 'step_751_chromophore_6', 'step_751_chromophore_7',
+ 'step_751_chromophore_8', 'step_751_chromophore_9', 'step_801_chromophore_1', 'step_801_chromophore_10', 'step_801_chromophore_11',
+ 'step_801_chromophore_12', 'step_801_chromophore_13', 'step_801_chromophore_14', 'step_801_chromophore_15', 'step_801_chromophore_16',
+ 'step_801_chromophore_17', 'step_801_chromophore_18', 'step_801_chromophore_19', 'step_801_chromophore_2', 'step_801_chromophore_20',
+ 'step_801_chromophore_21', 'step_801_chromophore_22', 'step_801_chromophore_23', 'step_801_chromophore_24', 'step_801_chromophore_25',
+ 'step_801_chromophore_27', 'step_801_chromophore_3', 'step_801_chromophore_4', 'step_801_chromophore_5', 'step_801_chromophore_6',
+ 'step_801_chromophore_7', 'step_801_chromophore_8', 'step_801_chromophore_9', 'step_851_chromophore_1', 'step_851_chromophore_11',
+ 'step_851_chromophore_12', 'step_851_chromophore_14', 'step_851_chromophore_15', 'step_851_chromophore_18', 'step_851_chromophore_19',
+ 'step_851_chromophore_2', 'step_851_chromophore_21', 'step_851_chromophore_22', 'step_851_chromophore_24', 'step_851_chromophore_25',
+ 'step_851_chromophore_26', 'step_851_chromophore_27', 'step_851_chromophore_3', 'step_851_chromophore_4', 'step_851_chromophore_5',
+ 'step_851_chromophore_6', 'step_851_chromophore_7', 'step_851_chromophore_8', 'step_851_chromophore_9', 'step_901_chromophore_1',
+ 'step_901_chromophore_10', 'step_901_chromophore_11', 'step_901_chromophore_12', 'step_901_chromophore_13', 'step_901_chromophore_14',
+ 'step_901_chromophore_15', 'step_901_chromophore_16', 'step_901_chromophore_17', 'step_901_chromophore_18', 'step_901_chromophore_19',
+ 'step_901_chromophore_2', 'step_901_chromophore_20', 'step_901_chromophore_21', 'step_901_chromophore_22', 'step_901_chromophore_23',
+ 'step_901_chromophore_24', 'step_901_chromophore_25', 'step_901_chromophore_26', 'step_901_chromophore_27', 'step_901_chromophore_3',
+ 'step_901_chromophore_4', 'step_901_chromophore_5', 'step_901_chromophore_6', 'step_901_chromophore_7', 'step_901_chromophore_8',
+ 'step_901_chromophore_9', 'step_951_chromophore_1', 'step_951_chromophore_10', 'step_951_chromophore_11', 'step_951_chromophore_12',
+ 'step_951_chromophore_13', 'step_951_chromophore_14', 'step_951_chromophore_15', 'step_951_chromophore_16', 'step_951_chromophore_17',
+ 'step_951_chromophore_18', 'step_951_chromophore_19', 'step_951_chromophore_2', 'step_951_chromophore_21', 'step_951_chromophore_22',
+ 'step_951_chromophore_23', 'step_951_chromophore_24', 'step_951_chromophore_25', 'step_951_chromophore_26', 'step_951_chromophore_27',
+ 'step_951_chromophore_3', 'step_951_chromophore_4', 'step_951_chromophore_5', 'step_951_chromophore_6', 'step_951_chromophore_7',
+ 'step_951_chromophore_8', 'step_951_chromophore_9']
+
 	def make_active_param_list(self, active_params=[]):
 		"""
 		make the list of active parameters, being optimized
@@ -155,8 +241,12 @@ class Optimizer():
 	def __init__(self, ref_data, method, active_params=[], max_iter=1):
 		self.method = method
 		self.ref_data = ref_data
+
+		self.test_set = [x for x in list(self.ref_data.keys()) if x not in self.validation_set]
+		assert(len(list(set(self.test_set).intersection(self.validation_set))) == 0)
+
+		self.training_set = random.sample(self.test_set, k=5)
 		
-		self.test_set = random.sample(list(self.ref_data.keys()), k=100)
 		self.iter = 1
 		
 		#defaults GFN0
@@ -195,10 +285,11 @@ class Optimizer():
 		chromophore, input_str = input_tuple
 
 		result = run_qcore(input_str)
+
 		return [chromophore, result]
 
 
-	def generate_results(self, params):
+	def generate_results(self, params, test=False):
 		"""
 		runs exc-xtb for each chlorophyll molecule, sanitizing results
 		"""
@@ -206,9 +297,10 @@ class Optimizer():
 
 		qcore_path = "/Users/of15641/qcore/cmake-build-release/bin/qcore"
 		#qcore_path = "~/.local/src/Qcore/release/qcore"
-		input_str = ' -n 1 -f json --schema none -s "{chromophore} := bchla(structure(file = \'xyz_files/{chromophore}.xyz\') input_params={params})" '
+		input_str = ' -n 1 -f json --schema none -s "{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}.xyz\') input_params={params})" '
 
-		chromophores = list(ref_data.keys())
+		chromophores = self.test_set
+
 		input_strs = list(map(lambda x : qcore_path + input_str.format(chromophore=x, params=params_dict), chromophores))
 
 		with ProcessPoolExecutor(max_workers=20) as pool:
@@ -309,7 +401,7 @@ class Optimizer():
 		return result
 
 
-	def callback(self, params):
+	def callback(self, params, test=False):
 		"""
 		callback function to be run after iterations steps. Prints/stores the parameter strings
 		along with the single fitness value.
@@ -323,17 +415,18 @@ class Optimizer():
 		else:
 			params_list = params.tolist()
 
-		param_str = self.params_string(params_list)
+		param_str = self.param_string(params_list)
 
-		results = self.generate_results(params)
-		MAE, correlation = self.fitness_function(results)
+		results = self.generate_results(params, test)
+		energy_MAE, energy_correlation, dipole_MAE = self.fitness_function(results)
 
-		fitness_str = "MAE : {0:3.3f} R^2 : {1:3.3f}".format(MAE, 1-correlation)
+		fitness_str = "MAE(energy) : {0:3.3f} R^2 : {1:3.3f} ".format(energy_MAE, 1-energy_correlation)
+		fitness_str += f"MAE(dipole) : {dipole_MAE:3.3f}"
 
 		time_str = "time/s : {0:3.6f}".format(time.time() - self.time)
 		self.time = time.time()
 
-		log_string = "{iter_} {param} {fitness} {time}\n".format(iter_=iter_str,
+		log_string = "{iter_} {param} {fitness} {time}".format(iter_=iter_str,
 									param=param_str,
 									fitness=fitness_str,
 									time=time_str)
@@ -410,7 +503,7 @@ class Optimizer():
 		given a list of parameters, will run the full test set. 
 		DIFFERENT to the validation set!
 		"""
-		self.callback(np.array(params))
+		self.callback(np.array(params), test=True)
 
 
 
@@ -475,6 +568,6 @@ if __name__ == '__main__':
 		optimized_params = optimizer.optimize()
 
 		#run validation
-		#Optimizer.test_result(optimized_params)
+		Optimizer.test_result(optimized_params)
 
 
