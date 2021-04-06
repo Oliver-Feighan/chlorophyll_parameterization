@@ -1,0 +1,14 @@
+#!/bin/bash
+#PBS -l walltime=10:00:00
+#PBS -l select=1:ncpus=24:mem=10gb
+#PBS -N huckel_electronegativity_kinetic_global_pair_response
+#PBS -j oe
+
+module load lang/python/anaconda/3.8-2020.07
+
+export OMP_THREADS=1
+export MKL_THREADING_LAYER=TBB
+
+python optimizer.py --params k_s k_p k_d k_EN_s k_EN_p k_EN_d k_T Mg_s Mg_p Mg_d N_s N_p a_x y_J y_K
+
+	

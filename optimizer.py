@@ -18,21 +18,40 @@ CLI.add_argument(
 	"--params",
 	nargs="*",
 	type=str,
-	default=[]
+	default=[],
+	help="active parameters for optimization",
+)
+
+CLI.add_argument(
+	"--method",
+	nargs=1,
+	type=str,
+	default="Nelder-Mead",
+	help="specify optimization method, or flag to run a validation set"
+)
+
+CLI.add_argument(
+	"--max_iter",
+	nargs=1,
+	type=int,
+	default=5000,
+	help="maximum number of iterations for optimization method"
 )
 
 CLI.add_argument(
 	"--ref_data",
 	nargs=1,
 	type=str,
-	default='tddft_results.json'
+	default='tddft_results.json',
+	help="json file that stores reference data, used to optimize against"
 )
 
 CLI.add_argument(
 	"--run_tests",
 	nargs=1,
 	type=bool,
-	default=False
+	default=False,
+	help="bool to flag running doctests instead of an optimization"
 )
 
 def calc_dipole_error(vec1, vec2):
@@ -175,12 +194,8 @@ class Optimizer():
 	def generate_result(self, input_tuple):
 		chromophore, input_str = input_tuple
 
-		try:
-			result = run_qcore(input_str)
-		except:
-			return None
-		else:
-			return [chromophore, result]
+		result = run_qcore(input_str)
+		return [chromophore, result]
 
 
 	def generate_results(self, params):
@@ -189,8 +204,8 @@ class Optimizer():
 		"""
 		params_dict = dict(zip(self.active_params, params))
 
-		#qcore_path = "/Users/of15641/qcore/cmake-build-debug/bin/qcore"
-		qcore_path = "~/.local/src/Qcore/release/qcore"
+		qcore_path = "/Users/of15641/qcore/cmake-build-release/bin/qcore"
+		#qcore_path = "~/.local/src/Qcore/release/qcore"
 		input_str = ' -n 1 -f json --schema none -s "{chromophore} := bchla(structure(file = \'xyz_files/{chromophore}.xyz\') input_params={params})" '
 
 		chromophores = list(ref_data.keys())
@@ -202,7 +217,6 @@ class Optimizer():
 		results = {}
 
 		for i in xtb_results:
-			if i is not None:
 				c = i[0]
 				xtb = i[1]
 
@@ -415,9 +429,9 @@ if __name__ == '__main__':
 		pass
 	else:
 		print()
-		print("#" * 20)
-		print("BChla-xTB optimizer")
-		print("#" * 20)
+		print("#######################")
+		print("# BChla-xTB optimizer #")
+		print("#######################")
 
 		print()
 
@@ -428,16 +442,37 @@ if __name__ == '__main__':
 		active_params = args.params
 		print("active parameters from python argument input : ", end="")
 		print(active_params)
+		print()
 
 		#construct reference data
 		ref_data = make_ref_data(args.ref_data)
 		print("reference data constructed from : \"%s\"" % args.ref_data)
+		print()
 
 		#make optimizer
-		optimizer = Optimizer(ref_data, method="Nelder-Mead", active_params=active_params, max_iter=5000)
+		method   = args.method
+		max_iter = args.max_iter
 
+		print("Optimization method : ", method)
+		print("maximum iterations : ", max_iter)
+
+		print()
+		print("recreate input with:")
+		print("python optimizer.py", end=" ")
+		print("--params %s" % " ".join(args.params), end=" ")
+		print("--method %s" % method, end=" ")
+		print("--max_iter %i" % max_iter, end=" ")
+		print("--ref_data %s" % args.ref_data , end=" ")
+		print("--run_tests %r" % args.run_tests, end=" ")
+		print()
+
+		print("making optimizer...")
+		optimizer = Optimizer(ref_data=ref_data, method=method, active_params=active_params, max_iter=max_iter)
+		print()
 		#run optimization
-		#optimized_params = optimizer.optimize()
+		print("running optimization...")
+		print()
+		optimized_params = optimizer.optimize()
 
 		#run validation
 		#Optimizer.test_result(optimized_params)
