@@ -2,6 +2,7 @@ import scipy.optimize
 from scipy.optimize import minimize
 from scipy.stats import linregress
 
+import argparse
 import subprocess
 import random
 import json
@@ -12,12 +13,56 @@ import datetime
 import sys
 from concurrent.futures import ProcessPoolExecutor
 
+CLI=argparse.ArgumentParser()
+CLI.add_argument(
+	"--params",
+	nargs="*",
+	type=str,
+	default=[]
+)
+
+CLI.add_argument(
+	"--ref_data",
+	nargs=1,
+	type=str,
+	default='tddft_results.json'
+)
+
+CLI.add_argument(
+	"--run_tests",
+	nargs=1,
+	type=bool,
+	default=False
+)
+
+def calc_dipole_error(vec1, vec2):
+	"""
+	find the error between two vectors as the norm of the difference.
+	Altered due to arbitary phase of transition dipoles
+
+	>>> calc_dipole_error([0,3,3], [0,1,1])
+	2.8284271247461903
+	
+	>>> calc_dipole_error([0,3,3], [0,-1,-1])
+	2.8284271247461903
+	
+
+	"""
+	phase1 = np.linalg.norm(np.array(vec2) - np.array(vec1))
+	phase2 = np.linalg.norm(np.array(vec2) + np.array(vec1))
+
+	return min(phase1, phase2)
+
 def calc_angle_error(vector_1, vector_2):
 	"""
 	computes the angle between two transition dipoles.
+	Altered due to arbitary phase of transition dipoles
 
 	>>> calc_angle_error([0,0,1], [0,1,1])
 	45.00000000000001
+
+	>>> calc_angle_error([0,0,1], [0,-1,-1])
+	45.0
 	"""
 	if(np.linalg.norm(vector_1) < 1e-6 and np.linalg.norm(vector_2) < 1e-6):
 		return 0.0
@@ -34,11 +79,11 @@ def calc_angle_error(vector_1, vector_2):
 	return np.rad2deg(angle)
 
 
-def make_ref_data():
+def make_ref_data(file_name):
 	"""
 	make dictionary object of the TD-DFT reference data
 
-	>>> data = make_ref_data()
+	>>> data = make_ref_data("tddft_results.json")
 	>>> data["step_1_chromophore_01"]["energy"]
 	0.067717
 	>>> data["step_1_chromophore_01"]["transition_dipole"]
@@ -48,7 +93,7 @@ def make_ref_data():
 	<class 'dict'>
 
 	"""
-	data = open("tddft_results.json")
+	data = open(file_name)
 	data = json.load(data)
 
 	return data
@@ -65,25 +110,30 @@ def run_qcore(input_str):
 					universal_newlines=True).stdout)
 
 class Optimizer():
-	def make_active_param_list(self, active_params=""):
+	def make_active_param_list(self, active_params=[]):
+		"""
+		make the list of active parameters, being optimized
+
+		>>> o.make_active_param_list(active_params=["k_s", "k_p", "k_d"])
+		['k_s', 'k_p', 'k_d']
+
+		>>> o.make_active_param_list([])
+		['k_s', 'k_p', 'k_d', 'k_EN_s', 'k_EN_p', 'k_EN_d', 'k_T', 'Mg_s', 'Mg_p', 'Mg_d', 'N_s', 'N_p']
+
+		"""
 		all_params = ["k_s", "k_p", "k_d", "k_EN_s", "k_EN_p", "k_EN_d", "k_T", "Mg_s", "Mg_p", "Mg_d", "N_s", "N_p"]
-		if active_params == "":
+		if not active_params:
 			return all_params
 		else:
-			assert(set(active_params).issubset(all_params))
-			assert(len(set(active_params)) == len(all_params))
+			assert(set(active_params).issubset(set(all_params)))
+			assert(len(set(active_params)) == len(active_params))
+				
 			return active_params
 
 	"""
 	store functions and data for optimization
-	>>> ref_data=make_ref_data()
-	>>> keys = list(ref_data.keys())[:3]
-	>>> ref_data = {keys[0] : ref_data[keys[0]], keys[1] : ref_data[keys[1]], keys[2] : ref_data[keys[2]]}
-	>>> test=Optimizer(ref_data)
-	>>> test.run_opt()
-	iter :    2 k_S : 1.827 k_P : 3.089 k_D : 1.531 k_EN_s : -0.029 k_EN_p : 0.013 k_EN_d : 0.001 k_T : 0.000 fitness : 1.034
 	"""
-	def __init__(self, method, active_params="", ref_data=None, max_iter=1):
+	def __init__(self, ref_data, method, active_params=[], max_iter=1):
 		self.method = method
 		self.ref_data = ref_data
 		
@@ -136,15 +186,8 @@ class Optimizer():
 	def generate_results(self, params):
 		"""
 		runs exc-xtb for each chlorophyll molecule, sanitizing results
-
-		>>> ref_data = make_ref_data()
-		>>> keys = list(ref_data.keys())[:3]
-		>>> ref_data = {keys[0] : ref_data[keys[0]], keys[1] : ref_data[keys[1]], keys[2] : ref_data[keys[2]]}
-		>>> test=generate_results(ref_data, params=[1.827, 3.089, 1.531, -0.029, 0.013, 0.001, 0.0])
-		>>> test
-		{'step_1_chromophore_01': {'tddft_energy': 0.067717, 'xtb_energy': 0.029292343886254457, 'energy_error': 0.03842465611374554, 'tddft_dipole': [0.305422706, -2.699393089, 0.410750669], 'xtb_dipole': [0.5124307476124165, -4.498082315965987, 0.218572342605373], 'dipole_error': 5.8340260552349354}, 'step_1_chromophore_02': {'tddft_energy': 0.069685, 'xtb_energy': 0.031652590077129616, 'energy_error': 0.03803240992287038, 'tddft_dipole': [-2.43839633, 0.294525704, -0.899224337], 'xtb_dipole': [-4.022174469548795, 0.8850977027546133, -1.60640001070345], 'dipole_error': 5.303504105038609}, 'step_1_chromophore_03': {'tddft_energy': 0.069472, 'xtb_energy': 0.03186119181447111, 'energy_error': 0.03761080818552889, 'tddft_dipole': [0.108963122, -2.698943706, -0.009963017], 'xtb_dipole': [-0.2097896114822028, 4.360348315008915, -0.5581703233391183], 'dipole_error': 7.51076667604526}}
 		"""
-		params_dict  = dict(zip([self.active_params], params))
+		params_dict = dict(zip(self.active_params, params))
 
 		#qcore_path = "/Users/of15641/qcore/cmake-build-debug/bin/qcore"
 		qcore_path = "~/.local/src/Qcore/release/qcore"
@@ -154,7 +197,7 @@ class Optimizer():
 		input_strs = list(map(lambda x : qcore_path + input_str.format(chromophore=x, params=params_dict), chromophores))
 
 		with ProcessPoolExecutor(max_workers=20) as pool:
-			xtb_results = list(pool.map(generate_result, list(zip(chromophores, input_strs))))
+			xtb_results = list(pool.map(self.generate_result, list(zip(chromophores, input_strs))))
 		
 		results = {}
 
@@ -174,16 +217,29 @@ class Optimizer():
 
 		return results
 
-	def dipole_error(result):
-		xtb = np.array(i['xtb_dipole'])
-		tddft = np.array(i['tddft_dipole'])
-
-		phase1 = np.linalg.norm(xtb - tddft)
-		phase2 = np.linalg.norm(xtb - tddft)
-
-		return min(phase1, phase2)
-
 	def fitness_function(self, results):
+		"""
+		Parses results from generate results. Appends all errors into lists for error
+		calculation.
+
+		>>> test_results = { \
+"step_1_chromophore_1" : { \
+"tddft_energy" : 1.0, \
+"xtb_energy" : 1.5, \
+"tddft_dipole" : [0., 1., 1.], \
+"xtb_dipole" : [0., 3., 3.] \
+}, \
+"step_1_chromophore_2" : { \
+"tddft_energy" : 1.0, \
+"xtb_energy" : 1.0, \
+"tddft_dipole" : [0., 1., 1.], \
+"xtb_dipole" : [0., 1., 1.] \
+} \
+}
+		>>> o.fitness_function(test_results)				
+		(6.80285, 1.0, 1.4142135623730951)
+
+		"""
 		tddft_energies = []
 		xtb_energies = [] 
 		energy_errors = []
@@ -192,17 +248,20 @@ class Optimizer():
 
 		for i in results.values():
 			angle_error = calc_angle_error(i["tddft_dipole"], i["xtb_dipole"])
-			if i["dipole_error"] < 20:
+			if angle_error < 20:
 				tddft_energies.append(i["tddft_energy"])
 				xtb_energies.append(i["xtb_energy"])
-				energy_errors.append(i["energy_error"])
-				dipole_errors.append(dipole_error(i))
-				angle_errors.append(i["dipole_error"])
+				energy_errors.append(i["xtb_energy"] - i["tddft_energy"])
+				dipole_errors.append(calc_dipole_error(i["xtb_dipole"], i["tddft_dipole"]))
+				angle_errors.append(angle_error)
 
 		slope, intercept, r_value, p_value, std_err = linregress(xtb_energies, tddft_energies)
 
 		energy_errors = np.array(energy_errors)
 		energy_errors *= 27.2114 #hartree to eV
+
+		dipole_errors = np.array(dipole_errors)
+
 		energy_MAE = np.mean(abs(energy_errors))
 
 		energy_correlation = 1 - r_value**2
@@ -213,14 +272,9 @@ class Optimizer():
 
 	def step(self, params):
 		"""	
-	 	>>> ref_data=make_ref_data()
-		>>> keys = list(ref_data.keys())[:3]
-		>>> ref_data = {keys[0] : ref_data[keys[0]], keys[1] : ref_data[keys[1]], keys[2] : ref_data[keys[2]]}
-		>>> test=Optimizer(ref_data)
-		>>> test.step([1.827, 3.089, 1.531, -0.029, 0.013, 0.001, 0.0])
-		1.0346488508694904
+		run the fitness function, and give back single fitness value
 		"""
-		results = generate_results(self.ref_data, params)
+		results = self.generate_results(params)
 
 		energy_MAE, energy_correlation, dipole_MAE = self.fitness_function(results)
 
@@ -229,16 +283,23 @@ class Optimizer():
 
 	def param_string(self, params):
 		"""
+		writes the parameter string for logging and printing
 
+		>>> o.param_string([1, 2, 3])
+		'k_s : 1.000 k_p : 2.000 k_d : 3.000 '
 		"""
 		result = ""
-		for enum, key in enumerate(self.active_params.keys()):
-			result += "%s : %3.3f" % (key, params[enum])
+		for enum, key in enumerate(self.active_params):
+			result += "%s : %3.3f " % (key, params[enum])
 
 		return result
 
 
 	def callback(self, params):
+		"""
+		callback function to be run after iterations steps. Prints/stores the parameter strings
+		along with the single fitness value.
+		"""
 		iter_str = "iter : {0:4d}".format(self.iter)
 		
 		params_list = None
@@ -246,11 +307,11 @@ class Optimizer():
 		if type(params) == list:
 			params_list = params
 		else:
-			params_list == *params.tolist()
+			params_list = params.tolist()
 
-		params_str = self.params_string(params_list)
+		param_str = self.params_string(params_list)
 
-		results = generate_results(self.ref_data, params)
+		results = self.generate_results(params)
 		MAE, correlation = self.fitness_function(results)
 
 		fitness_str = "MAE : {0:3.3f} R^2 : {1:3.3f}".format(MAE, 1-correlation)
@@ -265,9 +326,7 @@ class Optimizer():
 
 		self.log.append(log_string)
 
-		if self.save:
-			with open(self.file_name_str + ".txt", "a") as output_file:
-				output_file.write(log_string)
+		print(log_string)
 		
 		self.iter += 1
 
@@ -281,6 +340,9 @@ class Optimizer():
 		
 
 	def optimize(self):
+		"""
+		run the optimization method
+		"""
 		IG_as_list = list(self.initial_guess.values())
 
 		if self.method == "Nelder-Mead":
@@ -329,34 +391,55 @@ class Optimizer():
 			]
 			)
 
-	def validate_result(self, params):
-			self.callback(np.array(params))
+	def test_result(self, params):
+		"""
+		given a list of parameters, will run the full test set. 
+		DIFFERENT to the validation set!
+		"""
+		self.callback(np.array(params))
 
 
 
 if __name__ == '__main__':
+	args = CLI.parse_args()
 	try:
-		if sys.argv[1] == "test":
+		if args.run_tests:
+			ref_data = make_ref_data(args.ref_data)
 			print("running doctests")
 			import doctest
-			doctest.testmod()
+			doctest.testmod(verbose=True, extraglobs={'o' : Optimizer(ref_data, method='testing', active_params=['k_s', 'k_p', 'k_d'], max_iter=50)})
 			print("doctests finished")
 			exit(0)
 	
 	except:
 		pass
+	else:
+		print()
+		print("#" * 20)
+		print("BChla-xTB optimizer")
+		print("#" * 20)
 
-	#construct reference data
-	ref_data = make_ref_data()
+		print()
 
-	#make optimizer
-	#optimizer = Optimizer("Nelder-Mead", ref_data, 5000)
-	optimizer = Optimizer("Nelder-Mead", ref_data, 5000)
+		print("start time: ", time.ctime())
 
-	#run optimization
-	optimized_params = optimizer.run()
+		print()
+		
+		active_params = args.params
+		print("active parameters from python argument input : ", end="")
+		print(active_params)
 
-	#run validation
-	Optimizer.validate_result(optimized_params)
+		#construct reference data
+		ref_data = make_ref_data(args.ref_data)
+		print("reference data constructed from : \"%s\"" % args.ref_data)
+
+		#make optimizer
+		optimizer = Optimizer(ref_data, method="Nelder-Mead", active_params=active_params, max_iter=5000)
+
+		#run optimization
+		#optimized_params = optimizer.optimize()
+
+		#run validation
+		#Optimizer.test_result(optimized_params)
 
 
