@@ -1,10 +1,10 @@
 #!/bin/bash
 #PBS -l walltime=5:00:00
-#PBS -l select=1:ncpus=24:mem=150gb
+#PBS -l select=1:ncpus=24:mem=170gb
 #PBS -N step_101_chromophore_18
 #PBS -j oe
 
-cd ~/chlorophyll_optimization/tddft_data
+cd ~/chlorophyll_parameterization/tddft_data
 
 export OMP_NUM_THREADS=1
 export MKL_THREADING_LAYER=TBB
