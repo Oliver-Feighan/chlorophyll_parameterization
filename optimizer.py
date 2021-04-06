@@ -299,7 +299,7 @@ class Optimizer():
 		#qcore_path = "~/.local/src/Qcore/release/qcore"
 		input_str = ' -n 1 -f json --schema none -s "{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}.xyz\') input_params={params})" '
 
-		chromophores = self.test_set
+		chromophores = self.training_set
 
 		input_strs = list(map(lambda x : qcore_path + input_str.format(chromophore=x, params=params_dict), chromophores))
 
