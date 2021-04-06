@@ -245,7 +245,7 @@ class Optimizer():
 		self.test_set = [x for x in list(self.ref_data.keys()) if x not in self.validation_set]
 		assert(len(list(set(self.test_set).intersection(self.validation_set))) == 0)
 
-		self.training_set = random.sample(self.test_set, k=5)
+		self.training_set = random.sample(self.test_set, k=100)
 		
 		self.iter = 1
 		
@@ -295,8 +295,8 @@ class Optimizer():
 		"""
 		params_dict = dict(zip(self.active_params, params))
 
-		qcore_path = "/Users/of15641/qcore/cmake-build-release/bin/qcore"
-		#qcore_path = "~/.local/src/Qcore/release/qcore"
+		#qcore_path = "/Users/of15641/qcore/cmake-build-release/bin/qcore"
+		qcore_path = "~/.local/src/Qcore/release/qcore"
 		input_str = ' -n 1 -f json --schema none -s "{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}.xyz\') input_params={params})" '
 
 		chromophores = self.test_set
