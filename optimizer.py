@@ -42,7 +42,7 @@ CLI.add_argument(
 	"--ref_data",
 	nargs=1,
 	type=str,
-	default='tddft_results.json',
+	default='tddft_data/tddft_results.json',
 	help="json file that stores reference data, used to optimize against"
 )
 
