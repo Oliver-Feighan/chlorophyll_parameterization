@@ -27,6 +27,7 @@ CLI.add_argument(
 	nargs=1,
 	type=str,
 	default="Nelder-Mead",
+	choices=["Nelder-Mead", "test", "Bayesian_Gaussian_Process"],
 	help="specify optimization method, or flag to run a validation set"
 )
 
@@ -452,13 +453,24 @@ class Optimizer():
 		"""
 		IG_as_list = list(self.initial_guess.values())
 
+		if self.method =="test":
+			from scipy.optimize import rosen, rosen_der
+			x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
+			return minimize(
+				rosen,
+				x0,
+				method="Nelder-Mead",
+				tol=1e-6,
+				options={"disp" : True}
+			)
+
 		if self.method == "Nelder-Mead":
 			return minimize(
 			self.make_fitness_function(), 
 			IG_as_list, 
 			callback=self.callback,
 			method="Nelder-Mead",
-			options={"maxiter" : self.max_iter+1, "adaptive" : True}
+			options={"maxiter" : self.max_iter+1, "disp": True, "adaptive" : True}
 			)
 
 		elif self.method == "Bayesian_Gaussian_Process":
@@ -503,7 +515,10 @@ class Optimizer():
 		given a list of parameters, will run the full test set. 
 		DIFFERENT to the validation set!
 		"""
-		self.callback(np.array(params), test=True)
+		if self.method == "test":
+			print(params)
+		else:
+			self.callback(np.array(params), test=True)
 
 
 
@@ -543,7 +558,7 @@ if __name__ == '__main__':
 		print()
 
 		#make optimizer
-		method   = args.method
+		method   = args.method[0]
 		max_iter = args.max_iter
 
 		print("Optimization method : ", method)
@@ -565,9 +580,22 @@ if __name__ == '__main__':
 		#run optimization
 		print("running optimization...")
 		print()
-		optimized_params = optimizer.optimize()
+		optimizer_result = optimizer.optimize()
+		
+		print()
+		optimized_params = optimizer_result.x
+
+		if method == "test":
+			zipped_params = dict(zip(["x1", "x2", "x3", "x4", "x5"], optimized_params))
+			print("optimized parameters: ", zipped_params)
+		else:
+			zipped_params = dict(zip(args.params, optimized_params))
+			print("optimized parameters: ", zipped_params)
+		print()
+
 
 		#run validation
-		Optimizer.test_result(optimized_params)
+		print("running validation...")
+		optimizer.test_result(optimized_params)
 
 
