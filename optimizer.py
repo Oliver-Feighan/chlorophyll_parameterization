@@ -26,7 +26,7 @@ CLI.add_argument(
 	"--method",
 	nargs=1,
 	type=str,
-	default="Nelder-Mead",
+	default=["Nelder-Mead"],
 	choices=["Nelder-Mead", "test", "Bayesian_Gaussian_Process"],
 	help="specify optimization method, or flag to run a validation set"
 )
