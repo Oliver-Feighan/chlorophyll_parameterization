@@ -4,9 +4,11 @@
 #PBS -N global_pair
 #PBS -j oe
 
+cd ~/chlorophyll_parameterization
+
 module load lang/python/anaconda/3.8-2020.07
 
-export OMP_THREADS=1
+export OMP_NUM_THREADS=1
 export MKL_THREADING_LAYER=TBB
 
 python optimizer.py --params Mg_s Mg_p Mg_d N_s N_p
