@@ -271,7 +271,7 @@ class Optimizer():
 		['k_s', 'k_p', 'k_d', 'k_EN_s', 'k_EN_p', 'k_EN_d', 'k_T', 'Mg_s', 'Mg_p', 'Mg_d', 'N_s', 'N_p']
 
 		"""
-		all_params = ["k_s", "k_p", "k_d", "k_EN_s", "k_EN_p", "k_EN_d", "k_T", "Mg_s", "Mg_p", "Mg_d", "N_s", "N_p"]
+		all_params = ["k_s", "k_p", "k_d", "k_EN_s", "k_EN_p", "k_EN_d", "k_T", "Mg_s", "Mg_p", "Mg_d", "N_s", "N_p", "a_x", "y_J", "y_K"]
 		if not active_params:
 			return all_params
 		else:
@@ -279,6 +279,28 @@ class Optimizer():
 			assert(len(set(active_params)) == len(active_params))
 				
 			return active_params
+
+	def make_initial_guess(self):
+		 GFN0_defaults = {
+			"k_s" 		: 2.0,
+			"k_p" 		: 2.48,
+			"k_d" 		: 2.27,
+			"k_EN_s" 	: 0.006,
+			"k_EN_p" 	: -0.001,
+			"k_EN_d"	: -0.002,
+			"k_T" 		: 0.000,
+			"Mg_s" 		: 1.0,
+			"Mg_p" 		: 1.0,
+			"Mg_d" 		: 1.0,
+			"N_s" 		: 1.0, 
+			"N_p" 		: 1.0, 
+			"a_x"		: 0.5,
+			"y_J"		: 4.0,
+			"y_K"		: 2.0
+		}
+
+		return [GFN0_defaults[p] for p in self.active_params]
+
 
 	"""
 	store functions and data for optimization
@@ -296,23 +318,8 @@ class Optimizer():
 		
 		self.iter = 1
 		
-		#defaults GFN0
-		self.initial_guess = {
-			"k_s" 		: 2.0,
-			"k_p" 		: 2.48,
-			"k_d" 		: 2.27,
-			"k_EN_s" 	: 0.006,
-			"k_EN_p" 	: -0.001,
-			"k_EN_d"	: -0.002,
-			"k_T" 		: 0.000,
-			"Mg_s" 		: 1.0,
-			"Mg_p" 		: 1.0,
-			"Mg_d" 		: 1.0,
-			"N_s" 		: 1.0, 
-			"N_p" 		: 1.0, 
-		}
-		
 		self.active_params = self.make_active_param_list(active_params)
+		self.initial_guess = self.make_initial_guess()
 
 		self.max_iter = max_iter
 		self.log = []
@@ -500,8 +507,6 @@ class Optimizer():
 		"""
 		run the optimization method
 		"""
-		IG_as_list = list(self.initial_guess.values())
-
 		if self.method =="test":
 			from scipy.optimize import rosen, rosen_der
 			x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
@@ -515,8 +520,8 @@ class Optimizer():
 
 		if self.method == "Nelder-Mead":
 			return minimize(
-			self.make_fitness_function(), 
-			IG_as_list, 
+			fun=self.make_fitness_function(), 
+			x0=self.initial_guess, 
 			callback=self.callback,
 			method="Nelder-Mead",
 			options={"maxiter" : self.max_iter+1, "disp": True, "adaptive" : True}
