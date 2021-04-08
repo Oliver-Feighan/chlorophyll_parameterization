@@ -356,7 +356,7 @@ class Optimizer():
 		chromophores = self.training_set
 
 		if test:
-			chromophore = self.test_set
+			chromophores = self.test_set
 
 		input_strs = list(map(lambda x : qcore_path + input_str.format(chromophore=x, params=params_dict), chromophores))
 
@@ -475,6 +475,12 @@ class Optimizer():
 		param_str = self.param_string(params_list)
 
 		results = self.generate_results(params, test)
+
+		if test:
+			assert(len(results) == len(self.test_set))
+		else:
+			assert(len(results) == len(self.training_set))
+
 		energy_MAE, energy_correlation, dipole_MAE = self.fitness_function(results)
 
 		fitness_str = "MAE(energy) : {0:3.3f} R^2 : {1:3.3f} ".format(energy_MAE, 1-energy_correlation)
