@@ -119,15 +119,32 @@ def make_ref_data(file_name):
 	return data
 
 
-def run_qcore(input_str):
+def run_qcore(chromophore_str):
 	"""
 	runs qcore with the input string
 	"""
-	return json.loads(subprocess.run(input_str,
+	qcore_path = "~/.local/src/Qcore/release/qcore"
+	json_str = " -n 1 -f json --schema none -s "
+	norm_str = " -n 1 -s "
+
+	json_run = subprocess.run(qcore_path + json_str + chromophore_str,
 					shell=True,
 					stdout=subprocess.PIPE,
 					executable="/bin/bash",
-					universal_newlines=True).stdout)
+					universal_newlines=True)
+
+	if json_run.resultcode != 0:
+		norm_run = subprocess.run(qcore_path + norm_str + chromophore_str,,
+					shell=True,
+					stdout=subprocess.PIPE,
+					executable="/bin/bash",
+					universal_newlines=True)
+
+		print(norm_run.stdout)
+
+		exit()
+
+	return json.loads(json_run.stdout)
 
 class Optimizer():
 
@@ -345,20 +362,18 @@ class Optimizer():
 
 	def generate_results(self, params, test=False):
 		"""
-		runs exc-xtb for each chlorophyll molecule, sanitizing results
+		runs xtb for each chlorophyll molecule
 		"""
 		params_dict = dict(zip(self.active_params, params))
 
-		#qcore_path = "/Users/of15641/qcore/cmake-build-release/bin/qcore"
-		qcore_path = "~/.local/src/Qcore/release/qcore"
-		input_str = ' -n 1 -f json --schema none -s "{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}.xyz\') input_params={params})" '
+		input_str = "{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}.xyz\') input_params={params})"
 
 		chromophores = self.training_set
 
 		if test:
 			chromophores = self.test_set
 
-		input_strs = list(map(lambda x : qcore_path + input_str.format(chromophore=x, params=params_dict), chromophores))
+		input_strs = list(map(lambda x : input_str.format(chromophore=x, params=params_dict), chromophores))
 
 		with ProcessPoolExecutor(max_workers=20) as pool:
 			xtb_results = list(pool.map(self.generate_result, list(zip(chromophores, input_strs))))
