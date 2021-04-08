@@ -281,7 +281,7 @@ class Optimizer():
 			return active_params
 
 	def make_initial_guess(self):
-		 GFN0_defaults = {
+		GFN0_defaults = {
 			"k_s" 		: 2.0,
 			"k_p" 		: 2.48,
 			"k_d" 		: 2.27,
@@ -298,7 +298,7 @@ class Optimizer():
 			"y_J"		: 4.0,
 			"y_K"		: 2.0
 		}
-
+		
 		return [GFN0_defaults[p] for p in self.active_params]
 
 
