@@ -1,0 +1,140 @@
+ 
+ University of Bristol ACRC HPC Bluepebble Service
+ -------------------------------------------------
+ Job electronegativity_global_pair, jobid 1305352.bp1, username of15641 - started execution at 18:03:56 Thu 08/04/21 on node bp1-compute00099.data.bp.acrc.priv
+ 
+
+#######################
+# BChla-xTB optimizer #
+#######################
+
+start time:  Thu Apr  8 18:03:58 2021
+
+active parameters from python argument input : ['k_EN_s', 'k_EN_p', 'k_EN_d', 'Mg_s', 'Mg_p', 'Mg_d', 'N_s', 'N_p']
+
+reference data constructed from : "tddft_data/tddft_data.json"
+
+Optimization method :  Nelder-Mead
+maximum iterations :  5000
+
+recreate input with:
+python optimizer.py --params k_EN_s k_EN_p k_EN_d Mg_s Mg_p Mg_d N_s N_p --method Nelder-Mead --max_iter 5000 --ref_data tddft_data/tddft_data.json --run_tests False 
+making optimizer...
+
+running optimization...
+
+iter :    1 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.014 Mg_p : 1.014 Mg_d : 1.014 N_s : 1.014 N_p : 1.014  MAE(energy) : 1.064 R^2 : 0.007 MAE(dipole) : 1.873 time/s : 45.844525
+iter :    2 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.018 Mg_p : 1.018 Mg_d : 1.018 N_s : 1.018 N_p : 1.018  MAE(energy) : 1.000 R^2 : 0.008 MAE(dipole) : 1.873 time/s : 11.301850
+iter :    3 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.023 Mg_p : 1.023 Mg_d : 1.023 N_s : 1.023 N_p : 1.023  MAE(energy) : 0.925 R^2 : 0.009 MAE(dipole) : 1.874 time/s : 11.258632
+iter :    4 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.030 Mg_p : 1.030 Mg_d : 1.030 N_s : 1.030 N_p : 1.030  MAE(energy) : 0.869 R^2 : 0.009 MAE(dipole) : 1.874 time/s : 11.293672
+iter :    5 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.961 Mg_p : 1.038 Mg_d : 1.038 N_s : 1.038 N_p : 1.038  MAE(energy) : 0.821 R^2 : 0.008 MAE(dipole) : 1.875 time/s : 11.601264
+iter :    6 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.961 Mg_p : 1.038 Mg_d : 1.038 N_s : 1.038 N_p : 1.038  MAE(energy) : 0.821 R^2 : 0.008 MAE(dipole) : 1.875 time/s : 7.524123
+iter :    7 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.961 Mg_p : 1.038 Mg_d : 1.038 N_s : 1.038 N_p : 1.038  MAE(energy) : 0.821 R^2 : 0.008 MAE(dipole) : 1.875 time/s : 7.591097
+iter :    8 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.020 Mg_p : 1.036 Mg_d : 1.076 N_s : 1.044 N_p : 0.999  MAE(energy) : 0.708 R^2 : 0.022 MAE(dipole) : 1.871 time/s : 11.380076
+iter :    9 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.020 Mg_p : 1.036 Mg_d : 1.076 N_s : 1.044 N_p : 0.999  MAE(energy) : 0.708 R^2 : 0.022 MAE(dipole) : 1.871 time/s : 7.597946
+iter :   10 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.011 Mg_p : 1.037 Mg_d : 1.068 N_s : 1.049 N_p : 1.055  MAE(energy) : 0.590 R^2 : 0.011 MAE(dipole) : 1.875 time/s : 11.318070
+iter :   11 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.011 Mg_p : 1.037 Mg_d : 1.068 N_s : 1.049 N_p : 1.055  MAE(energy) : 0.590 R^2 : 0.011 MAE(dipole) : 1.875 time/s : 7.602799
+iter :   12 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.993 Mg_p : 1.034 Mg_d : 1.085 N_s : 1.054 N_p : 1.064  MAE(energy) : 0.541 R^2 : 0.011 MAE(dipole) : 1.875 time/s : 11.575408
+iter :   13 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.993 Mg_p : 1.034 Mg_d : 1.085 N_s : 1.054 N_p : 1.064  MAE(energy) : 0.541 R^2 : 0.011 MAE(dipole) : 1.875 time/s : 7.628628
+iter :   14 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.101 Mg_d : 1.087 N_s : 1.038 N_p : 1.054  MAE(energy) : 0.440 R^2 : 0.019 MAE(dipole) : 1.875 time/s : 11.412528
+iter :   15 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.101 Mg_d : 1.087 N_s : 1.038 N_p : 1.054  MAE(energy) : 0.440 R^2 : 0.019 MAE(dipole) : 1.875 time/s : 7.601345
+iter :   16 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.049 Mg_p : 1.058 Mg_d : 1.114 N_s : 1.076 N_p : 1.062  MAE(energy) : 0.307 R^2 : 0.021 MAE(dipole) : 1.875 time/s : 11.531258
+iter :   17 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.049 Mg_p : 1.058 Mg_d : 1.114 N_s : 1.076 N_p : 1.062  MAE(energy) : 0.307 R^2 : 0.021 MAE(dipole) : 1.875 time/s : 7.555499
+iter :   18 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.972 Mg_p : 1.070 Mg_d : 1.111 N_s : 1.081 N_p : 1.124  MAE(energy) : 0.233 R^2 : 0.012 MAE(dipole) : 1.875 time/s : 11.581143
+iter :   19 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.972 Mg_p : 1.070 Mg_d : 1.111 N_s : 1.081 N_p : 1.124  MAE(energy) : 0.233 R^2 : 0.012 MAE(dipole) : 1.875 time/s : 7.491672
+iter :   20 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.967 Mg_p : 1.090 Mg_d : 1.147 N_s : 1.092 N_p : 1.077  MAE(energy) : 0.185 R^2 : 0.025 MAE(dipole) : 1.876 time/s : 11.813323
+iter :   21 k_EN_s : 0.005 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.001 Mg_p : 1.119 Mg_d : 1.143 N_s : 1.102 N_p : 1.074  MAE(energy) : 0.145 R^2 : 0.028 MAE(dipole) : 1.876 time/s : 11.375578
+iter :   22 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 11.515907
+iter :   23 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 7.581052
+iter :   24 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 7.419001
+iter :   25 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 7.553304
+iter :   26 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 7.720118
+iter :   27 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 7.499085
+iter :   28 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 7.716618
+iter :   29 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 11.534424
+iter :   30 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 11.451181
+iter :   31 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 11.309314
+iter :   32 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 11.231363
+iter :   33 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 7.583741
+iter :   34 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 7.657421
+iter :   35 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 11.120886
+iter :   36 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 11.406297
+iter :   37 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 11.235899
+iter :   38 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.988 Mg_p : 1.135 Mg_d : 1.160 N_s : 1.111 N_p : 1.074  MAE(energy) : 0.104 R^2 : 0.035 MAE(dipole) : 1.876 time/s : 11.645408
+iter :   39 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.955 Mg_p : 1.130 Mg_d : 1.217 N_s : 1.133 N_p : 1.058  MAE(energy) : 0.101 R^2 : 0.047 MAE(dipole) : 1.875 time/s : 11.698292
+iter :   40 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.955 Mg_p : 1.130 Mg_d : 1.217 N_s : 1.133 N_p : 1.058  MAE(energy) : 0.101 R^2 : 0.047 MAE(dipole) : 1.875 time/s : 11.418943
+iter :   41 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.955 Mg_p : 1.130 Mg_d : 1.217 N_s : 1.133 N_p : 1.058  MAE(energy) : 0.101 R^2 : 0.047 MAE(dipole) : 1.875 time/s : 11.259538
+iter :   42 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.955 Mg_p : 1.130 Mg_d : 1.217 N_s : 1.133 N_p : 1.058  MAE(energy) : 0.101 R^2 : 0.047 MAE(dipole) : 1.875 time/s : 11.282857
+iter :   43 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.053 Mg_p : 1.103 Mg_d : 1.180 N_s : 1.134 N_p : 1.040  MAE(energy) : 0.097 R^2 : 0.045 MAE(dipole) : 1.874 time/s : 11.462429
+iter :   44 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.053 Mg_p : 1.103 Mg_d : 1.180 N_s : 1.134 N_p : 1.040  MAE(energy) : 0.097 R^2 : 0.045 MAE(dipole) : 1.874 time/s : 7.501144
+iter :   45 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.053 Mg_p : 1.103 Mg_d : 1.180 N_s : 1.134 N_p : 1.040  MAE(energy) : 0.097 R^2 : 0.045 MAE(dipole) : 1.874 time/s : 7.621436
+iter :   46 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.053 Mg_p : 1.103 Mg_d : 1.180 N_s : 1.134 N_p : 1.040  MAE(energy) : 0.097 R^2 : 0.045 MAE(dipole) : 1.874 time/s : 7.675834
+iter :   47 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.053 Mg_p : 1.103 Mg_d : 1.180 N_s : 1.134 N_p : 1.040  MAE(energy) : 0.097 R^2 : 0.045 MAE(dipole) : 1.874 time/s : 11.567204
+iter :   48 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.053 Mg_p : 1.103 Mg_d : 1.180 N_s : 1.134 N_p : 1.040  MAE(energy) : 0.097 R^2 : 0.045 MAE(dipole) : 1.874 time/s : 11.371570
+iter :   49 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.997 Mg_p : 1.171 Mg_d : 1.183 N_s : 1.116 N_p : 1.023  MAE(energy) : 0.098 R^2 : 0.059 MAE(dipole) : 1.873 time/s : 11.538735
+iter :   50 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.997 Mg_p : 1.171 Mg_d : 1.183 N_s : 1.116 N_p : 1.023  MAE(energy) : 0.098 R^2 : 0.059 MAE(dipole) : 1.873 time/s : 7.725056
+iter :   51 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 0.997 Mg_p : 1.171 Mg_d : 1.183 N_s : 1.116 N_p : 1.023  MAE(energy) : 0.098 R^2 : 0.059 MAE(dipole) : 1.873 time/s : 7.578413
+iter :   52 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.016 Mg_p : 1.119 Mg_d : 1.203 N_s : 1.107 N_p : 1.007  MAE(energy) : 0.094 R^2 : 0.061 MAE(dipole) : 1.871 time/s : 11.415379
+iter :   53 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.026 Mg_p : 1.105 Mg_d : 1.212 N_s : 1.122 N_p : 0.976  MAE(energy) : 0.094 R^2 : 0.074 MAE(dipole) : 1.866 time/s : 11.661062
+iter :   54 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.026 Mg_p : 1.105 Mg_d : 1.212 N_s : 1.122 N_p : 0.976  MAE(energy) : 0.094 R^2 : 0.074 MAE(dipole) : 1.866 time/s : 7.534912
+iter :   55 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.026 Mg_p : 1.105 Mg_d : 1.212 N_s : 1.122 N_p : 0.976  MAE(energy) : 0.094 R^2 : 0.074 MAE(dipole) : 1.866 time/s : 7.579420
+iter :   56 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.096 Mg_p : 1.123 Mg_d : 1.193 N_s : 1.124 N_p : 0.950  MAE(energy) : 0.108 R^2 : 0.087 MAE(dipole) : 1.860 time/s : 11.504278
+iter :   57 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.096 Mg_p : 1.123 Mg_d : 1.193 N_s : 1.124 N_p : 0.950  MAE(energy) : 0.108 R^2 : 0.087 MAE(dipole) : 1.860 time/s : 7.856896
+iter :   58 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.096 Mg_p : 1.123 Mg_d : 1.193 N_s : 1.124 N_p : 0.950  MAE(energy) : 0.108 R^2 : 0.087 MAE(dipole) : 1.860 time/s : 7.513001
+iter :   59 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.096 Mg_p : 1.123 Mg_d : 1.193 N_s : 1.124 N_p : 0.950  MAE(energy) : 0.108 R^2 : 0.087 MAE(dipole) : 1.860 time/s : 7.474266
+iter :   60 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.096 Mg_p : 1.123 Mg_d : 1.193 N_s : 1.124 N_p : 0.950  MAE(energy) : 0.108 R^2 : 0.087 MAE(dipole) : 1.860 time/s : 11.286339
+iter :   61 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.047 Mg_p : 1.151 Mg_d : 1.182 N_s : 1.110 N_p : 0.918  MAE(energy) : 0.107 R^2 : 0.099 MAE(dipole) : 1.849 time/s : 11.261501
+iter :   62 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.076 Mg_p : 1.085 Mg_d : 1.214 N_s : 1.126 N_p : 0.893  MAE(energy) : 0.118 R^2 : 0.106 MAE(dipole) : 1.839 time/s : 11.475952
+iter :   63 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.076 Mg_p : 1.085 Mg_d : 1.214 N_s : 1.126 N_p : 0.893  MAE(energy) : 0.118 R^2 : 0.106 MAE(dipole) : 1.839 time/s : 7.717751
+iter :   64 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.099 Mg_p : 1.127 Mg_d : 1.181 N_s : 1.081 N_p : 0.886  MAE(energy) : 0.114 R^2 : 0.106 MAE(dipole) : 1.836 time/s : 11.408699
+iter :   65 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.107 Mg_p : 1.088 Mg_d : 1.178 N_s : 1.111 N_p : 0.886  MAE(energy) : 0.108 R^2 : 0.103 MAE(dipole) : 1.836 time/s : 11.310511
+iter :   66 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.107 Mg_p : 1.088 Mg_d : 1.178 N_s : 1.111 N_p : 0.886  MAE(energy) : 0.108 R^2 : 0.103 MAE(dipole) : 1.836 time/s : 11.316790
+iter :   67 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.107 Mg_p : 1.088 Mg_d : 1.178 N_s : 1.111 N_p : 0.886  MAE(energy) : 0.108 R^2 : 0.103 MAE(dipole) : 1.836 time/s : 11.383465
+iter :   68 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.107 Mg_p : 1.088 Mg_d : 1.178 N_s : 1.111 N_p : 0.886  MAE(energy) : 0.108 R^2 : 0.103 MAE(dipole) : 1.836 time/s : 7.615146
+iter :   69 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.178 Mg_p : 1.090 Mg_d : 1.156 N_s : 1.112 N_p : 0.855  MAE(energy) : 0.116 R^2 : 0.109 MAE(dipole) : 1.818 time/s : 11.389070
+iter :   70 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.178 Mg_p : 1.090 Mg_d : 1.156 N_s : 1.112 N_p : 0.855  MAE(energy) : 0.116 R^2 : 0.109 MAE(dipole) : 1.818 time/s : 11.336880
+iter :   71 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.178 Mg_p : 1.090 Mg_d : 1.156 N_s : 1.112 N_p : 0.855  MAE(energy) : 0.116 R^2 : 0.109 MAE(dipole) : 1.818 time/s : 7.676657
+iter :   72 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.178 Mg_p : 1.090 Mg_d : 1.156 N_s : 1.112 N_p : 0.855  MAE(energy) : 0.116 R^2 : 0.109 MAE(dipole) : 1.818 time/s : 7.640478
+iter :   73 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.178 Mg_p : 1.090 Mg_d : 1.156 N_s : 1.112 N_p : 0.855  MAE(energy) : 0.116 R^2 : 0.109 MAE(dipole) : 1.818 time/s : 7.587934
+iter :   74 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.178 Mg_p : 1.090 Mg_d : 1.156 N_s : 1.112 N_p : 0.855  MAE(energy) : 0.116 R^2 : 0.109 MAE(dipole) : 1.818 time/s : 7.756580
+iter :   75 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.178 Mg_p : 1.090 Mg_d : 1.156 N_s : 1.112 N_p : 0.855  MAE(energy) : 0.116 R^2 : 0.109 MAE(dipole) : 1.818 time/s : 11.279452
+iter :   76 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.476835
+iter :   77 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.395126
+iter :   78 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 7.593095
+iter :   79 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.467915
+iter :   80 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 7.718719
+iter :   81 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 7.717438
+iter :   82 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.276228
+iter :   83 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.526288
+iter :   84 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.376433
+iter :   85 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.389519
+iter :   86 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.397944
+iter :   87 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 7.432098
+iter :   88 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.584005
+iter :   89 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.326916
+iter :   90 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.499299
+iter :   91 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.418533
+iter :   92 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.479511
+iter :   93 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 7.596521
+iter :   94 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.190 Mg_p : 1.024 Mg_d : 1.178 N_s : 1.094 N_p : 0.812  MAE(energy) : 0.135 R^2 : 0.104 MAE(dipole) : 1.786 time/s : 11.314407
+iter :   95 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.161 Mg_p : 1.026 Mg_d : 1.173 N_s : 1.086 N_p : 0.785  MAE(energy) : 0.156 R^2 : 0.096 MAE(dipole) : 1.755 time/s : 11.480495
+iter :   96 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.161 Mg_p : 1.026 Mg_d : 1.173 N_s : 1.086 N_p : 0.785  MAE(energy) : 0.156 R^2 : 0.096 MAE(dipole) : 1.755 time/s : 11.474154
+iter :   97 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.161 Mg_p : 1.026 Mg_d : 1.173 N_s : 1.086 N_p : 0.785  MAE(energy) : 0.156 R^2 : 0.096 MAE(dipole) : 1.755 time/s : 11.326065
+iter :   98 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.161 Mg_p : 1.026 Mg_d : 1.173 N_s : 1.086 N_p : 0.785  MAE(energy) : 0.156 R^2 : 0.096 MAE(dipole) : 1.755 time/s : 11.251176
+iter :   99 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.161 Mg_p : 1.026 Mg_d : 1.173 N_s : 1.086 N_p : 0.785  MAE(energy) : 0.156 R^2 : 0.096 MAE(dipole) : 1.755 time/s : 7.610153
+iter :  100 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.161 Mg_p : 1.026 Mg_d : 1.173 N_s : 1.086 N_p : 0.785  MAE(energy) : 0.156 R^2 : 0.096 MAE(dipole) : 1.755 time/s : 11.578254
+iter :  101 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.161 Mg_p : 1.026 Mg_d : 1.173 N_s : 1.086 N_p : 0.785  MAE(energy) : 0.156 R^2 : 0.096 MAE(dipole) : 1.755 time/s : 11.685649
+iter :  102 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.161 Mg_p : 1.026 Mg_d : 1.173 N_s : 1.086 N_p : 0.785  MAE(energy) : 0.156 R^2 : 0.096 MAE(dipole) : 1.755 time/s : 11.600186
+iter :  103 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.181 Mg_p : 1.028 Mg_d : 1.171 N_s : 1.103 N_p : 0.796  MAE(energy) : 0.147 R^2 : 0.100 MAE(dipole) : 1.769 time/s : 11.553705
+iter :  104 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.181 Mg_p : 1.028 Mg_d : 1.171 N_s : 1.103 N_p : 0.796  MAE(energy) : 0.147 R^2 : 0.100 MAE(dipole) : 1.769 time/s : 11.373129
+iter :  105 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.181 Mg_p : 1.028 Mg_d : 1.171 N_s : 1.103 N_p : 0.796  MAE(energy) : 0.147 R^2 : 0.100 MAE(dipole) : 1.769 time/s : 7.485173
+iter :  106 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.199 Mg_p : 0.999 Mg_d : 1.179 N_s : 1.103 N_p : 0.789  MAE(energy) : 0.152 R^2 : 0.097 MAE(dipole) : 1.760 time/s : 11.509246
+iter :  107 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.199 Mg_p : 0.999 Mg_d : 1.179 N_s : 1.103 N_p : 0.789  MAE(energy) : 0.152 R^2 : 0.097 MAE(dipole) : 1.760 time/s : 11.383331
+iter :  108 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.199 Mg_p : 0.999 Mg_d : 1.179 N_s : 1.103 N_p : 0.789  MAE(energy) : 0.152 R^2 : 0.097 MAE(dipole) : 1.760 time/s : 11.412092
+iter :  109 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.199 Mg_p : 0.999 Mg_d : 1.179 N_s : 1.103 N_p : 0.789  MAE(energy) : 0.152 R^2 : 0.097 MAE(dipole) : 1.760 time/s : 11.545429
+iter :  110 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.199 Mg_p : 0.999 Mg_d : 1.179 N_s : 1.103 N_p : 0.789  MAE(energy) : 0.152 R^2 : 0.097 MAE(dipole) : 1.760 time/s : 7.537225
+iter :  111 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.199 Mg_p : 0.999 Mg_d : 1.179 N_s : 1.103 N_p : 0.789  MAE(energy) : 0.152 R^2 : 0.097 MAE(dipole) : 1.760 time/s : 11.364239
+iter :  112 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.199 Mg_p : 0.999 Mg_d : 1.179 N_s : 1.103 N_p : 0.789  MAE(energy) : 0.152 R^2 : 0.097 MAE(dipole) : 1.760 time/s : 7.500861
+iter :  113 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.199 Mg_p : 0.999 Mg_d : 1.179 N_s : 1.103 N_p : 0.789  MAE(energy) : 0.152 R^2 : 0.097 MAE(dipole) : 1.760 time/s : 7.444924
+iter :  114 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.199 Mg_p : 0.999 Mg_d : 1.179 N_s : 1.103 N_p : 0.789  MAE(energy) : 0.152 R^2 : 0.097 MAE(dipole) : 1.760 time/s : 11.307727
+iter :  115 k_EN_s : 0.007 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.199 Mg_p : 0.999 Mg_d : 1.179 N_s : 1.103 N_p : 0.789  MAE(energy) : 0.152 R^2 : 0.097 MAE(dipole) : 1.760 time/s : 11.518086

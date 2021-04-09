@@ -133,8 +133,8 @@ def run_qcore(chromophore_str):
 					executable="/bin/bash",
 					universal_newlines=True)
 
-	if json_run.resultcode != 0:
-		norm_run = subprocess.run(qcore_path + norm_str + chromophore_str,,
+	if json_run.returncode != 0:
+		norm_run = subprocess.run(qcore_path + norm_str + chromophore_str,
 					shell=True,
 					stdout=subprocess.PIPE,
 					executable="/bin/bash",
@@ -366,7 +366,7 @@ class Optimizer():
 		"""
 		params_dict = dict(zip(self.active_params, params))
 
-		input_str = "{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}.xyz\') input_params={params})"
+		input_str = "\"{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}.xyz\') input_params={params})\""
 
 		chromophores = self.training_set
 
@@ -390,6 +390,10 @@ class Optimizer():
 				"tddft_dipole" : ref_data[c]["transition_dipole"],
 				"xtb_dipole" : xtb[c]["transition_dipole"]
 				}
+
+				for key, value in package.items(): 
+					if package[key] is None:
+						print(f"None value for {key} for chromophore {c}") 
 
 				results[c] = package
 
