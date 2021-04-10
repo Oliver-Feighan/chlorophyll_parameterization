@@ -11,6 +11,6 @@ module load lang/python/anaconda/3.8-2020.07
 export OMP_NUM_THREADS=1
 export MKL_THREADING_LAYER=TBB
 
-python optimizer.py --params k_T Mg_s Mg_p Mg_d N_s N_p
+python ~/chlorophyll_parameterization/optimizer.py --params k_T Mg_s Mg_p Mg_d N_s N_p --ref_data ~/chlorophyll_parameterization/tddft_data/tddft_data.json
 
 	

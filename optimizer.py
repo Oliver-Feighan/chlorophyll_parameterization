@@ -29,7 +29,7 @@ CLI.add_argument(
 	"--samples",
 	nargs=1,
 	type=int,
-	default=100,
+	default=[100],
 	help="the number of samples in the training set")
 
 CLI.add_argument(
@@ -141,8 +141,8 @@ def run_qcore(chromophore_str):
 	"""
 	runs qcore with the input string
 	"""
-	qcore_path = "~/qcore/cmake-build-release/bin/qcore"
-	#qcore_path = "~/.local/src/Qcore/release/qcore"
+	#qcore_path = "~/qcore/cmake-build-release/bin/qcore"
+	qcore_path = "~/.local/src/Qcore/release/qcore"
 	json_str = " -n 1 -f json --schema none -s "
 	norm_str = " -n 1 -s "
 
@@ -169,20 +169,19 @@ class Errors():
 	def make_full_error_lists(self, results):
 		for i in results.values():
 			angle_error = calc_angle_error(i["tddft_dipole"], i["xtb_dipole"])
-			if angle_error < 20:
-				self.chromophores.append(i)
-				self.Na_Ncs.append(i["Na_Nc"])
-				self.tddft_energies.append(i["tddft_energy"])
-				self.xtb_energies.append(i["xtb_energy"])
-				self.tddft_dipoles.append(i["tddft_dipole"])
-				self.xtb_dipoles.append(i["xtb_dipole"])
-				self.tddft_dipole_mags.append(np.linalg.norm(i["tddft_dipole"]))
-				self.xtb_dipole_mags.append(np.linalg.norm(i["xtb_dipole"]))
+			self.chromophores.append(i)
+			self.Na_Ncs.append(i["Na_Nc"])
+			self.tddft_energies.append(i["tddft_energy"])
+			self.xtb_energies.append(i["xtb_energy"])
+			self.tddft_dipoles.append(i["tddft_dipole"])
+			self.xtb_dipoles.append(i["xtb_dipole"])
+			self.tddft_dipole_mags.append(np.linalg.norm(i["tddft_dipole"]))
+			self.xtb_dipole_mags.append(np.linalg.norm(i["xtb_dipole"]))
 
-				self.energy_errors.append(i["xtb_energy"] - i["tddft_energy"])
-				self.dipole_errors.append(calc_dipole_error(i["xtb_dipole"], i["tddft_dipole"]))
-				self.tddft_angle_errors.append(calc_angle_error(i["Na_Nc"], i["tddft_dipole"]))
-				self.xtb_angle_errors.append(calc_angle_error(i["Na_Nc"], i["xtb_dipole"]))
+			self.energy_errors.append(i["xtb_energy"] - i["tddft_energy"])
+			self.dipole_errors.append(calc_dipole_error(i["xtb_dipole"], i["tddft_dipole"]))
+			self.tddft_angle_errors.append(calc_angle_error(i["Na_Nc"], i["tddft_dipole"]))
+			self.xtb_angle_errors.append(calc_angle_error(i["Na_Nc"], i["xtb_dipole"]))
 
 		self.tddft_energies 	= np.array(self.tddft_energies)
 		self.xtb_energies 		= np.array(self.xtb_energies)
@@ -546,7 +545,7 @@ class Optimizer():
 		"""
 		params_dict = dict(zip(self.active_params, params))
 
-		input_str = "\"{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}.xyz\') input_params={params})\""
+		input_str = "\"{chromophore} := bchla(structure(file = \'/home/of15641/chlorophyll_parameterization/tddft_data/{chromophore}.xyz\') input_params={params})\""
 
 		chromophores = self.training_set
 
@@ -785,7 +784,7 @@ if __name__ == '__main__':
 
 		#construct reference data
 		ref_data = make_ref_data(args.ref_data[0])
-		print("reference data constructed from : \"%s\"" % args.ref_data)
+		print("reference data constructed from : \"%s\"" % args.ref_data[0])
 		print()
 
 		#make optimizer
