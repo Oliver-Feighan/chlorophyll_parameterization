@@ -61,7 +61,7 @@ CLI.add_argument(
 	"--ref_data",
 	nargs=1,
 	type=str,
-	default='tddft_data/tddft_data.json',
+	default=['tddft_data/tddft_data.json'],
 	help="json file that stores reference data, used to optimize against"
 )
 
@@ -784,7 +784,7 @@ if __name__ == '__main__':
 		print()
 
 		#construct reference data
-		ref_data = make_ref_data(args.ref_data)
+		ref_data = make_ref_data(args.ref_data[0])
 		print("reference data constructed from : \"%s\"" % args.ref_data)
 		print()
 
