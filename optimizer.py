@@ -742,16 +742,16 @@ class Optimizer():
 		
 		import pickle as pkl
 
-		pkl.dump(fig1, open("EnergiesScatter.pkl", 'wb'))
-		pkl.dump(fig2, open("DipoleMagsScatter.pkl", 'wb'))
-		pkl.dump(fig3, open("AnglesScatter.pkl", 'wb'))
+		pkl.dump(ax1, open("energies_scatter.pkl", 'wb'))
+		pkl.dump(ax2, open("dipole_mags_scatter.pkl", 'wb'))
+		pkl.dump(ax3, open("angles_scatter.pkl", 'wb'))
 
 		df = test_results.make_dataframe()
 
-		with open("Results.tex", 'w') as tex_file:
+		with open("results.tex", 'w') as tex_file:
 			print(df.to_latex(index=False), file=tex_file)
 
-		pkl.dump(df, open("Test_results.pkl", 'wb'))
+		pkl.dump(df, open("test_set_results.pkl", 'wb'))
 
 
 if __name__ == '__main__':
