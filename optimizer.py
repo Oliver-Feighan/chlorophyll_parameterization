@@ -707,6 +707,9 @@ class Optimizer():
 		fitness_str = "MAE(energy) : {0:3.3f} R^2 : {1:3.3f} ".format(test_results.energy_MAE, 1-test_results.energy_correlation)
 		fitness_str += f"MAE(dipole) : {test_results.dipole_MAE:3.3f}"
 
+		print(fitness_str)
+		print()
+
 		fig1, ax1 = plt.subplots()
 		fig2, ax2 = plt.subplots()
 		fig3, ax3 = plt.subplots(subplot_kw={'projection': 'polar'})
