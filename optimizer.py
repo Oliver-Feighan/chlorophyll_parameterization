@@ -2,6 +2,7 @@ import scipy.optimize
 from scipy.optimize import minimize
 from scipy.stats import linregress
 
+import enum
 import argparse
 import subprocess
 import random
@@ -12,6 +13,8 @@ import time
 import datetime
 import sys
 from concurrent.futures import ProcessPoolExecutor
+import matplotlib.pyplot as plt
+
 
 CLI=argparse.ArgumentParser()
 CLI.add_argument(
@@ -21,6 +24,21 @@ CLI.add_argument(
 	default=[],
 	help="active parameters for optimization",
 )
+
+CLI.add_argument(
+	"--samples",
+	nargs=1,
+	type=int,
+	default=100,
+	help="the number of samples in the training set")
+
+CLI.add_argument(
+	"--weights",
+	nargs=3,
+	type=float,
+	default=[1., 1., 1.],
+	help="""the weights associated with the MAE of the energy, the R^2 coefficient,
+ and the MAE of the transition dipole""")
 
 CLI.add_argument(
 	"--method",
@@ -123,7 +141,8 @@ def run_qcore(chromophore_str):
 	"""
 	runs qcore with the input string
 	"""
-	qcore_path = "~/.local/src/Qcore/release/qcore"
+	qcore_path = "~/qcore/cmake-build-release/bin/qcore"
+	#qcore_path = "~/.local/src/Qcore/release/qcore"
 	json_str = " -n 1 -f json --schema none -s "
 	norm_str = " -n 1 -s "
 
@@ -145,6 +164,176 @@ def run_qcore(chromophore_str):
 		exit()
 
 	return json.loads(json_run.stdout)
+
+class Errors():
+	def make_full_error_lists(self, results):
+		for i in results.values():
+			angle_error = calc_angle_error(i["tddft_dipole"], i["xtb_dipole"])
+			if angle_error < 20:
+				self.chromophores.append(i)
+				self.Na_Ncs.append(i["Na_Nc"])
+				self.tddft_energies.append(i["tddft_energy"])
+				self.xtb_energies.append(i["xtb_energy"])
+				self.tddft_dipoles.append(i["tddft_dipole"])
+				self.xtb_dipoles.append(i["xtb_dipole"])
+				self.tddft_dipole_mags.append(np.linalg.norm(i["tddft_dipole"]))
+				self.xtb_dipole_mags.append(np.linalg.norm(i["xtb_dipole"]))
+
+				self.energy_errors.append(i["xtb_energy"] - i["tddft_energy"])
+				self.dipole_errors.append(calc_dipole_error(i["xtb_dipole"], i["tddft_dipole"]))
+				self.tddft_angle_errors.append(calc_angle_error(i["Na_Nc"], i["tddft_dipole"]))
+				self.xtb_angle_errors.append(calc_angle_error(i["Na_Nc"], i["xtb_dipole"]))
+
+		self.tddft_energies 	= np.array(self.tddft_energies)
+		self.xtb_energies 		= np.array(self.xtb_energies)
+		self.energy_errors 		= np.array(self.energy_errors)
+		self.dipole_errors 		= np.array(self.dipole_errors)
+		self.tddft_angle_errors = np.array(self.tddft_angle_errors)
+		self.xtb_angle_errors 	= np.array(self.xtb_angle_errors)
+
+		self.tddft_energies *= 27.2114 #hartree to eV
+		self.xtb_energies 	*= 27.2114 #hartree to eV
+		self.energy_errors 	*= 27.2114 #hartree to eV
+
+	def clean_by_Z_value(self, full_errors, mean, stddev):
+		Z_value = lambda x : (x - mean)/stddev
+
+		self.z_values = [Z_value(x) for x in full_errors.energy_errors]
+
+		for enum, z in enumerate(self.z_values):
+			if abs(z) < 2:
+				self.chromophores.append(full_errors.chromophores[enum])
+				self.Na_Ncs.append(full_errors.Na_Ncs[enum])
+				self.tddft_energies.append(full_errors.tddft_energies[enum])
+				self.xtb_energies.append(full_errors.xtb_energies[enum])
+				self.tddft_dipoles.append(full_errors.tddft_dipoles[enum])
+				self.xtb_dipoles.append(full_errors.xtb_dipoles[enum])
+				self.tddft_dipole_mags.append(full_errors.tddft_dipole_mags[enum])
+				self.xtb_dipole_mags.append(full_errors.xtb_dipole_mags[enum])
+				self.tddft_angle_errors.append(full_errors.tddft_angle_errors[enum])
+				self.xtb_angle_errors.append(full_errors.xtb_angle_errors[enum])
+
+				self.energy_errors.append(full_errors.energy_errors[enum])
+				self.dipole_errors.append(full_errors.dipole_errors[enum])
+
+		self.tddft_energies 	= np.array(self.tddft_energies)
+		self.xtb_energies 		= np.array(self.xtb_energies)
+		self.energy_errors 		= np.array(self.energy_errors)
+		self.dipole_errors 		= np.array(self.dipole_errors)
+		self.tddft_angle_errors = np.array(self.tddft_angle_errors)
+		self.xtb_angle_errors	= np.array(self.xtb_angle_errors)
+
+	def __init__(self, results=None, full_errors=None, mean=None, stddev=None, with_outliers=True):
+		self.chromophores 		= []
+		self.Na_Ncs 			= []
+		self.tddft_energies 	= []
+		self.xtb_energies 		= []
+		self.tddft_dipoles 		= []
+		self.xtb_dipoles 		= []
+		self.tddft_dipole_mags 	= []
+		self.xtb_dipole_mags	= []
+		self.energy_errors 		= []
+		self.z_values 			= []
+		self.dipole_errors 		= []
+		self.tddft_angle_errors = []
+		self.xtb_angle_errors	= []
+
+		if with_outliers:
+			self.make_full_error_lists(results)
+
+		else:
+			assert(full_errors is not None and mean is not None and stddev is not None)
+			self.clean_by_Z_value(full_errors, mean, stddev)
+
+		assert(len(self.tddft_energies) == len(self.chromophores))
+		assert(len(self.tddft_energies) == len(self.Na_Ncs))
+		assert(len(self.tddft_energies) == len(self.xtb_energies))
+		assert(len(self.tddft_energies) == len(self.tddft_dipoles))
+		assert(len(self.tddft_energies) == len(self.xtb_dipoles))
+		assert(len(self.tddft_energies) == len(self.energy_errors))
+		assert(len(self.tddft_energies) == len(self.dipole_errors))
+		assert(len(self.tddft_energies) == len(self.tddft_angle_errors))
+		assert(len(self.tddft_energies) == len(self.xtb_angle_errors))
+
+
+class Results():
+	def sanitize_results(self, results):
+		results_dict = {}
+		chromophores = []
+
+		for i in results:
+			c = i[0]
+			xtb = i[1]
+
+			chromophores.append(c)
+
+			package = {
+			"Na_Nc" : ref_data[c]["Na_Nc"],
+			"tddft_energy" : ref_data[c]["energy"],
+			"xtb_energy" : xtb[c]["excitation_energy"],
+			"tddft_dipole" : ref_data[c]["transition_dipole"],
+			"xtb_dipole" : xtb[c]["transition_dipole"]
+			}
+
+			for key, value in package.items(): 
+				if package[key] is None:
+					print(f"None value for {key} for chromophore {c}") 
+
+					exit()
+
+			results_dict[c] = package
+
+		return chromophores, results_dict
+
+	def make_dataframe(self):
+		assert(self.training_set)
+
+		set_type = ["test" for x in self.chromophores]
+
+		for enum, i in enumerate(set_type):
+			if self.chromophores[enum] in self.training_set:
+				set_type[enum] = "training"
+
+
+		import pandas as pd
+		to_be_df = {	
+			"chromophores" 		: self.chromophores,
+			"set"				: set_type,
+			"tddft_energy" 		: self.full.tddft_energies,
+			"xtb_energy" 		: self.full.xtb_energies,
+			"energy_error" 		: self.full.energy_errors,
+			"Z_values"			: self.clean.z_values,
+			"tddft_dipoles"		: self.full.tddft_dipoles,
+			"xtb_dipoles"		: self.full.xtb_dipoles,
+			"dipole_errors"		: self.full.dipole_errors,
+			"Na_Nc" 			: self.full.Na_Ncs,
+			"tddft_angle_errors": self.full.tddft_angle_errors,
+			"xtb_angle_errors" 	: self.full.xtb_angle_errors,
+		}
+
+		df = pd.DataFrame.from_dict(to_be_df, orient='columns')
+
+		return df
+
+
+	def __init__(self, _results, training_set=[]):
+		self.training_set = training_set
+		self.chromophores, self.results = self.sanitize_results(_results)
+
+		self.full = Errors(results=self.results, with_outliers=True)
+
+		self.energy_mean = np.mean(self.full.energy_errors)
+		self.energy_stddev = np.std(self.full.energy_errors)
+
+		self.clean = Errors(full_errors=self.full, mean=self.energy_mean, stddev=self.energy_stddev, with_outliers=False)
+
+		self.slope, self.intercept, self.r_value, self.p_value, self.stderr = linregress(self.clean.tddft_energies, self.clean.xtb_energies)
+
+		self.energy_correlation = 1 - self.r_value**2
+		self.energy_MAE = np.mean(abs(self.clean.energy_errors))
+		self.dipole_MAE = np.mean(abs(self.clean.dipole_errors))
+
+
 
 class Optimizer():
 
@@ -322,15 +511,15 @@ class Optimizer():
 	"""
 	store functions and data for optimization
 	"""
-	def __init__(self, ref_data, method, active_params=[], max_iter=1):
+	def __init__(self, samples, ref_data, method, active_params=[], max_iter=1):
 		self.method = method
 		self.ref_data = ref_data
 
 		self.test_set = [x for x in list(self.ref_data.keys()) if x not in self.validation_set]
 		assert(len(list(set(self.test_set).intersection(self.validation_set))) == 0)
 
-		self.training_set = random.sample(self.test_set, k=100)
-		assert(len(self.training_set) == 100)
+		self.training_set = random.sample(self.test_set, k=samples)
+		assert(len(self.training_set) == samples)
 		assert(len(list(set(self.training_set).intersection(self.validation_set))) == 0)
 		
 		self.iter = 1
@@ -339,18 +528,9 @@ class Optimizer():
 		self.initial_guess = self.make_initial_guess()
 
 		self.max_iter = max_iter
-		self.log = []
 		self.save = True
 		self.start_time = datetime.datetime.now()
 		self.time = time.time()
-		self.file_name_str = "{method}_{year}_{month}_{day}_{hour}{minute}".format(
-			method = method,
-            year = self.start_time.year,
-            month = self.start_time.month,
-            day = self.start_time.day,
-            hour = self.start_time.hour,
-            minute = self.start_time.minute
-        )
 
 	def generate_result(self, input_tuple):
 		chromophore, input_str = input_tuple
@@ -378,89 +558,12 @@ class Optimizer():
 		with ProcessPoolExecutor(max_workers=20) as pool:
 			xtb_results = list(pool.map(self.generate_result, list(zip(chromophores, input_strs))))
 		
-		results = {}
-
-		for i in xtb_results:
-				c = i[0]
-				xtb = i[1]
-
-				package = {
-				"tddft_energy" : ref_data[c]["energy"],
-				"xtb_energy" : xtb[c]["excitation_energy"],
-				"tddft_dipole" : ref_data[c]["transition_dipole"],
-				"xtb_dipole" : xtb[c]["transition_dipole"]
-				}
-
-				for key, value in package.items(): 
-					if package[key] is None:
-						print(f"None value for {key} for chromophore {c}") 
-
-				results[c] = package
-
-		return results
-
-	def fitness_function(self, results):
-		"""
-		Parses results from generate results. Appends all errors into lists for error
-		calculation.
-
-		>>> test_results = { \
-"step_1_chromophore_1" : { \
-"tddft_energy" : 1.0, \
-"xtb_energy" : 1.5, \
-"tddft_dipole" : [0., 1., 1.], \
-"xtb_dipole" : [0., 3., 3.] \
-}, \
-"step_1_chromophore_2" : { \
-"tddft_energy" : 1.0, \
-"xtb_energy" : 1.0, \
-"tddft_dipole" : [0., 1., 1.], \
-"xtb_dipole" : [0., 1., 1.] \
-} \
-}
-		>>> o.fitness_function(test_results)				
-		(6.80285, 1.0, 1.4142135623730951)
-
-		"""
-		tddft_energies = []
-		xtb_energies = [] 
-		energy_errors = []
-		dipole_errors = []
-		angle_errors  = []
-
-		for i in results.values():
-			angle_error = calc_angle_error(i["tddft_dipole"], i["xtb_dipole"])
-			if angle_error < 20:
-				tddft_energies.append(i["tddft_energy"])
-				xtb_energies.append(i["xtb_energy"])
-				energy_errors.append(i["xtb_energy"] - i["tddft_energy"])
-				dipole_errors.append(calc_dipole_error(i["xtb_dipole"], i["tddft_dipole"]))
-				angle_errors.append(angle_error)
-
-		slope, intercept, r_value, p_value, std_err = linregress(xtb_energies, tddft_energies)
-
-		energy_errors = np.array(energy_errors)
-		energy_errors *= 27.2114 #hartree to eV
-
-		dipole_errors = np.array(dipole_errors)
-
-		energy_MAE = np.mean(abs(energy_errors))
-
-		energy_correlation = 1 - r_value**2
-
-		dipole_MAE = np.mean(abs(dipole_errors))
-
-		return (energy_MAE, energy_correlation, dipole_MAE)
+		return Results(xtb_results, training_set=self.training_set)
 
 	def step(self, params):
-		"""	
-		run the fitness function, and give back single fitness value
-		"""
 		results = self.generate_results(params)
 
-		energy_MAE, energy_correlation, dipole_MAE = self.fitness_function(results)
-
-		return energy_MAE + energy_correlation + dipole_MAE
+		return results.energy_MAE + results.energy_correlation + results.dipole_MAE
 
 
 	def param_string(self, params):
@@ -496,14 +599,12 @@ class Optimizer():
 		results = self.generate_results(params, test)
 
 		if test:
-			assert(len(results) == len(self.test_set))
+			assert(len(results.full.xtb_energies) == len(self.test_set))
 		else:
-			assert(len(results) == len(self.training_set))
+			assert(len(results.full.xtb_energies) == len(self.training_set))
 
-		energy_MAE, energy_correlation, dipole_MAE = self.fitness_function(results)
-
-		fitness_str = "MAE(energy) : {0:3.3f} R^2 : {1:3.3f} ".format(energy_MAE, 1-energy_correlation)
-		fitness_str += f"MAE(dipole) : {dipole_MAE:3.3f}"
+		fitness_str = "MAE(energy) : {0:3.3f} R^2 : {1:3.3f} ".format(results.energy_MAE, 1-results.energy_correlation)
+		fitness_str += f"MAE(dipole) : {results.dipole_MAE:3.3f}"
 
 		time_str = "time/s : {0:3.6f}".format(time.time() - self.time)
 		self.time = time.time()
@@ -513,15 +614,13 @@ class Optimizer():
 									fitness=fitness_str,
 									time=time_str)
 
-		self.log.append(log_string)
-
 		print(log_string)
 		
 		self.iter += 1
 
 		return 
 
-	def make_fitness_function(self):
+	def make_step_function(self):
 		"""
 		lambda wrapper for scipy optimize
 		"""
@@ -545,7 +644,7 @@ class Optimizer():
 
 		if self.method == "Nelder-Mead":
 			return minimize(
-			fun=self.make_fitness_function(), 
+			fun=self.make_step_function(), 
 			x0=self.initial_guess, 
 			callback=self.callback,
 			method="Nelder-Mead",
@@ -596,9 +695,61 @@ class Optimizer():
 		"""
 		if self.method == "test":
 			print(params)
-		else:
-			self.callback(np.array(params), test=True)
+			return
 
+		train_results = self.generate_results(params)
+		test_results = self.generate_results(params, test=True)
+
+		no_test_set_samples = len(test_results.full.xtb_energies)
+
+		print(f"# of test set samples: {no_test_set_samples}")
+
+		print("test set results:")
+		fitness_str = "MAE(energy) : {0:3.3f} R^2 : {1:3.3f} ".format(test_results.energy_MAE, 1-test_results.energy_correlation)
+		fitness_str += f"MAE(dipole) : {test_results.dipole_MAE:3.3f}"
+
+		fig1, ax1 = plt.subplots()
+		fig2, ax2 = plt.subplots()
+		fig3, ax3 = plt.subplots(subplot_kw={'projection': 'polar'})
+
+		ax1.scatter(test_results.clean.tddft_energies, test_results.clean.xtb_energies, label="test set", color='black', marker='x')
+		ax1.scatter(train_results.clean.tddft_energies, train_results.clean.xtb_energies, label="training set", color='red', marker='x')
+		ax1.set_xlabel("TD-DFT excitation energies / eV")
+		ax1.set_ylabel("xtb excitation energies / eV")
+
+		ax2.scatter(test_results.clean.tddft_dipole_mags, test_results.clean.xtb_dipole_mags, label="test set", color='black', marker='x')
+		ax2.scatter(train_results.clean.tddft_dipole_mags, train_results.clean.xtb_dipole_mags, label="training set", color='red', marker='x')
+		ax2.set_xlabel("TD-DFT $|\mu|$")
+		ax2.set_ylabel("xtb $|\mu|$")
+
+		ax3.scatter(np.deg2rad(test_results.clean.tddft_angle_errors), test_results.clean.tddft_dipole_mags, label="TDDFT", color='black')
+		ax3.scatter(np.deg2rad(train_results.clean.tddft_angle_errors), train_results.clean.tddft_dipole_mags, label="TDDFT", color='red')
+		ax3.scatter(np.deg2rad(test_results.clean.xtb_angle_errors), test_results.clean.xtb_dipole_mags,  label="xtb", color='black', marker='x')
+		ax3.scatter(np.deg2rad(train_results.clean.xtb_angle_errors), train_results.clean.xtb_dipole_mags,  label="xtb", color='red', marker='x')
+		ax3.set_thetamin(0)
+		ax3.set_thetamax(30)
+		ax3.set_ylim([0,6])
+
+		fig1.set_size_inches(12, 12)
+		fig2.set_size_inches(12, 12)
+		fig3.set_size_inches(12, 12)
+
+		ax1.legend()
+		ax2.legend()
+		ax3.legend()
+		
+		import pickle as pkl
+
+		pkl.dump(fig1, open("EnergiesScatter.pkl", 'wb'))
+		pkl.dump(fig2, open("DipoleMagsScatter.pkl", 'wb'))
+		pkl.dump(fig3, open("AnglesScatter.pkl", 'wb'))
+
+		df = test_results.make_dataframe()
+
+		with open("Results.tex", 'w') as tex_file:
+			print(df.to_latex(index=False), file=tex_file)
+
+		pkl.dump(df, open("Test_results.pkl", 'wb'))
 
 
 if __name__ == '__main__':
@@ -640,14 +791,17 @@ if __name__ == '__main__':
 		#make optimizer
 		method   = args.method[0]
 		max_iter = args.max_iter
+		samples  = args.samples[0]
 
 		print("Optimization method : ", method)
 		print("maximum iterations : ", max_iter)
+		print("# of training set samples: ", samples)
 
 		print()
 		print("recreate input with:")
 		print("python optimizer.py", end=" ")
 		print("--params %s" % " ".join(args.params), end=" ")
+		print("--samples %s" % samples, end=" ")
 		print("--method %s" % method, end=" ")
 		print("--max_iter %i" % max_iter, end=" ")
 		print("--ref_data %s" % args.ref_data , end=" ")
@@ -655,7 +809,7 @@ if __name__ == '__main__':
 		print()
 
 		print("making optimizer...")
-		optimizer = Optimizer(ref_data=ref_data, method=method, active_params=active_params, max_iter=max_iter)
+		optimizer = Optimizer(ref_data=ref_data, samples=samples, method=method, active_params=active_params, max_iter=max_iter)
 		print()
 		#run optimization
 		print("running optimization...")
@@ -663,7 +817,7 @@ if __name__ == '__main__':
 		optimizer_result = optimizer.optimize()
 		
 		print()
-		optimized_params = optimizer_result.x
+		optimized_params = [round(x, 3) for x in optimizer_result.x]
 
 		if method == "test":
 			zipped_params = dict(zip(["x1", "x2", "x3", "x4", "x5"], optimized_params))

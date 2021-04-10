@@ -1,0 +1,16 @@
+#!/bin/bash
+#PBS -l walltime=10:00:00
+#PBS -l select=1:ncpus=24:mem=10gb
+#PBS -N electronegativity_global_pair
+#PBS -j oe
+
+cd ~/chlorophyll_parameterization/fitting_tests/electronegativity_global_pair
+
+module load lang/python/anaconda/3.8-2020.07
+
+export OMP_NUM_THREADS=1
+export MKL_THREADING_LAYER=TBB
+
+python optimizer.py --params k_EN_s k_EN_p k_EN_d Mg_s Mg_p Mg_d N_s N_p
+
+	

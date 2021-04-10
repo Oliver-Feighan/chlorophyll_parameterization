@@ -45,7 +45,7 @@ if __name__ == "__main__":
 #PBS -N {name}
 #PBS -j oe
 
-cd ~/chlorophyll_parameterization
+cd ~/chlorophyll_parameterization/fitting_tests/{name}
 
 module load lang/python/anaconda/3.8-2020.07
 
@@ -60,7 +60,7 @@ python optimizer.py --params {params}
 		params_list = make_params_list(combination)
 		name = "_".join(combination)
 
-		with open(f"{name}.sub", 'w') as f:
+		with open(f"{name}/{name}.sub", 'w') as f:
 			print(script_template.format(name=name, params=" ".join(params_list)), file=f)
 
 
