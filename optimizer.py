@@ -5,16 +5,12 @@ from scipy.stats import linregress
 import enum
 import argparse
 import subprocess
-import random
 import json
 import numpy as np
-import random
 import time
 import datetime
 import sys
 from concurrent.futures import ProcessPoolExecutor
-import matplotlib.pyplot as plt
-
 
 CLI=argparse.ArgumentParser()
 CLI.add_argument(
@@ -26,19 +22,12 @@ CLI.add_argument(
 )
 
 CLI.add_argument(
-	"--samples",
+	"--weight",
 	nargs=1,
-	type=int,
-	default=[100],
-	help="the number of samples in the training set")
-
-CLI.add_argument(
-	"--weights",
-	nargs=3,
 	type=float,
-	default=[1., 1., 1.],
-	help="""the weights associated with the MAE of the energy, the R^2 coefficient,
- and the MAE of the transition dipole""")
+	default=[1],
+	help="""the weight associated with the MAE of the excitation energy, compared to R^2 value for excitation energy and
+transition dipole magnitude""")
 
 CLI.add_argument(
 	"--method",
@@ -141,8 +130,8 @@ def run_qcore(chromophore_str):
 	"""
 	runs qcore with the input string
 	"""
-	#qcore_path = "~/qcore/cmake-build-release/bin/qcore"
-	qcore_path = "~/.local/src/Qcore/release/qcore"
+	qcore_path = "~/qcore/cmake-build-release/bin/qcore"
+	#qcore_path = "~/.local/src/Qcore/release/qcore"
 	json_str = " -n 1 -f json --schema none -s "
 	norm_str = " -n 1 -s "
 
@@ -326,144 +315,17 @@ class Results():
 
 		self.clean = Errors(full_errors=self.full, mean=self.energy_mean, stddev=self.energy_stddev, with_outliers=False)
 
-		self.slope, self.intercept, self.r_value, self.p_value, self.stderr = linregress(self.clean.tddft_energies, self.clean.xtb_energies)
+		_, _, self.energy_r_value, _, _ = linregress(self.clean.tddft_energies, self.clean.xtb_energies)
+		_, _, self.dipole_r_value, _, _ = linregress(self.clean.tddft_dipole_mags, self.clean.xtb_dipole_mags)
 
-		self.energy_correlation = 1 - self.r_value**2
-		self.energy_MAE = np.mean(abs(self.clean.energy_errors))
-		self.dipole_MAE = np.mean(abs(self.clean.dipole_errors))
+		self.energy_correlation = 1 - self.energy_r_value**2
+		self.dipole_correlation = 1 - self.dipole_r_value**2
+		self.energy_RMSE = np.sqrt(np.mean(np.square(self.clean.energy_errors)))
+		#self.dipole_mag_RMSE = np.sqrt(np.mean(np.square(self.clean.xtb_dipole_mags - self.clean.tddft_dipole_mags)))
 
 
 
 class Optimizer():
-
-	#validation set data - do not use!
-	validation_set = ['step_1601_chromophore_21', 'step_1451_chromophore_25', 'step_401_chromophore_19', 'step_701_chromophore_2',
- 'step_1001_chromophore_7', 'step_1601_chromophore_15', 'step_1251_chromophore_21', 'step_1701_chromophore_16',
- 'step_1001_chromophore_5', 'step_1551_chromophore_10', 'step_351_chromophore_1', 'step_1151_chromophore_15',
- 'step_701_chromophore_11', 'step_1651_chromophore_26', 'step_851_chromophore_20', 'step_151_chromophore_9',
- 'step_1451_chromophore_6', 'step_1101_chromophore_3', 'step_351_chromophore_23', 'step_1501_chromophore_10',
- 'step_401_chromophore_3', 'step_1_chromophore_12', 'step_1751_chromophore_23', 'step_351_chromophore_3',
- 'step_1151_chromophore_13', 'step_1351_chromophore_18', 'step_1601_chromophore_17', 'step_1701_chromophore_14',
- 'step_1_chromophore_13', 'step_101_chromophore_18', 'step_951_chromophore_5', 'step_251_chromophore_19',
- 'step_1251_chromophore_6', 'step_1651_chromophore_2', 'step_551_chromophore_12', 'step_701_chromophore_26',
- 'step_651_chromophore_27', 'step_551_chromophore_10', 'step_1701_chromophore_1', 'step_401_chromophore_14',
- 'step_851_chromophore_3', 'step_501_chromophore_22', 'step_451_chromophore_22', 'step_251_chromophore_15',
- 'step_501_chromophore_8', 'step_1301_chromophore_5', 'step_851_chromophore_14', 'step_651_chromophore_11',
- 'step_1401_chromophore_8', 'step_551_chromophore_24', 'step_1701_chromophore_12', 'step_101_chromophore_19',
- 'step_251_chromophore_22', 'step_151_chromophore_8', 'step_1001_chromophore_27', 'step_551_chromophore_14',
- 'step_1_chromophore_11', 'step_401_chromophore_2', 'step_901_chromophore_21', 'step_301_chromophore_13',
- 'step_1101_chromophore_16', 'step_1601_chromophore_11', 'step_901_chromophore_9', 'step_1051_chromophore_13',
- 'step_1801_chromophore_17', 'step_1_chromophore_17', 'step_1051_chromophore_10', 'step_1151_chromophore_8',
- 'step_151_chromophore_3', 'step_451_chromophore_5', 'step_1001_chromophore_22', 'step_1851_chromophore_26',
- 'step_1451_chromophore_23', 'step_1151_chromophore_17', 'step_401_chromophore_15', 'step_1451_chromophore_21',
- 'step_1_chromophore_23', 'step_1551_chromophore_15', 'step_801_chromophore_13', 'step_1701_chromophore_6',
- 'step_951_chromophore_7', 'step_901_chromophore_14', 'step_1801_chromophore_22', 'step_1351_chromophore_16',
- 'step_1801_chromophore_21', 'step_401_chromophore_12', 'step_951_chromophore_11', 'step_1451_chromophore_26',
- 'step_801_chromophore_2', 'step_1701_chromophore_10', 'step_1201_chromophore_12', 'step_1301_chromophore_13',
- 'step_651_chromophore_21', 'step_101_chromophore_23', 'step_1151_chromophore_24', 'step_801_chromophore_1',
- 'step_51_chromophore_3', 'step_1101_chromophore_11', 'step_1751_chromophore_18', 'step_751_chromophore_20',
- 'step_1201_chromophore_27', 'step_101_chromophore_7', 'step_701_chromophore_23', 'step_1551_chromophore_1',
- 'step_1251_chromophore_9', 'step_1751_chromophore_8', 'step_501_chromophore_18', 'step_51_chromophore_17',
- 'step_901_chromophore_19', 'step_1151_chromophore_23', 'step_1801_chromophore_11', 'step_251_chromophore_27',
- 'step_1451_chromophore_3', 'step_1001_chromophore_11', 'step_1701_chromophore_19', 'step_901_chromophore_22',
- 'step_1001_chromophore_8', 'step_1501_chromophore_26', 'step_1751_chromophore_24', 'step_801_chromophore_19',
- 'step_451_chromophore_16', 'step_901_chromophore_13', 'step_651_chromophore_18', 'step_1851_chromophore_13',
- 'step_251_chromophore_12', 'step_851_chromophore_27', 'step_951_chromophore_25', 'step_1651_chromophore_4',
- 'step_801_chromophore_26', 'step_1551_chromophore_11', 'step_1101_chromophore_20', 'step_51_chromophore_18',
- 'step_751_chromophore_8', 'step_201_chromophore_23', 'step_1301_chromophore_2', 'step_1201_chromophore_11',
- 'step_451_chromophore_10', 'step_201_chromophore_7', 'step_501_chromophore_27', 'step_1501_chromophore_17',
- 'step_51_chromophore_14', 'step_1051_chromophore_26', 'step_1801_chromophore_16', 'step_701_chromophore_7',
- 'step_451_chromophore_26', 'step_1751_chromophore_2', 'step_1401_chromophore_11', 'step_251_chromophore_2',
- 'step_751_chromophore_22', 'step_1351_chromophore_22', 'step_1201_chromophore_8', 'step_651_chromophore_23',
- 'step_1101_chromophore_15', 'step_901_chromophore_8', 'step_351_chromophore_4', 'step_501_chromophore_11',
- 'step_1451_chromophore_17', 'step_1001_chromophore_2', 'step_1601_chromophore_1', 'step_1151_chromophore_21',
- 'step_201_chromophore_22', 'step_851_chromophore_22', 'step_1851_chromophore_19', 'step_901_chromophore_15',
- 'step_1651_chromophore_12', 'step_201_chromophore_5', 'step_801_chromophore_20', 'step_1351_chromophore_26',
- 'step_101_chromophore_24', 'step_1301_chromophore_24', 'step_1851_chromophore_12', 'step_1351_chromophore_6',
- 'step_151_chromophore_23', 'step_501_chromophore_19', 'step_1051_chromophore_16', 'step_1_chromophore_24',
- 'step_601_chromophore_6', 'step_1151_chromophore_5', 'step_301_chromophore_16', 'step_301_chromophore_22',
- 'step_401_chromophore_10', 'step_851_chromophore_21', 'step_1351_chromophore_3', 'step_1201_chromophore_10',
- 'step_1351_chromophore_12', 'step_1_chromophore_16', 'step_401_chromophore_11', 'step_1651_chromophore_6',
- 'step_1101_chromophore_17', 'step_1551_chromophore_19', 'step_1551_chromophore_3', 'step_451_chromophore_9',
- 'step_101_chromophore_10', 'step_851_chromophore_11', 'step_1751_chromophore_25', 'step_751_chromophore_4',
- 'step_201_chromophore_10', 'step_601_chromophore_7', 'step_851_chromophore_10', 'step_1351_chromophore_1',
- 'step_151_chromophore_26', 'step_1151_chromophore_12', 'step_1801_chromophore_12', 'step_951_chromophore_9',
- 'step_451_chromophore_21', 'step_801_chromophore_21', 'step_1351_chromophore_4', 'step_851_chromophore_13',
- 'step_1101_chromophore_19', 'step_351_chromophore_2', 'step_1201_chromophore_5', 'step_1151_chromophore_11',
- 'step_1251_chromophore_2', 'step_1201_chromophore_25', 'step_851_chromophore_6', 'step_201_chromophore_24',
- 'step_1051_chromophore_11', 'step_1401_chromophore_14', 'step_451_chromophore_2', 'step_301_chromophore_5',
- 'step_1051_chromophore_23', 'step_1301_chromophore_25', 'step_201_chromophore_9', 'step_1651_chromophore_19',
- 'step_1751_chromophore_16', 'step_1301_chromophore_21', 'step_1401_chromophore_20', 'step_401_chromophore_9',
- 'step_651_chromophore_14', 'step_1851_chromophore_2', 'step_601_chromophore_16', 'step_251_chromophore_7',
- 'step_51_chromophore_27', 'step_201_chromophore_14', 'step_1501_chromophore_15', 'step_251_chromophore_10',
- 'step_1751_chromophore_20', 'step_1251_chromophore_1', 'step_1251_chromophore_7', 'step_1101_chromophore_24',
- 'step_1801_chromophore_7', 'step_1401_chromophore_7', 'step_601_chromophore_5', 'step_1701_chromophore_17',
- 'step_1251_chromophore_11', 'step_1551_chromophore_25', 'step_1251_chromophore_12', 'step_351_chromophore_6',
- 'step_301_chromophore_4', 'step_551_chromophore_20', 'step_51_chromophore_1', 'step_1551_chromophore_24',
- 'step_851_chromophore_25', 'step_551_chromophore_26', 'step_801_chromophore_3', 'step_1451_chromophore_19',
- 'step_451_chromophore_19', 'step_1601_chromophore_4', 'step_151_chromophore_7', 'step_1_chromophore_21',
- 'step_1651_chromophore_23', 'step_1251_chromophore_24', 'step_1101_chromophore_14', 'step_1151_chromophore_27',
- 'step_1251_chromophore_14', 'step_601_chromophore_26', 'step_1851_chromophore_6', 'step_1501_chromophore_16',
- 'step_301_chromophore_18', 'step_1151_chromophore_6', 'step_451_chromophore_18', 'step_401_chromophore_17',
- 'step_1151_chromophore_16', 'step_351_chromophore_19', 'step_1501_chromophore_7', 'step_1351_chromophore_24',
- 'step_1001_chromophore_10', 'step_251_chromophore_16', 'step_1651_chromophore_5', 'step_451_chromophore_1',
- 'step_1651_chromophore_22', 'step_1701_chromophore_22', 'step_1301_chromophore_10', 'step_1751_chromophore_13',
- 'step_601_chromophore_2', 'step_451_chromophore_15', 'step_801_chromophore_6', 'step_801_chromophore_14',
- 'step_1101_chromophore_8', 'step_1_chromophore_18', 'step_601_chromophore_10', 'step_601_chromophore_21',
- 'step_851_chromophore_24', 'step_1201_chromophore_1', 'step_1301_chromophore_3', 'step_351_chromophore_18',
- 'step_1701_chromophore_8', 'step_851_chromophore_15', 'step_1351_chromophore_10', 'step_1351_chromophore_23',
- 'step_601_chromophore_12', 'step_1301_chromophore_1', 'step_1651_chromophore_18', 'step_1401_chromophore_10',
- 'step_151_chromophore_22', 'step_1401_chromophore_18', 'step_51_chromophore_7', 'step_1701_chromophore_3',
- 'step_1801_chromophore_9', 'step_1501_chromophore_2', 'step_701_chromophore_1', 'step_1551_chromophore_8',
- 'step_1201_chromophore_2', 'step_951_chromophore_8', 'step_101_chromophore_17', 'step_601_chromophore_14',
- 'step_1251_chromophore_18', 'step_1601_chromophore_12', 'step_701_chromophore_13', 'step_1251_chromophore_10',
- 'step_1101_chromophore_13', 'step_1301_chromophore_22', 'step_551_chromophore_17', 'step_951_chromophore_15',
- 'step_1051_chromophore_12', 'step_201_chromophore_4', 'step_1101_chromophore_2', 'step_1151_chromophore_7',
- 'step_101_chromophore_22', 'step_401_chromophore_20', 'step_1301_chromophore_11', 'step_701_chromophore_6',
- 'step_1651_chromophore_7', 'step_51_chromophore_25', 'step_1401_chromophore_15', 'step_1051_chromophore_6',
- 'step_751_chromophore_17', 'step_1701_chromophore_11', 'step_651_chromophore_5', 'step_51_chromophore_22',
- 'step_1401_chromophore_21', 'step_101_chromophore_5', 'step_1_chromophore_26', 'step_101_chromophore_25',
- 'step_1601_chromophore_20', 'step_301_chromophore_7', 'step_1801_chromophore_4', 'step_1051_chromophore_9',
- 'step_251_chromophore_20', 'step_251_chromophore_14', 'step_501_chromophore_4', 'step_751_chromophore_10',
- 'step_1001_chromophore_19', 'step_1_chromophore_27', 'step_1801_chromophore_14', 'step_51_chromophore_8',
- 'step_401_chromophore_27', 'step_951_chromophore_26', 'step_1851_chromophore_9', 'step_1201_chromophore_3',
- 'step_1001_chromophore_20', 'step_1351_chromophore_7', 'step_1501_chromophore_5', 'step_1301_chromophore_16',
- 'step_1301_chromophore_20', 'step_651_chromophore_1', 'step_1251_chromophore_13', 'step_1051_chromophore_5',
- 'step_1351_chromophore_8', 'step_951_chromophore_13', 'step_1351_chromophore_20', 'step_901_chromophore_16',
- 'step_1701_chromophore_4', 'step_551_chromophore_21', 'step_751_chromophore_12', 'step_501_chromophore_2',
- 'step_801_chromophore_9', 'step_1051_chromophore_15', 'step_1001_chromophore_21', 'step_51_chromophore_5',
- 'step_601_chromophore_24', 'step_301_chromophore_10', 'step_651_chromophore_10', 'step_401_chromophore_25',
- 'step_1451_chromophore_10', 'step_1701_chromophore_21', 'step_1701_chromophore_24', 'step_301_chromophore_19',
- 'step_1251_chromophore_15', 'step_601_chromophore_11', 'step_151_chromophore_17', 'step_301_chromophore_20',
- 'step_851_chromophore_4', 'step_1051_chromophore_7', 'step_351_chromophore_22', 'step_151_chromophore_14',
- 'step_1401_chromophore_12', 'step_1751_chromophore_9', 'step_751_chromophore_16', 'step_1101_chromophore_18',
- 'step_601_chromophore_27', 'step_951_chromophore_6', 'step_1_chromophore_9', 'step_1251_chromophore_19',
- 'step_1551_chromophore_6', 'step_251_chromophore_5', 'step_901_chromophore_17', 'step_601_chromophore_1',
- 'step_151_chromophore_13', 'step_251_chromophore_23', 'step_1451_chromophore_16', 'step_901_chromophore_11',
- 'step_451_chromophore_23', 'step_651_chromophore_22', 'step_1701_chromophore_5', 'step_1851_chromophore_15',
- 'step_501_chromophore_20', 'step_401_chromophore_24', 'step_401_chromophore_18', 'step_1801_chromophore_2',
- 'step_601_chromophore_19', 'step_1101_chromophore_1', 'step_1051_chromophore_21', 'step_851_chromophore_26',
- 'step_401_chromophore_1', 'step_551_chromophore_18', 'step_501_chromophore_13', 'step_451_chromophore_6',
- 'step_151_chromophore_6', 'step_1601_chromophore_22', 'step_1151_chromophore_19', 'step_1451_chromophore_5',
- 'step_401_chromophore_23', 'step_651_chromophore_20', 'step_1501_chromophore_12', 'step_201_chromophore_13',
- 'step_101_chromophore_9', 'step_1201_chromophore_14', 'step_901_chromophore_1', 'step_1851_chromophore_22',
- 'step_951_chromophore_2', 'step_1701_chromophore_9', 'step_351_chromophore_14', 'step_201_chromophore_26',
- 'step_901_chromophore_18', 'step_601_chromophore_20', 'step_51_chromophore_9', 'step_151_chromophore_5',
- 'step_1051_chromophore_1', 'step_101_chromophore_27', 'step_101_chromophore_15', 'step_1201_chromophore_13',
- 'step_801_chromophore_23', 'step_1401_chromophore_2', 'step_451_chromophore_11', 'step_201_chromophore_11',
- 'step_1201_chromophore_19', 'step_751_chromophore_2', 'step_1651_chromophore_3', 'step_851_chromophore_2',
- 'step_551_chromophore_25', 'step_1551_chromophore_5', 'step_1751_chromophore_3', 'step_451_chromophore_12',
- 'step_1451_chromophore_18', 'step_901_chromophore_2', 'step_1501_chromophore_20', 'step_951_chromophore_27',
- 'step_1251_chromophore_27', 'step_801_chromophore_11', 'step_1751_chromophore_26', 'step_1001_chromophore_14',
- 'step_1851_chromophore_16', 'step_651_chromophore_13', 'step_1751_chromophore_7', 'step_701_chromophore_16',
- 'step_1151_chromophore_26', 'step_51_chromophore_20', 'step_301_chromophore_26', 'step_1501_chromophore_21',
- 'step_651_chromophore_6', 'step_351_chromophore_16', 'step_1551_chromophore_16', 'step_851_chromophore_23',
- 'step_751_chromophore_7', 'step_801_chromophore_25', 'step_551_chromophore_7', 'step_751_chromophore_3',
- 'step_951_chromophore_22', 'step_51_chromophore_6', 'step_1101_chromophore_12', 'step_1851_chromophore_24',
- 'step_1801_chromophore_23', 'step_1601_chromophore_9', 'step_1301_chromophore_26', 'step_1151_chromophore_18',
- 'step_451_chromophore_14', 'step_1501_chromophore_3', 'step_351_chromophore_12', 'step_851_chromophore_12',
- 'step_1051_chromophore_3', 'step_1451_chromophore_7', 'step_801_chromophore_24', 'step_101_chromophore_26',
- 'step_701_chromophore_17', 'step_1651_chromophore_17', 'step_651_chromophore_16']
 
 	def make_active_param_list(self, active_params=[]):
 		"""
@@ -507,19 +369,40 @@ class Optimizer():
 		return [GFN0_defaults[p] for p in self.active_params]
 
 
-	"""
-	store functions and data for optimization
-	"""
-	def __init__(self, samples, ref_data, method, active_params=[], max_iter=1):
+	def read_sets(self):
+		training_set = []
+		test_set = []
+		validation_set = []
+
+		with open("training_set.txt") as training_set_file:
+			for line in training_set_file.readlines():
+				training_set.append(line.replace("\n", ""))
+
+		with open("test_set.txt") as test_set_file:
+			for line in test_set_file.readlines():
+				test_set.append(line.replace("\n", ""))
+
+		with open("validation_set.txt") as validation_set_file:
+			for line in validation_set_file.readlines():
+				validation_set.append(line.replace("\n", ""))
+
+		assert(set(training_set).issubset(set(list(self.ref_data.keys()))))
+		assert(set(test_set).issubset(set(list(self.ref_data.keys()))))
+		assert(set(validation_set).issubset(set(list(self.ref_data.keys()))))
+		assert(set(training_set).issubset(set(test_set)))
+		assert(len(list(set(test_set).intersection(validation_set))) == 0)
+		assert(len(list(set(training_set).intersection(validation_set))) == 0)
+		assert(len(training_set) == 100)
+
+		return (training_set, test_set, validation_set)
+		
+
+	def __init__(self, ref_data, method, active_params=[], max_iter=1, weight=1):
 		self.method = method
 		self.ref_data = ref_data
+		self.weight = weight
 
-		self.test_set = [x for x in list(self.ref_data.keys()) if x not in self.validation_set]
-		assert(len(list(set(self.test_set).intersection(self.validation_set))) == 0)
-
-		self.training_set = random.sample(self.test_set, k=samples)
-		assert(len(self.training_set) == samples)
-		assert(len(list(set(self.training_set).intersection(self.validation_set))) == 0)
+		self.training_set, self.test_set, self.validation_set = self.read_sets()
 		
 		self.iter = 1
 		
@@ -538,14 +421,14 @@ class Optimizer():
 
 		return [chromophore, result]
 
-
 	def generate_results(self, params, test=False):
 		"""
 		runs xtb for each chlorophyll molecule
 		"""
 		params_dict = dict(zip(self.active_params, params))
 
-		input_str = "\"{chromophore} := bchla(structure(file = \'/home/of15641/chlorophyll_parameterization/tddft_data/{chromophore}.xyz\') input_params={params})\""
+		#input_str = "\"{chromophore} := bchla(structure(file = \'/home/of15641/chlorophyll_parameterization/tddft_data/{chromophore}.xyz\') input_params={params})\""
+		input_str = "\"{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}.xyz\') input_params={params})\""
 
 		chromophores = self.training_set
 
@@ -559,10 +442,10 @@ class Optimizer():
 		
 		return Results(xtb_results, training_set=self.training_set)
 
-	def step(self, params):
+	def objective_function(self, params):
 		results = self.generate_results(params)
 
-		return results.energy_MAE + results.energy_correlation + results.dipole_MAE
+		return results.energy_correlation + results.dipole_correlation + self.weight * results.energy_RMSE
 
 
 	def param_string(self, params):
@@ -602,8 +485,8 @@ class Optimizer():
 		else:
 			assert(len(results.full.xtb_energies) == len(self.training_set))
 
-		fitness_str = "MAE(energy) : {0:3.3f} R^2 : {1:3.3f} ".format(results.energy_MAE, 1-results.energy_correlation)
-		fitness_str += f"MAE(dipole) : {results.dipole_MAE:3.3f}"
+		fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(results.energy_RMSE, 1-results.energy_correlation)
+		fitness_str += f"R^2(dipole_mags) : {1-results.dipole_correlation:3.3f}"
 
 		time_str = "time/s : {0:3.6f}".format(time.time() - self.time)
 		self.time = time.time()
@@ -619,11 +502,11 @@ class Optimizer():
 
 		return 
 
-	def make_step_function(self):
+	def make_objective_function(self):
 		"""
 		lambda wrapper for scipy optimize
 		"""
-		return lambda x : self.step(x)
+		return lambda x : self.objective_function(x)
 		
 
 	def optimize(self):
@@ -643,7 +526,7 @@ class Optimizer():
 
 		if self.method == "Nelder-Mead":
 			return minimize(
-			fun=self.make_step_function(), 
+			fun=self.make_objective_function(), 
 			x0=self.initial_guess, 
 			callback=self.callback,
 			method="Nelder-Mead",
@@ -697,61 +580,27 @@ class Optimizer():
 			return
 
 		train_results = self.generate_results(params)
-		test_results = self.generate_results(params, test=True)
+		test_results  = self.generate_results(params, test=True)
 
 		no_test_set_samples = len(test_results.full.xtb_energies)
 
 		print(f"# of test set samples: {no_test_set_samples}")
 
 		print("test set results:")
-		fitness_str = "MAE(energy) : {0:3.3f} R^2 : {1:3.3f} ".format(test_results.energy_MAE, 1-test_results.energy_correlation)
-		fitness_str += f"MAE(dipole) : {test_results.dipole_MAE:3.3f}"
+		fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(test_results.energy_RMSE, 1-test_results.energy_correlation)
+		fitness_str += f"R^2(dipole_mags) : {1-test_results.dipole_correlation:3.3f}"
 
 		print(fitness_str)
 		print()
 
-		fig1, ax1 = plt.subplots()
-		fig2, ax2 = plt.subplots()
-		fig3, ax3 = plt.subplots(subplot_kw={'projection': 'polar'})
-
-		ax1.scatter(test_results.clean.tddft_energies, test_results.clean.xtb_energies, label="test set", color='black', marker='x')
-		ax1.scatter(train_results.clean.tddft_energies, train_results.clean.xtb_energies, label="training set", color='red', marker='x')
-		ax1.set_xlabel("TD-DFT excitation energies / eV")
-		ax1.set_ylabel("xtb excitation energies / eV")
-
-		ax2.scatter(test_results.clean.tddft_dipole_mags, test_results.clean.xtb_dipole_mags, label="test set", color='black', marker='x')
-		ax2.scatter(train_results.clean.tddft_dipole_mags, train_results.clean.xtb_dipole_mags, label="training set", color='red', marker='x')
-		ax2.set_xlabel("TD-DFT $|\mu|$")
-		ax2.set_ylabel("xtb $|\mu|$")
-
-		ax3.scatter(np.deg2rad(test_results.clean.tddft_angle_errors), test_results.clean.tddft_dipole_mags, label="TDDFT", color='black')
-		ax3.scatter(np.deg2rad(train_results.clean.tddft_angle_errors), train_results.clean.tddft_dipole_mags, label="TDDFT", color='red')
-		ax3.scatter(np.deg2rad(test_results.clean.xtb_angle_errors), test_results.clean.xtb_dipole_mags,  label="xtb", color='black', marker='x')
-		ax3.scatter(np.deg2rad(train_results.clean.xtb_angle_errors), train_results.clean.xtb_dipole_mags,  label="xtb", color='red', marker='x')
-		ax3.set_thetamin(0)
-		ax3.set_thetamax(30)
-		ax3.set_ylim([0,6])
-
-		fig1.set_size_inches(12, 12)
-		fig2.set_size_inches(12, 12)
-		fig3.set_size_inches(12, 12)
-
-		ax1.legend()
-		ax2.legend()
-		ax3.legend()
 		
 		import pickle as pkl
-
-		pkl.dump(ax1, open("energies_scatter.pkl", 'wb'))
-		pkl.dump(ax2, open("dipole_mags_scatter.pkl", 'wb'))
-		pkl.dump(ax3, open("angles_scatter.pkl", 'wb'))
-
 		df = test_results.make_dataframe()
 
 		with open("results.tex", 'w') as tex_file:
 			print(df.to_latex(index=False), file=tex_file)
 
-		pkl.dump(df, open("test_set_results.pkl", 'wb'))
+		#pkl.dump(df, open("test_set_results.pkl", 'wb'))
 
 
 if __name__ == '__main__':
@@ -792,26 +641,25 @@ if __name__ == '__main__':
 
 		#make optimizer
 		method   = args.method[0]
-		max_iter = args.max_iter
-		samples  = args.samples[0]
+		max_iter = args.max_iter[0]
+		weight =  args.weight[0]
 
 		print("Optimization method : ", method)
 		print("maximum iterations : ", max_iter)
-		print("# of training set samples: ", samples)
 
 		print()
 		print("recreate input with:")
 		print("python optimizer.py", end=" ")
 		print("--params %s" % " ".join(args.params), end=" ")
-		print("--samples %s" % samples, end=" ")
 		print("--method %s" % method, end=" ")
 		print("--max_iter %i" % max_iter, end=" ")
-		print("--ref_data %s" % args.ref_data , end=" ")
+		print("--ref_data %s" % args.ref_data[0], end=" ")
 		print("--run_tests %r" % args.run_tests, end=" ")
+		print("--weight %f" % weight)
 		print()
 
 		print("making optimizer...")
-		optimizer = Optimizer(ref_data=ref_data, samples=samples, method=method, active_params=active_params, max_iter=max_iter)
+		optimizer = Optimizer(ref_data=ref_data, method=method, active_params=active_params, max_iter=max_iter, weight=weight)
 		print()
 		#run optimization
 		print("running optimization...")
