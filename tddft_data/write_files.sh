@@ -1,6 +1,8 @@
-for i in *xyz; 
+for i in */; 
 	do 
-	sed "s/NAME/${i/.xyz/}/g" template.in > ${i/.xyz/.in}; 
-	sed "s/NAME/${i/.xyz/}/g" template.sub > ${i/.xyz/.sub}; 
+	new_file=${i/\//}
+	#echo ${i}dscf_${new_file}.in
+	sed "s/NAME/${new_file}/g" dscf_template.sub > ${i}dscf_${new_file}.sub
+	sed "s/NAME/${new_file}/g" dscf_template.in > ${i}dscf_${new_file}.in
 done
 

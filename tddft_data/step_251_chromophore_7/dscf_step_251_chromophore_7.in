@@ -1,0 +1,12 @@
+excited_scf(
+	structure(file = 'step_251_chromophore_7.xyz')
+	dft(
+		ao = 'Def2-SVP'
+		xc = PBE0
+		ansatz = u
+		diis = cdiis
+	)
+
+	start_from_average = true
+	symmetric_orthogonalization_correction = true
+)
