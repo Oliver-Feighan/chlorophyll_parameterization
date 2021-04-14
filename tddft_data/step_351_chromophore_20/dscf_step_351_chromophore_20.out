@@ -15,12 +15,12 @@
  Build type: Release
  Version:    1.1.0
 
- Start time: Sun Apr 11 21:26:36 2021
+ Start time: Tue Apr 13 09:11:19 2021
 
  Data directory: /home/of15641/.local/src/Qcore/release/share/entos/1.1.0/data
  Number of threads: 18
  Number of threads was determined by: command line argument
-  - More threads can be used by running 'qcore -n 32'
+  - More threads can be used by running 'qcore -n 24'
 
  --------------------------------------------------------------------------------
                                command: excited_scf                              
@@ -57,76 +57,24 @@
  Threshold for linear dependence:        1.00e-08
 
  -------------------------------------
-  Running restricted closed-shell SCF 
+  Running unrestricted open-shell SCF 
  -------------------------------------
  Max number of iterations:             128
  Conv. threshold (gradient):             1.00e-05
  Conv. threshold (energy):               1.00e-06
- Interpolation scheme:                   adiis+cdiis
+ Interpolation scheme:                   cdiis
  Initial guess:                          SAD
 
  ---------------------------------------------------------------
                   energy        change          grad        time
  ---------------------------------------------------------------
-   0     -3021.911070193                    2.07e+01       29.12
-   1     -3004.205781351      1.77e+01      1.72e+00       19.50
-   2     -3003.468746897      7.37e-01      3.65e+00       19.87
-   3     -3005.240477988     -1.77e+00      9.03e-01       18.54
-   4     -3004.962518751      2.78e-01      2.16e+00       20.31
-   5     -3005.325322430     -3.63e-01      3.05e-01       19.76
-   6     -3005.330425957     -5.10e-03      3.06e-01       19.50
-   7     -3005.337792275     -7.37e-03      2.20e-01       19.38
-   8     -3005.330906757      6.89e-03      4.06e-01       19.12
-   9     -3005.340859204     -9.95e-03      1.21e-01       19.27
-  10     -3005.340735220      1.24e-04      1.31e-01       19.74
-  11     -3005.341874029     -1.14e-03      7.21e-02       19.80
-  12     -3005.341795004      7.90e-05      7.77e-02       20.66
-  13     -3005.342224676     -4.30e-04      6.06e-04       18.79
-  14     -3005.342224690     -1.44e-08      3.50e-04       19.39
-  15     -3005.342224696     -6.27e-09      5.81e-05       20.09
-  16     -3005.342224697     -2.26e-10      3.92e-05       21.25
-  17     -3005.342224697     -7.19e-11      1.35e-05       19.22
-  18     -3005.342224697      8.64e-12      6.33e-06       19.11
-
- SCF converged in 18 iterations.
-
- Dipole moment (in Debye):              -2.607103       2.121846       1.458585
-
- Quadrupole moment (in Debye-Angstrom):
-                  1            2            3
- 1      -415.683459   -24.417334    -6.017396
- 2       -24.417334  -390.333850    27.088018
- 3        -6.017396    27.088018  -374.406063
-
- Spin-squared expectation <S^2>:         0.000
- Total spin quantum number S:            0.000
-
- ***************
-  Singlet state 
- ***************
- AO basis set:                           def2-svp
- Number of AO basis functions:        1298
-
- Formula:                                C55H74N4O6Mg
- Nuclear charge:                       492.000000000
- Total charge:                           0.000000000
- Number of electrons:                  492.000000000
-
- Number of alpha electrons:            246
- Number of beta electrons:             246
- Number of unpaired electrons:           0
- Spin:                                   0
- Multiplicity:                           singlet
-
- Theory:                                 dft
- Exchange-correlation functional:        pbe0
- Method for Coulomb:                     incore_df
- Method for exact exchange:              pre_transformed_df
- Integral threshold:                     1.00e-12
- DF basis set:                           def2-universal-JKFIT
- Number of DF basis functions:        6339
- Schwarz screening threshold:            1.00e-10
- Coulomb fitting method:                 Cholesky
- Total number of grid points:       885930
- Method for AO orthogonalization:        symmetric
- Threshold for linear dependence:        1.00e-08
+   0     -3021.911070180                    1.04e+01       61.10
+   1     -3004.168260359      1.77e+01      8.85e-01       40.27
+   2     -3003.437638924      7.31e-01      1.86e+00       40.91
+   3     -3005.212480497     -1.77e+00      5.96e-01       40.38
+   4     -3005.336501566     -1.24e-01      1.20e-01       41.80
+   5     -3005.339160470     -2.66e-03      1.33e-01       40.31
+   6     -3005.341595086     -2.43e-03      6.85e-02       39.70
+   7     -3005.342115631     -5.21e-04      1.90e-02       40.38
+   8     -3005.342202660     -8.70e-05      7.78e-03       41.48
+   9     -3005.342215849     -1.32e-05      4.01e-03       40.17

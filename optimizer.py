@@ -42,7 +42,7 @@ CLI.add_argument(
 	"--max_iter",
 	nargs=1,
 	type=int,
-	default=5000,
+	default=[5000],
 	help="maximum number of iterations for optimization method"
 )
 
@@ -130,8 +130,8 @@ def run_qcore(chromophore_str):
 	"""
 	runs qcore with the input string
 	"""
-	qcore_path = "~/qcore/cmake-build-release/bin/qcore"
-	#qcore_path = "~/.local/src/Qcore/release/qcore"
+	#qcore_path = "~/qcore/cmake-build-release/bin/qcore"
+	qcore_path = "~/.local/src/Qcore/release/qcore"
 	json_str = " -n 1 -f json --schema none -s "
 	norm_str = " -n 1 -s "
 
@@ -374,15 +374,18 @@ class Optimizer():
 		test_set = []
 		validation_set = []
 
-		with open("training_set.txt") as training_set_file:
+		with open("/home/of15641/chlorophyll_parameterization/training_set.txt") as training_set_file:
+		#with open("training_set.txt") as training_set_file:
 			for line in training_set_file.readlines():
 				training_set.append(line.replace("\n", ""))
 
-		with open("test_set.txt") as test_set_file:
+		with open("/home/of15641/chlorophyll_parameterization/test_set.txt") as test_set_file:
+		#with open("test_set.txt") as test_set_file:
 			for line in test_set_file.readlines():
 				test_set.append(line.replace("\n", ""))
 
-		with open("validation_set.txt") as validation_set_file:
+		with open("/home/of15641/chlorophyll_parameterization/validation_set.txt") as validation_set_file:
+		#with open("validation_set.txt") as validation_set_file:
 			for line in validation_set_file.readlines():
 				validation_set.append(line.replace("\n", ""))
 
@@ -427,8 +430,8 @@ class Optimizer():
 		"""
 		params_dict = dict(zip(self.active_params, params))
 
-		#input_str = "\"{chromophore} := bchla(structure(file = \'/home/of15641/chlorophyll_parameterization/tddft_data/{chromophore}.xyz\') input_params={params})\""
-		input_str = "\"{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}.xyz\') input_params={params})\""
+		input_str = "\"{chromophore} := bchla(structure(file = \'/home/of15641/chlorophyll_parameterization/tddft_data/{chromophore}/{chromophore}.xyz\') input_params={params})\""
+		#input_str = "\"{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}.xyz\') input_params={params})\""
 
 		chromophores = self.training_set
 

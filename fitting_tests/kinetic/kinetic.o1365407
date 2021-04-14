@@ -1,0 +1,61 @@
+ 
+ University of Bristol ACRC HPC Bluepebble Service
+ -------------------------------------------------
+ Job kinetic, jobid 1365407.bp1, username of15641 - started execution at 19:03:08 Tue 13/04/21 on node bp1-compute00081.data.bp.acrc.priv
+ 
+
+#######################
+# BChla-xTB optimizer #
+#######################
+
+start time:  Tue Apr 13 19:03:09 2021
+
+active parameters from python argument input : ['k_T']
+
+reference data constructed from : "/home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json"
+
+Optimization method :  Nelder-Mead
+maximum iterations :  5000
+
+recreate input with:
+python optimizer.py --params k_T --method Nelder-Mead --max_iter 5000 --ref_data /home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json --run_tests False --weight 1.000000
+
+making optimizer...
+
+running optimization...
+
+iter :    1 k_T : 0.001  RMSE(energy) : 1.332 R^2(energy) : 0.026 R^2(dipole_mags) : 0.188 time/s : 19.141508
+iter :    2 k_T : 0.003  RMSE(energy) : 1.326 R^2(energy) : 0.027 R^2(dipole_mags) : 0.188 time/s : 11.632177
+iter :    3 k_T : 0.010  RMSE(energy) : 1.309 R^2(energy) : 0.027 R^2(dipole_mags) : 0.188 time/s : 11.737484
+iter :    4 k_T : 0.030  RMSE(energy) : 1.258 R^2(energy) : 0.029 R^2(dipole_mags) : 0.188 time/s : 11.740821
+iter :    5 k_T : 0.091  RMSE(energy) : 1.109 R^2(energy) : 0.033 R^2(dipole_mags) : 0.186 time/s : 11.561157
+iter :    6 k_T : 0.273  RMSE(energy) : 0.246 R^2(energy) : 0.012 R^2(dipole_mags) : 0.179 time/s : 11.493268
+iter :    7 k_T : 0.273  RMSE(energy) : 0.246 R^2(energy) : 0.012 R^2(dipole_mags) : 0.179 time/s : 11.674272
+iter :    8 k_T : 0.273  RMSE(energy) : 0.246 R^2(energy) : 0.012 R^2(dipole_mags) : 0.179 time/s : 11.700374
+iter :    9 k_T : 0.285  RMSE(energy) : 0.194 R^2(energy) : 0.002 R^2(dipole_mags) : 0.148 time/s : 11.542671
+iter :   10 k_T : 0.285  RMSE(energy) : 0.194 R^2(energy) : 0.002 R^2(dipole_mags) : 0.148 time/s : 11.613791
+iter :   11 k_T : 0.285  RMSE(energy) : 0.194 R^2(energy) : 0.002 R^2(dipole_mags) : 0.148 time/s : 11.740385
+iter :   12 k_T : 0.285  RMSE(energy) : 0.194 R^2(energy) : 0.002 R^2(dipole_mags) : 0.148 time/s : 11.667031
+iter :   13 k_T : 0.285  RMSE(energy) : 0.194 R^2(energy) : 0.002 R^2(dipole_mags) : 0.148 time/s : 11.348976
+iter :   14 k_T : 0.286  RMSE(energy) : 0.194 R^2(energy) : 0.002 R^2(dipole_mags) : 0.148 time/s : 11.694845
+iter :   15 k_T : 0.286  RMSE(energy) : 0.194 R^2(energy) : 0.002 R^2(dipole_mags) : 0.150 time/s : 11.749971
+iter :   16 k_T : 0.286  RMSE(energy) : 0.194 R^2(energy) : 0.002 R^2(dipole_mags) : 0.150 time/s : 11.711464
+iter :   17 k_T : 0.286  RMSE(energy) : 0.195 R^2(energy) : 0.002 R^2(dipole_mags) : 0.152 time/s : 11.713552
+iter :   18 k_T : 0.286  RMSE(energy) : 0.195 R^2(energy) : 0.002 R^2(dipole_mags) : 0.151 time/s : 11.800880
+iter :   19 k_T : 0.286  RMSE(energy) : 0.195 R^2(energy) : 0.002 R^2(dipole_mags) : 0.152 time/s : 11.836561
+Optimization terminated successfully.
+         Current function value: 2.040953
+         Iterations: 20
+         Function evaluations: 40
+
+optimized parameters:  {'k_T': 0.286}
+
+running validation...
+# of test set samples: 507
+test set results:
+RMSE(energy) : 0.174 R^2(energy) : 0.017 R^2(dipole_mags) : 0.164
+
+
+wall-clock time : 251.977 seconds
+
+#######################
