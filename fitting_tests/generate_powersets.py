@@ -40,7 +40,7 @@ if __name__ == "__main__":
 	all_types_powerset = powerset(list(param_types.keys()))
 
 	script_template = """#!/bin/bash
-#PBS -l walltime=10:00:00
+#PBS -l walltime=20:00:00
 #PBS -l select=1:ncpus=24:mem=10gb
 #PBS -N {name}
 #PBS -j oe

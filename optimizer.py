@@ -600,10 +600,10 @@ class Optimizer():
 		import pickle as pkl
 		df = test_results.make_dataframe()
 
-		with open("results.tex", 'w') as tex_file:
-			print(df.to_latex(index=False), file=tex_file)
+		#with open("results.tex", 'w') as tex_file:
+		#	print(df.to_latex(index=False), file=tex_file)
 
-		#pkl.dump(df, open("test_set_results.pkl", 'wb'))
+		pkl.dump(df, open("test_set_results.pkl", 'wb'))
 
 
 if __name__ == '__main__':
