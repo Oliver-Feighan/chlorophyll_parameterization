@@ -126,11 +126,13 @@ def make_ref_data(file_name):
 	return data
 
 
-def run_qcore(chromophore_str):
+def run_qcore(input_tuple):
 	"""
 	runs qcore with the input string
 	"""
 	#qcore_path = "~/qcore/cmake-build-release/bin/qcore"
+	chromophore, chromophore_str = input_tuple
+
 	qcore_path = "~/.local/src/Qcore/release/qcore"
 	json_str = " -n 1 -f json --schema none -s "
 	norm_str = " -n 1 -s "
@@ -141,7 +143,11 @@ def run_qcore(chromophore_str):
 					executable="/bin/bash",
 					universal_newlines=True)
 
-	if json_run.returncode != 0:
+	json_results = json.loads(json_run.stdout)
+
+	if json_results[chromophore]["excitation_energy"] is None or json_results[chromophore]["transition_dipole"] is None:
+		print(qcore_path + norm_str + chromophore_str)
+
 		norm_run = subprocess.run(qcore_path + norm_str + chromophore_str,
 					shell=True,
 					stdout=subprocess.PIPE,
@@ -152,7 +158,7 @@ def run_qcore(chromophore_str):
 
 		exit()
 
-	return json.loads(json_run.stdout)
+	return [chromophore, json_results]
 
 class Errors():
 	def make_full_error_lists(self, results):
@@ -417,13 +423,6 @@ class Optimizer():
 		self.start_time = datetime.datetime.now()
 		self.time = time.time()
 
-	def generate_result(self, input_tuple):
-		chromophore, input_str = input_tuple
-
-		result = run_qcore(input_str)
-
-		return [chromophore, result]
-
 	def generate_results(self, params, test=False):
 		"""
 		runs xtb for each chlorophyll molecule
@@ -441,7 +440,7 @@ class Optimizer():
 		input_strs = list(map(lambda x : input_str.format(chromophore=x, params=params_dict), chromophores))
 
 		with ProcessPoolExecutor(max_workers=20) as pool:
-			xtb_results = list(pool.map(self.generate_result, list(zip(chromophores, input_strs))))
+			xtb_results = list(pool.map(self.run_qcore, list(zip(chromophores, input_strs))))
 		
 		return Results(xtb_results, training_set=self.training_set)
 
@@ -589,11 +588,21 @@ class Optimizer():
 
 		print(f"# of test set samples: {no_test_set_samples}")
 
-		print("test set results:")
-		fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(test_results.energy_RMSE, 1-test_results.energy_correlation)
-		fitness_str += f"R^2(dipole_mags) : {1-test_results.dipole_correlation:3.3f}"
+		print("training set results:")
 
-		print(fitness_str)
+		training_fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(train_results.energy_RMSE, 1-train_results.energy_correlation)
+		training_fitness_str += f"R^2(dipole_mags) : {1-train_results.dipole_correlation:3.3f}"
+		print(training_fitness_str)
+
+		print()
+
+
+		print("test set results:")
+
+		test_fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(test_results.energy_RMSE, 1-test_results.energy_correlation)
+		test_fitness_str += f"R^2(dipole_mags) : {1-test_results.dipole_correlation:3.3f}"
+		print(test_fitness_str)
+
 		print()
 
 		
