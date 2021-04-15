@@ -392,7 +392,7 @@ class Optimizer():
 			"y_K"		: (1, None)
 		}
 
-		return [bounds[p] for p in self.activate_params]
+		return [bounds[p] for p in self.active_params]
 
 
 	def read_sets(self):
@@ -552,9 +552,9 @@ class Optimizer():
 			fun=self.make_objective_function(), 
 			x0=self.initial_guess, 
 			callback=self.callback,
-			method="Nelder-Mead",
-			bounds=self.bounds
-			options={"maxiter" : self.max_iter+1, "disp": True, "adaptive" : True}
+			method="SLSQP",
+			bounds=self.bounds,
+			options={"maxiter" : self.max_iter+1, "disp": True}#, "adaptive" : True}
 			)
 
 		elif self.method == "Bayesian_Gaussian_Process":
