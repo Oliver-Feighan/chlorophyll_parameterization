@@ -1,0 +1,79 @@
+ 
+ University of Bristol ACRC HPC Bluepebble Service
+ -------------------------------------------------
+ Job electronegativity_global_pair, jobid 1404178.bp1, username of15641 - started execution at 11:38:00 Thu 15/04/21 on node bp1-compute00082.data.bp.acrc.priv
+ 
+
+#######################
+# BChla-xTB optimizer #
+#######################
+
+start time:  Thu Apr 15 11:38:02 2021
+
+active parameters from python argument input : ['k_EN_s', 'k_EN_p', 'k_EN_d', 'Mg_s', 'Mg_p', 'Mg_d', 'N_s', 'N_p']
+
+reference data constructed from : "/home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json"
+
+Optimization method :  SLSQP
+maximum iterations :  5000
+
+recreate input with:
+python optimizer.py --params k_EN_s k_EN_p k_EN_d Mg_s Mg_p Mg_d N_s N_p --method SLSQP --max_iter 5000 --ref_data /home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json --run_tests False --weight 1.000000
+
+making optimizer...
+
+running optimization...
+
+iter :    0 k_EN_s : 0.006 k_EN_p : -0.001 k_EN_d : -0.002 Mg_s : 1.000 Mg_p : 1.000 Mg_d : 1.000 N_s : 1.000 N_p : 1.000  RMSE(energy) : 1.334 R^2(energy) : 0.026 R^2(dipole_mags) : 0.188 time/s : 4.452447
+iter :    1 k_EN_s : 111.404 k_EN_p : 87.206 k_EN_d : 58.651 Mg_s : 2.635 Mg_p : 4.640 Mg_d : 5.641 N_s : 5.133 N_p : 4.551  RMSE(energy) : 1518.788 R^2(energy) : 0.030 R^2(dipole_mags) : 0.054 time/s : 41.491522
+iter :    2 k_EN_s : 7.272 k_EN_p : -1.041 k_EN_d : -9.335 Mg_s : 1.176 Mg_p : 0.895 Mg_d : -0.046 N_s : 1.996 N_p : 7.810  RMSE(energy) : 42.932 R^2(energy) : 0.000 R^2(dipole_mags) : 0.014 time/s : 80.857032
+iter :    3 k_EN_s : -1.028 k_EN_p : 5.996 k_EN_d : -5.550 Mg_s : 1.118 Mg_p : 0.620 Mg_d : -0.487 N_s : 1.872 N_p : 10.637  RMSE(energy) : 439.176 R^2(energy) : 0.001 R^2(dipole_mags) : 0.010 time/s : 61.701503
+iter :    4 k_EN_s : 0.047 k_EN_p : -0.894 k_EN_d : 1.531 Mg_s : 1.131 Mg_p : 0.938 Mg_d : 0.379 N_s : 2.004 N_p : 7.973  RMSE(energy) : 50.553 R^2(energy) : 0.004 R^2(dipole_mags) : 0.006 time/s : 54.566597
+iter :    5 k_EN_s : 0.102 k_EN_p : 0.018 k_EN_d : -0.035 Mg_s : 1.006 Mg_p : 0.931 Mg_d : 0.800 N_s : 0.880 N_p : 1.163  RMSE(energy) : 0.213 R^2(energy) : 0.118 R^2(dipole_mags) : 0.182 time/s : 57.685152
+iter :    6 k_EN_s : 0.083 k_EN_p : 0.038 k_EN_d : -0.062 Mg_s : 1.002 Mg_p : 1.066 Mg_d : 0.953 N_s : 1.099 N_p : 1.134  RMSE(energy) : 0.108 R^2(energy) : 0.161 R^2(dipole_mags) : 0.157 time/s : 46.704745
+iter :    7 k_EN_s : 0.086 k_EN_p : 0.033 k_EN_d : -0.058 Mg_s : 0.990 Mg_p : 1.031 Mg_d : 0.975 N_s : 1.076 N_p : 1.159  RMSE(energy) : 0.078 R^2(energy) : 0.163 R^2(dipole_mags) : 0.166 time/s : 46.116017
+iter :    8 k_EN_s : 0.087 k_EN_p : 0.032 k_EN_d : -0.059 Mg_s : 0.973 Mg_p : 1.052 Mg_d : 0.999 N_s : 1.088 N_p : 1.165  RMSE(energy) : 0.076 R^2(energy) : 0.155 R^2(dipole_mags) : 0.171 time/s : 42.461410
+iter :    9 k_EN_s : 0.088 k_EN_p : 0.032 k_EN_d : -0.065 Mg_s : 0.939 Mg_p : 1.100 Mg_d : 1.049 N_s : 1.135 N_p : 1.164  RMSE(energy) : 0.076 R^2(energy) : 0.164 R^2(dipole_mags) : 0.160 time/s : 50.197775
+iter :   10 k_EN_s : 0.102 k_EN_p : 0.026 k_EN_d : -0.139 Mg_s : 0.527 Mg_p : 1.651 Mg_d : 1.693 N_s : 1.643 N_p : 1.218  RMSE(energy) : 2.997 R^2(energy) : 0.084 R^2(dipole_mags) : 0.051 time/s : 45.988461
+iter :   11 k_EN_s : 0.104 k_EN_p : 0.029 k_EN_d : -0.128 Mg_s : 0.603 Mg_p : 1.516 Mg_d : 1.547 N_s : 1.547 N_p : 1.236  RMSE(energy) : 2.147 R^2(energy) : 0.122 R^2(dipole_mags) : 0.073 time/s : 49.906685
+iter :   12 k_EN_s : 0.099 k_EN_p : 0.030 k_EN_d : -0.099 Mg_s : 0.748 Mg_p : 1.344 Mg_d : 1.290 N_s : 1.329 N_p : 1.219  RMSE(energy) : 0.645 R^2(energy) : 0.181 R^2(dipole_mags) : 0.136 time/s : 53.974748
+iter :   13 k_EN_s : 0.113 k_EN_p : 0.029 k_EN_d : -0.121 Mg_s : 0.409 Mg_p : 1.426 Mg_d : 1.417 N_s : 1.551 N_p : 1.252  RMSE(energy) : 1.549 R^2(energy) : 0.136 R^2(dipole_mags) : 0.103 time/s : 54.095843
+iter :   14 k_EN_s : 0.434 k_EN_p : -0.013 k_EN_d : -0.885 Mg_s : -6.218 Mg_p : 5.936 Mg_d : 6.415 N_s : 7.498 N_p : 2.413  RMSE(energy) : 3.356 R^2(energy) : 0.024 R^2(dipole_mags) : 0.034 time/s : 54.125987
+iter :   15 k_EN_s : 0.097 k_EN_p : 0.031 k_EN_d : -0.080 Mg_s : 0.811 Mg_p : 1.193 Mg_d : 1.110 N_s : 1.233 N_p : 1.195  RMSE(energy) : 0.130 R^2(energy) : 0.194 R^2(dipole_mags) : 0.166 time/s : 62.341699
+iter :   16 k_EN_s : 0.163 k_EN_p : 0.021 k_EN_d : -0.203 Mg_s : -0.308 Mg_p : 2.021 Mg_d : 1.844 N_s : 1.916 N_p : 1.455  RMSE(energy) : 1.235 R^2(energy) : 0.088 R^2(dipole_mags) : 0.019 time/s : 54.023562
+iter :   17 k_EN_s : 0.102 k_EN_p : 0.030 k_EN_d : -0.087 Mg_s : 0.722 Mg_p : 1.295 Mg_d : 1.127 N_s : 1.248 N_p : 1.218  RMSE(energy) : 0.210 R^2(energy) : 0.204 R^2(dipole_mags) : 0.168 time/s : 58.130026
+iter :   18 k_EN_s : 3.546 k_EN_p : -0.518 k_EN_d : -5.563 Mg_s : -53.159 Mg_p : 50.334 Mg_d : 22.509 N_s : 32.303 N_p : 13.920  RMSE(energy) : 29.147 R^2(energy) : 0.010 R^2(dipole_mags) : 0.001 time/s : 57.754341
+iter :   19 k_EN_s : 17.468 k_EN_p : -2.730 k_EN_d : -27.711 Mg_s : -271.179 Mg_p : 248.917 Mg_d : 108.891 N_s : 157.990 N_p : 65.272  RMSE(energy) : 148.866 R^2(energy) : 0.008 R^2(dipole_mags) : 0.029 time/s : 69.775916
+iter :   20 k_EN_s : 0.094 k_EN_p : 0.031 k_EN_d : -0.070 Mg_s : 0.908 Mg_p : 1.088 Mg_d : 1.073 N_s : 1.136 N_p : 1.184  RMSE(energy) : 0.078 R^2(energy) : 0.158 R^2(dipole_mags) : 0.166 time/s : 69.666251
+iter :   21 k_EN_s : 0.161 k_EN_p : 0.021 k_EN_d : -0.135 Mg_s : 0.376 Mg_p : 1.138 Mg_d : 1.461 N_s : 1.302 N_p : 1.401  RMSE(energy) : 1.613 R^2(energy) : 0.049 R^2(dipole_mags) : 0.095 time/s : 54.527395
+iter :   22 k_EN_s : 1.422 k_EN_p : -0.186 k_EN_d : -1.378 Mg_s : -9.078 Mg_p : 2.306 Mg_d : 9.027 N_s : 4.101 N_p : 5.565  RMSE(energy) : 14.972 R^2(energy) : 0.045 R^2(dipole_mags) : 0.001 time/s : 61.817797
+iter :   23 k_EN_s : 0.309 k_EN_p : -0.004 k_EN_d : -0.269 Mg_s : -0.740 Mg_p : 1.423 Mg_d : 2.025 N_s : 1.760 N_p : 1.854  RMSE(energy) : 2.147 R^2(energy) : 0.000 R^2(dipole_mags) : 0.004 time/s : 66.134132
+iter :   24 k_EN_s : 0.092 k_EN_p : 0.032 k_EN_d : -0.068 Mg_s : 0.922 Mg_p : 1.090 Mg_d : 1.049 N_s : 1.138 N_p : 1.176  RMSE(energy) : 0.077 R^2(energy) : 0.169 R^2(dipole_mags) : 0.162 time/s : 62.409643
+iter :   25 k_EN_s : 0.109 k_EN_p : 0.030 k_EN_d : -0.081 Mg_s : 0.823 Mg_p : 1.092 Mg_d : 1.092 N_s : 1.179 N_p : 1.224  RMSE(energy) : 0.129 R^2(energy) : 0.187 R^2(dipole_mags) : 0.168 time/s : 46.085394
+iter :   26 k_EN_s : 0.119 k_EN_p : 0.029 k_EN_d : -0.091 Mg_s : 0.738 Mg_p : 1.078 Mg_d : 1.147 N_s : 1.200 N_p : 1.257  RMSE(energy) : 0.258 R^2(energy) : 0.206 R^2(dipole_mags) : 0.167 time/s : 54.289117
+iter :   27 k_EN_s : 0.434 k_EN_p : -0.003 k_EN_d : -0.353 Mg_s : -1.431 Mg_p : 0.936 Mg_d : 2.219 N_s : 2.003 N_p : 2.175  RMSE(energy) : 2.768 R^2(energy) : 0.000 R^2(dipole_mags) : 0.000 time/s : 57.628062
+iter :   28 k_EN_s : 0.264 k_EN_p : 0.015 k_EN_d : -0.215 Mg_s : -0.193 Mg_p : 1.056 Mg_d : 1.609 N_s : 1.548 N_p : 1.690  RMSE(energy) : 1.413 R^2(energy) : 0.003 R^2(dipole_mags) : 0.004 time/s : 61.445248
+iter :   29 k_EN_s : 0.100 k_EN_p : 0.032 k_EN_d : -0.076 Mg_s : 0.852 Mg_p : 1.077 Mg_d : 1.097 N_s : 1.156 N_p : 1.203  RMSE(energy) : 0.090 R^2(energy) : 0.173 R^2(dipole_mags) : 0.165 time/s : 61.509381
+iter :   30 k_EN_s : 0.093 k_EN_p : 0.032 k_EN_d : -0.068 Mg_s : 0.919 Mg_p : 1.089 Mg_d : 1.046 N_s : 1.140 N_p : 1.180  RMSE(energy) : 0.076 R^2(energy) : 0.152 R^2(dipole_mags) : 0.175 time/s : 58.087353
+iter :   31 k_EN_s : 0.131 k_EN_p : 0.027 k_EN_d : -0.093 Mg_s : 0.750 Mg_p : 1.109 Mg_d : 1.081 N_s : 1.231 N_p : 1.279  RMSE(energy) : 0.240 R^2(energy) : 0.169 R^2(dipole_mags) : 0.178 time/s : 54.103133
+iter :   32 k_EN_s : 0.701 k_EN_p : -0.039 k_EN_d : -0.478 Mg_s : -1.910 Mg_p : 1.313 Mg_d : 1.671 N_s : 2.617 N_p : 2.818  RMSE(energy) : 5.240 R^2(energy) : 0.011 R^2(dipole_mags) : 0.012 time/s : 58.311002
+Optimization terminated successfully.    (Exit mode 0)
+            Current function value: 1.7381689113326977
+            Iterations: 32
+            Function evaluations: 444
+            Gradient evaluations: 32
+
+optimized parameters:  {'k_EN_s': 0.089, 'k_EN_p': 0.032, 'k_EN_d': -0.066, 'Mg_s': 0.938, 'Mg_p': 1.09, 'Mg_d': 1.043, 'N_s': 1.131, 'N_p': 1.168}
+
+running validation...
+# of test set samples: 507
+training set results:
+RMSE(energy) : 0.078 R^2(energy) : 0.165 R^2(dipole_mags) : 0.161
+
+test set results:
+RMSE(energy) : 0.104 R^2(energy) : 0.121 R^2(dipole_mags) : 0.198
+
+
+wall-clock time : 1866.773 seconds
+
+#######################

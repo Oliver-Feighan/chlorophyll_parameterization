@@ -1,0 +1,54 @@
+ 
+ University of Bristol ACRC HPC Bluepebble Service
+ -------------------------------------------------
+ Job response, jobid 1404207.bp1, username of15641 - started execution at 12:49:44 Thu 15/04/21 on node bp1-compute00091.data.bp.acrc.priv
+ 
+
+#######################
+# BChla-xTB optimizer #
+#######################
+
+start time:  Thu Apr 15 12:49:45 2021
+
+active parameters from python argument input : ['a_x', 'y_J', 'y_K']
+
+reference data constructed from : "/home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json"
+
+Optimization method :  SLSQP
+maximum iterations :  5000
+
+recreate input with:
+python optimizer.py --params a_x y_J y_K --method SLSQP --max_iter 5000 --ref_data /home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json --run_tests False --weight 1.000000
+
+making optimizer...
+
+running optimization...
+
+iter :    0 a_x : 0.500 y_J : 4.000 y_K : 2.000  RMSE(energy) : 1.334 R^2(energy) : 0.026 R^2(dipole_mags) : 0.188 time/s : 3.781051
+iter :    1 a_x : 0.000 y_J : 3.447 y_K : 1.875  RMSE(energy) : 0.120 R^2(energy) : 0.479 R^2(dipole_mags) : 0.164 time/s : 22.628690
+iter :    2 a_x : 0.000 y_J : 3.402 y_K : 1.674  RMSE(energy) : 0.089 R^2(energy) : 0.490 R^2(dipole_mags) : 0.164 time/s : 23.098725
+iter :    3 a_x : 0.000 y_J : 3.133 y_K : 0.493  RMSE(energy) : 0.316 R^2(energy) : 0.505 R^2(dipole_mags) : 0.179 time/s : 22.876371
+iter :    4 a_x : 0.000 y_J : 3.021 y_K : 0.000  RMSE(energy) : 0.618 R^2(energy) : 0.595 R^2(dipole_mags) : 0.187 time/s : 26.493147
+iter :    5 a_x : 0.000 y_J : 3.306 y_K : 1.254  RMSE(energy) : 0.026 R^2(energy) : 0.514 R^2(dipole_mags) : 0.164 time/s : 30.195938
+iter :    6 a_x : 0.000 y_J : 3.306 y_K : 1.253  RMSE(energy) : 0.026 R^2(energy) : 0.515 R^2(dipole_mags) : 0.164 time/s : 23.028347
+iter :    7 a_x : 0.000 y_J : 3.306 y_K : 1.253  RMSE(energy) : 0.026 R^2(energy) : 0.515 R^2(dipole_mags) : 0.164 time/s : 22.905419
+Optimization terminated successfully.    (Exit mode 0)
+            Current function value: 1.3470358998296366
+            Iterations: 7
+            Function evaluations: 38
+            Gradient evaluations: 7
+
+optimized parameters:  {'a_x': 0.0, 'y_J': 3.306, 'y_K': 1.253}
+
+running validation...
+# of test set samples: 507
+training set results:
+RMSE(energy) : 0.026 R^2(energy) : 0.515 R^2(dipole_mags) : 0.164
+
+test set results:
+RMSE(energy) : 0.027 R^2(energy) : 0.489 R^2(dipole_mags) : 0.200
+
+
+wall-clock time : 197.576 seconds
+
+#######################

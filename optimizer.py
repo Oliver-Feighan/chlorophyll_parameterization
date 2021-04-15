@@ -388,8 +388,8 @@ class Optimizer():
 			"N_s" 		: (None, None), 
 			"N_p" 		: (None, None), 
 			"a_x"		: (0, None),
-			"y_J"		: (1, None),
-			"y_K"		: (1, None)
+			"y_J"		: (0, None),
+			"y_K"		: (0, None)
 		}
 
 		return [bounds[p] for p in self.active_params]
