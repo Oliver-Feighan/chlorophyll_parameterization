@@ -332,7 +332,6 @@ class Results():
 
 
 class Optimizer():
-
 	def make_active_param_list(self, active_params=[]):
 		"""
 		make the list of active parameters, being optimized
@@ -373,6 +372,27 @@ class Optimizer():
 		}
 		
 		return [GFN0_defaults[p] for p in self.active_params]
+
+	def make_bounds(self):
+		bounds = {
+			"k_s" 		: (None, None),
+			"k_p" 		: (None, None),
+			"k_d" 		: (None, None),
+			"k_EN_s" 	: (None, None),
+			"k_EN_p" 	: (None, None),
+			"k_EN_d"	: (None, None),
+			"k_T" 		: (None, None),
+			"Mg_s" 		: (None, None),
+			"Mg_p" 		: (None, None),
+			"Mg_d" 		: (None, None),
+			"N_s" 		: (None, None), 
+			"N_p" 		: (None, None), 
+			"a_x"		: (0, None),
+			"y_J"		: (1, None),
+			"y_K"		: (1, None)
+		}
+
+		return [bounds[p] for p in self.activate_params]
 
 
 	def read_sets(self):
@@ -417,6 +437,7 @@ class Optimizer():
 		
 		self.active_params = self.make_active_param_list(active_params)
 		self.initial_guess = self.make_initial_guess()
+		self.bounds = self.make_bounds()
 
 		self.max_iter = max_iter
 		self.save = True
@@ -532,6 +553,7 @@ class Optimizer():
 			x0=self.initial_guess, 
 			callback=self.callback,
 			method="Nelder-Mead",
+			bounds=self.bounds
 			options={"maxiter" : self.max_iter+1, "disp": True, "adaptive" : True}
 			)
 
