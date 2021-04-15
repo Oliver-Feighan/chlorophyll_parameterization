@@ -440,7 +440,7 @@ class Optimizer():
 		input_strs = list(map(lambda x : input_str.format(chromophore=x, params=params_dict), chromophores))
 
 		with ProcessPoolExecutor(max_workers=20) as pool:
-			xtb_results = list(pool.map(self.run_qcore, list(zip(chromophores, input_strs))))
+			xtb_results = list(pool.map(run_qcore, list(zip(chromophores, input_strs))))
 		
 		return Results(xtb_results, training_set=self.training_set)
 
