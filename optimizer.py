@@ -33,8 +33,8 @@ CLI.add_argument(
 	"--method",
 	nargs=1,
 	type=str,
-	default=["Nelder-Mead"],
-	choices=["Nelder-Mead", "test", "Bayesian_Gaussian_Process"],
+	default=["SLSQP"],
+	choices=["SLSQP", "test", "Bayesian_Gaussian_Process"],
 	help="specify optimization method, or flag to run a validation set"
 )
 
@@ -433,7 +433,7 @@ class Optimizer():
 
 		self.training_set, self.test_set, self.validation_set = self.read_sets()
 		
-		self.iter = 1
+		self.iter = 0
 		
 		self.active_params = self.make_active_param_list(active_params)
 		self.initial_guess = self.make_initial_guess()
@@ -547,14 +547,16 @@ class Optimizer():
 				options={"disp" : True}
 			)
 
-		if self.method == "Nelder-Mead":
+		if self.method == "SLSQP":
+			self.callback(params=self.initial_guess)
+
 			return minimize(
 			fun=self.make_objective_function(), 
 			x0=self.initial_guess, 
 			callback=self.callback,
 			method="SLSQP",
 			bounds=self.bounds,
-			options={"maxiter" : self.max_iter+1, "disp": True}#, "adaptive" : True}
+			options={"maxiter" : self.max_iter+1, "disp": True}
 			)
 
 		elif self.method == "Bayesian_Gaussian_Process":
