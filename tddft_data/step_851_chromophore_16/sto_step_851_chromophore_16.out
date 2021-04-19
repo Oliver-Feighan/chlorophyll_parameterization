@@ -1,0 +1,415 @@
+
+================================================================================
+          _____________ ________ _______________ ________     _________         
+         / ___________// ______ \\_____   _____// ______ \   / ________)        
+        / /_________  / /      \ \     | |     / /      \ \ | (_______          
+       |  __________|| |        | |    | |    | |        | | \________ \        
+        \ \_________ | |        | |    | |     \ \______/ /___________) |       
+         \__________||_|        |_|    |_|      \________//____________/        
+                                                                                
+====================================[ Qcore ]===================================
+
+ Git hash:   de6f3cca3c73e16255eb78314cebe9e3cf5c322b
+ Git date:   Mon, 12 Apr 2021 13:13:05 +0100
+ Compiler:   GNU 9.1.0
+ Build type: Release
+ Version:    1.1.0
+
+ Start time: Sat Apr 17 01:19:26 2021
+
+ Data directory: /home/of15641/.local/src/Qcore/release/share/entos/1.1.0/data
+ Number of threads: 18
+ Number of threads was determined by: command line argument
+  - More threads can be used by running 'qcore -n 32'
+
+ --------------------------------------------------------------------------------
+                               command: excited_scf                              
+ --------------------------------------------------------------------------------
+
+ **************
+  Ground state 
+ **************
+ AO basis set:                           sto-3g
+ Number of AO basis functions:         408
+
+ Formula:                                C55H74N4O6Mg
+ Nuclear charge:                       492.000000000
+ Total charge:                           0.000000000
+ Number of electrons:                  492.000000000
+
+ Number of alpha electrons:            246
+ Number of beta electrons:             246
+ Number of unpaired electrons:           0
+ Spin:                                   0
+ Multiplicity:                           singlet
+
+ Theory:                                 dft
+ Exchange-correlation functional:        pbe0
+ Method for Coulomb:                     incore_df
+ Method for exact exchange:              pre_transformed_df
+ Integral threshold:                     1.00e-12
+ DF basis set:                           def2-universal-JKFIT
+ Number of DF basis functions:        6339
+ Schwarz screening threshold:            1.00e-10
+ Coulomb fitting method:                 Cholesky
+ Total number of grid points:       885930
+ Method for AO orthogonalization:        symmetric
+ Threshold for linear dependence:        1.00e-08
+
+ -------------------------------------
+  Running unrestricted open-shell SCF 
+ -------------------------------------
+ Max number of iterations:             128
+ Conv. threshold (gradient):             1.00e-05
+ Conv. threshold (energy):               1.00e-06
+ Interpolation scheme:                   cdiis
+ Initial guess:                          SAD
+
+ ---------------------------------------------------------------
+                  energy        change          grad        time
+ ---------------------------------------------------------------
+   0     -2966.598657399                    4.58e+00        7.60
+   1     -2969.970140510     -3.37e+00      6.58e-01        5.38
+   2     -2966.945314680      3.02e+00      2.71e+00        5.29
+   3     -2969.987927518     -3.04e+00      1.51e+00        5.75
+   4     -2970.493222956     -5.05e-01      2.10e-01        5.53
+   5     -2970.477316844      1.59e-02      2.59e-01        5.59
+   6     -2970.512373075     -3.51e-02      6.49e-02        5.82
+   7     -2970.514700172     -2.33e-03      1.41e-02        6.17
+   8     -2970.514769395     -6.92e-05      1.19e-02        6.00
+   9     -2970.514831601     -6.22e-05      3.85e-03        5.24
+  10     -2970.514839638     -8.04e-06      1.91e-03        5.60
+  11     -2970.514845159     -5.52e-06      1.16e-03        5.81
+  12     -2970.514847425     -2.27e-06      8.74e-04        6.24
+  13     -2970.514848097     -6.72e-07      5.83e-04        5.59
+  14     -2970.514848385     -2.88e-07      4.48e-04        5.59
+  15     -2970.514848515     -1.30e-07      1.88e-04        5.75
+  16     -2970.514848554     -3.90e-08      1.02e-04        5.67
+  17     -2970.514848570     -1.63e-08      8.94e-05        5.73
+  18     -2970.514848590     -1.98e-08      7.83e-05        6.01
+  19     -2970.514848606     -1.61e-08      6.88e-05        5.34
+  20     -2970.514848620     -1.35e-08      4.76e-05        5.63
+  21     -2970.514848628     -8.36e-09      4.57e-05        6.16
+  22     -2970.514848638     -9.90e-09      3.53e-05        5.59
+  23     -2970.514848646     -7.66e-09      3.23e-05        5.74
+  24     -2970.514848651     -5.34e-09      2.75e-05        5.61
+  25     -2970.514848655     -3.80e-09      1.36e-05        6.06
+  26     -2970.514848656     -1.23e-09      9.54e-06        5.56
+
+ SCF converged in 26 iterations.
+
+ Dipole moment (in Debye):              -0.702126      -2.614961       1.079929
+
+ Quadrupole moment (in Debye-Angstrom):
+                  1            2            3
+ 1      -385.776900     0.807887    16.738602
+ 2         0.807887  -382.262631     3.814879
+ 3        16.738602     3.814879  -347.432733
+
+ Spin-squared expectation <S^2>:         0.000
+ Total spin quantum number S:            0.000
+
+ ****************
+  Averaged state 
+ ****************
+ AO basis set:                           sto-3g
+ Number of AO basis functions:         408
+
+ Formula:                                C55H74N4O6Mg
+ Nuclear charge:                       492.000000000
+ Total charge:                           0.000000000
+ Number of electrons:                  492.000000000
+
+ Number of alpha electrons:            246
+ Number of beta electrons:             246
+ Number of unpaired electrons:           0
+ Spin:                                   0
+ Multiplicity:                           singlet
+
+ Theory:                                 dft
+ Exchange-correlation functional:        pbe0
+ Method for Coulomb:                     incore_df
+ Method for exact exchange:              pre_transformed_df
+ Integral threshold:                     1.00e-12
+ DF basis set:                           def2-universal-JKFIT
+ Number of DF basis functions:        6339
+ Schwarz screening threshold:            1.00e-10
+ Coulomb fitting method:                 Cholesky
+ Total number of grid points:       885930
+ Method for AO orthogonalization:        symmetric
+ Threshold for linear dependence:        1.00e-08
+ Setting up Delta-SCF
+
+ -------------------------------------
+  Running unrestricted open-shell SCF 
+ -------------------------------------
+ Max number of iterations:             128
+ Conv. threshold (gradient):             1.00e-05
+ Conv. threshold (energy):               1.00e-06
+ Interpolation scheme:                   cdiis
+ Initializing maximum overlap method (MOM)
+
+ ---------------------------------------------------------------
+                  energy        change          grad        time
+ ---------------------------------------------------------------
+   0     -2970.477807271                    4.07e-02        4.97
+   1     -2970.477399813      4.07e-04      5.45e-02        4.97
+   2     -2970.474817933      2.58e-03      9.33e-02        4.99
+   3     -2970.479260006     -4.44e-03      1.59e-02        5.00
+   4     -2970.479404178     -1.44e-04      3.85e-03        5.07
+   5     -2970.479421546     -1.74e-05      3.83e-03        5.01
+   6     -2970.479437365     -1.58e-05      2.04e-03        5.00
+   7     -2970.479440958     -3.59e-06      1.17e-03        5.09
+   8     -2970.479444171     -3.21e-06      6.56e-04        5.01
+   9     -2970.479445694     -1.52e-06      5.82e-04        5.00
+  10     -2970.479446630     -9.37e-07      3.42e-04        5.02
+  11     -2970.479447226     -5.96e-07      3.36e-04        5.02
+  12     -2970.479447454     -2.28e-07      2.29e-04        5.02
+  13     -2970.479447680     -2.26e-07      2.33e-04        5.03
+  14     -2970.479448157     -4.78e-07      2.28e-04        5.05
+  15     -2970.479448445     -2.88e-07      1.56e-04        5.01
+  16     -2970.479448892     -4.47e-07      9.25e-05        5.04
+  17     -2970.479449002     -1.10e-07      1.11e-04        5.00
+  18     -2970.479449139     -1.37e-07      5.91e-05        5.05
+  19     -2970.479449157     -1.78e-08      4.85e-05        5.04
+  20     -2970.479449173     -1.62e-08      2.88e-05        5.05
+  21     -2970.479449174     -1.29e-09      2.39e-05        5.02
+  22     -2970.479449175     -9.21e-10      1.43e-05        5.01
+  23     -2970.479449176     -3.34e-10      7.64e-06        5.10
+
+ SCF converged in 23 iterations.
+
+ Dipole moment (in Debye):              -0.747516      -2.487896       1.179802
+
+ Quadrupole moment (in Debye-Angstrom):
+                  1            2            3
+ 1      -385.960068     1.845250    16.808424
+ 2         1.845250  -384.895249     3.149550
+ 3        16.808424     3.149550  -346.418801
+
+ Spin-squared expectation <S^2>:         0.007
+ Total spin quantum number S:            0.007
+
+ ***************
+  Singlet state 
+ ***************
+ AO basis set:                           sto-3g
+ Number of AO basis functions:         408
+
+ Formula:                                C55H74N4O6Mg
+ Nuclear charge:                       492.000000000
+ Total charge:                           0.000000000
+ Number of electrons:                  492.000000000
+
+ Number of alpha electrons:            246
+ Number of beta electrons:             246
+ Number of unpaired electrons:           0
+ Spin:                                   0
+ Multiplicity:                           singlet
+
+ Theory:                                 dft
+ Exchange-correlation functional:        pbe0
+ Method for Coulomb:                     incore_df
+ Method for exact exchange:              pre_transformed_df
+ Integral threshold:                     1.00e-12
+ DF basis set:                           def2-universal-JKFIT
+ Number of DF basis functions:        6339
+ Schwarz screening threshold:            1.00e-10
+ Coulomb fitting method:                 Cholesky
+ Total number of grid points:       885930
+ Method for AO orthogonalization:        symmetric
+ Threshold for linear dependence:        1.00e-08
+ Setting up Delta-SCF
+
+ -------------------------------------
+  Running unrestricted open-shell SCF 
+ -------------------------------------
+ Max number of iterations:             128
+ Conv. threshold (gradient):             1.00e-05
+ Conv. threshold (energy):               1.00e-06
+ Interpolation scheme:                   cdiis
+ Initializing maximum overlap method (MOM)
+
+ ---------------------------------------------------------------
+                  energy        change          grad        time
+ ---------------------------------------------------------------
+   0     -2970.447969322                    6.63e-02        5.16
+   1     -2970.449417447     -1.45e-03      7.53e-02        5.05
+   2     -2970.446638277      2.78e-03      9.75e-02        5.67
+   3     -2970.452871819     -6.23e-03      2.81e-02        5.28
+   4     -2970.453172703     -3.01e-04      1.67e-02        5.51
+   5     -2970.453545800     -3.73e-04      1.13e-02        5.29
+   6     -2970.453445923      9.99e-05      3.20e-02        5.18
+   7     -2970.453950050     -5.04e-04      2.27e-02        5.11
+   8     -2970.454414152     -4.64e-04      8.93e-03        5.34
+   9     -2970.454531033     -1.17e-04      8.69e-03        5.27
+  10     -2970.454665969     -1.35e-04      4.99e-03        5.22
+  11     -2970.454698655     -3.27e-05      1.92e-03        5.48
+  12     -2970.454706507     -7.85e-06      1.49e-03        5.14
+  13     -2970.454708163     -1.66e-06      8.67e-04        5.38
+  14     -2970.454709654     -1.49e-06      5.49e-04        5.68
+  15     -2970.454709845     -1.91e-07      5.65e-04        5.41
+  16     -2970.454710094     -2.49e-07      1.72e-04        5.11
+  17     -2970.454710152     -5.74e-08      1.35e-04        5.45
+  18     -2970.454710168     -1.68e-08      8.29e-05        5.26
+  19     -2970.454710176     -8.05e-09      6.18e-05        5.02
+  20     -2970.454710179     -2.90e-09      4.99e-05        5.22
+  21     -2970.454710182     -2.54e-09      2.59e-05        5.29
+  22     -2970.454710182     -4.44e-10      2.43e-05        5.38
+  23     -2970.454710183     -3.39e-10      1.63e-05        5.26
+  24     -2970.454710183     -1.99e-10      5.66e-06        5.05
+
+ SCF converged in 24 iterations.
+
+ Dipole moment (in Debye):              -0.917173      -1.898497       1.078183
+
+ Quadrupole moment (in Debye-Angstrom):
+                  1            2            3
+ 1      -386.610216     3.481349    17.838566
+ 2         3.481349  -385.895854    -1.697009
+ 3        17.838566    -1.697009  -343.613354
+
+ Spin-squared expectation <S^2>:         1.059
+ Total spin quantum number S:            0.644
+
+ ***************
+  Triplet state 
+ ***************
+ AO basis set:                           sto-3g
+ Number of AO basis functions:         408
+
+ Formula:                                C55H74N4O6Mg
+ Nuclear charge:                       492.000000000
+ Total charge:                           0.000000000
+ Number of electrons:                  492.000000000
+
+ Number of alpha electrons:            246
+ Number of beta electrons:             246
+ Number of unpaired electrons:           0
+ Spin:                                   0
+ Multiplicity:                           singlet
+
+ Theory:                                 dft
+ Exchange-correlation functional:        pbe0
+ Method for Coulomb:                     incore_df
+ Method for exact exchange:              pre_transformed_df
+ Integral threshold:                     1.00e-12
+ DF basis set:                           def2-universal-JKFIT
+ Number of DF basis functions:        6339
+ Schwarz screening threshold:            1.00e-10
+ Coulomb fitting method:                 Cholesky
+ Total number of grid points:       885930
+ Method for AO orthogonalization:        symmetric
+ Threshold for linear dependence:        1.00e-08
+ Setting up Delta-SCF
+
+ -------------------------------------
+  Running unrestricted open-shell SCF 
+ -------------------------------------
+ Max number of iterations:             128
+ Conv. threshold (gradient):             1.00e-05
+ Conv. threshold (energy):               1.00e-06
+ Interpolation scheme:                   cdiis
+ Initializing maximum overlap method (MOM)
+
+ ---------------------------------------------------------------
+                  energy        change          grad        time
+ ---------------------------------------------------------------
+   0     -2970.465982230                    4.10e-02        6.09
+   1     -2970.465610305      3.72e-04      6.21e-02        6.04
+   2     -2970.462687043      2.92e-03      1.00e-01        5.75
+   3     -2970.467486523     -4.80e-03      1.73e-02        5.75
+   4     -2970.467621219     -1.35e-04      7.05e-03        5.71
+   5     -2970.467693909     -7.27e-05      3.76e-03        5.60
+   6     -2970.467757437     -6.35e-05      4.41e-03        5.53
+   7     -2970.467808224     -5.08e-05      4.08e-03        5.90
+   8     -2970.467855539     -4.73e-05      4.00e-03        5.65
+   9     -2970.467810695      4.48e-05      3.81e-03        5.47
+  10     -2970.467627819      1.83e-04      4.43e-03        6.05
+  11     -2970.467483032      1.45e-04      4.02e-03        5.84
+  12     -2970.467754917     -2.72e-04      3.77e-03        5.94
+  13     -2970.467988867     -2.34e-04      4.20e-03        6.00
+  14     -2970.467760769      2.28e-04      4.26e-03        5.88
+  15     -2970.467541468      2.19e-04      4.05e-03        5.67
+  16     -2970.466481163      1.06e-03      2.19e-02        5.64
+  17     -2970.466929939     -4.49e-04      1.37e-02        5.36
+  18     -2970.467336246     -4.06e-04      5.25e-03        6.05
+  19     -2970.467174669      1.62e-04      6.81e-03        5.91
+  20     -2970.467091098      8.36e-05      8.28e-03        5.87
+  21     -2970.467170364     -7.93e-05      5.44e-03        5.50
+  22     -2970.467542627     -3.72e-04      3.26e-03        5.71
+  23     -2970.466686345      8.56e-04      1.48e-02        5.57
+  24     -2970.467088147     -4.02e-04      7.17e-03        5.78
+  25     -2970.467177830     -8.97e-05      6.64e-03        5.65
+  26     -2970.467089169      8.87e-05      8.78e-03        6.22
+  27     -2970.467112507     -2.33e-05      7.92e-03        6.14
+  28     -2970.467124529     -1.20e-05      7.93e-03        5.77
+  29     -2970.467138573     -1.40e-05      7.38e-03        5.69
+  30     -2970.467211901     -7.33e-05      6.85e-03        5.62
+  31     -2970.467193862      1.80e-05      7.02e-03        5.60
+  32     -2970.467253391     -5.95e-05      6.23e-03        5.78
+  33     -2970.467393166     -1.40e-04      5.66e-03        5.87
+  34     -2970.468099966     -7.07e-04      1.14e-02        6.02
+  35     -2970.468127750     -2.78e-05      1.08e-02        5.68
+  36     -2970.468125365      2.38e-06      1.09e-02        5.54
+  37     -2970.468050711      7.47e-05      8.98e-03        5.98
+  38     -2970.468110230     -5.95e-05      1.01e-02        5.62
+  39     -2970.468096187      1.40e-05      1.18e-02        5.59
+  40     -2970.468120129     -2.39e-05      1.07e-02        5.48
+  41     -2970.467965144      1.55e-04      7.99e-03        5.58
+  42     -2970.468341406     -3.76e-04      1.18e-02        5.82
+  43     -2970.465761562      2.58e-03      3.00e-02        5.44
+  44     -2970.468524499     -2.76e-03      1.14e-02        5.91
+  45     -2970.468508179      1.63e-05      1.16e-02        5.26
+  46     -2970.468382608      1.26e-04      1.19e-02        5.50
+  47     -2970.468350297      3.23e-05      1.19e-02        5.72
+  48     -2970.468200607      1.50e-04      1.28e-02        5.37
+  49     -2970.468645482     -4.45e-04      9.49e-03        6.15
+  50     -2970.468806779     -1.61e-04      1.08e-02        5.75
+  51     -2970.468912229     -1.05e-04      1.09e-02        5.84
+  52     -2970.470076063     -1.16e-03      1.71e-02        5.83
+  53     -2970.470301818     -2.26e-04      1.16e-02        5.91
+  54     -2970.470432992     -1.31e-04      6.87e-03        5.28
+  55     -2970.471024288     -5.91e-04      5.39e-03        5.77
+  56     -2970.471073045     -4.88e-05      4.02e-03        6.06
+  57     -2970.471115655     -4.26e-05      8.06e-03        5.83
+  58     -2970.471167816     -5.22e-05      2.29e-03        5.67
+  59     -2970.471195737     -2.79e-05      2.21e-03        5.70
+  60     -2970.471201725     -5.99e-06      2.22e-03        5.65
+  61     -2970.471209769     -8.04e-06      4.52e-04        5.50
+  62     -2970.471209949     -1.80e-07      5.48e-04        5.77
+  63     -2970.471210306     -3.57e-07      1.27e-04        5.58
+  64     -2970.471210313     -6.94e-09      7.19e-05        5.81
+  65     -2970.471210321     -8.05e-09      4.49e-05        5.83
+  66     -2970.471210322     -1.07e-09      1.88e-05        6.19
+  67     -2970.471210325     -2.26e-09      1.11e-05        5.83
+  68     -2970.471210325     -1.79e-10      8.49e-06        5.79
+
+ SCF converged in 68 iterations.
+
+ Dipole moment (in Debye):              -0.817928      -2.170632       1.635134
+
+ Quadrupole moment (in Debye-Angstrom):
+                  1            2            3
+ 1      -387.034965     5.099967    18.348906
+ 2         5.099967  -392.745939     0.550663
+ 3        18.348906     0.550663  -349.480089
+
+ Spin-squared expectation <S^2>:         0.101
+ Total spin quantum number S:            0.093
+
+ ***********************
+  Transition properties 
+ ***********************
+ Excited state:                          singlet
+ Excitation energy:                      0.076638616 hartree
+ Excitation energy (in eV):              2.085442982 eV
+ Ground-Excited state overlap:          -0.018832100
+ Symmetric orthogonalization correction applied to the TDM.
+ Transition dipole:                      1.35459      -3.73906      -0.64053
+
+ --------------------------------------------------------------------------------
+
+ End time:                               Sat Apr 17 01:34:51 2021
+ Total wall-clock time:                924.909 seconds
+==================================================================================

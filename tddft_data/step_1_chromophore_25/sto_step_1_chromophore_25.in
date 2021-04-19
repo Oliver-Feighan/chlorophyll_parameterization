@@ -1,0 +1,12 @@
+excited_scf(
+	structure(file = 'step_1_chromophore_25.xyz')
+	dft(
+		ao = 'sto-3g'
+		xc = PBE0
+		ansatz = u
+		diis = cdiis
+	)
+
+	start_from_average = true
+	symmetric_orthogonalization_correction = true
+)
