@@ -22,12 +22,12 @@ CLI.add_argument(
 )
 
 CLI.add_argument(
-	"--weight",
-	nargs=1,
+	"--weights",
+	nargs=3,
 	type=float,
-	default=[1],
-	help="""the weight associated with the MAE of the excitation energy, compared to R^2 value for excitation energy and
-transition dipole magnitude""")
+	default=[1., 1., 1.],
+	help="""the weights associated with the MAE of the excitation energy, R^2 values for excitation energy and
+transition dipole magnitude in the objective function""")
 
 CLI.add_argument(
 	"--method",
@@ -60,6 +60,14 @@ CLI.add_argument(
 	type=bool,
 	default=False,
 	help="bool to flag running doctests instead of an optimization"
+)
+
+CLI.add_argument(
+	"--name",
+	nargs=1,
+	type=str,
+	help="name for the output files",
+	required=True
 )
 
 def calc_dipole_error(vec1, vec2):
@@ -426,10 +434,13 @@ class Optimizer():
 		return (training_set, test_set, validation_set)
 		
 
-	def __init__(self, ref_data, method, active_params=[], max_iter=1, weight=1):
+	def __init__(self, ref_data, method, output_func, name, active_params=[], max_iter=1, weights=[1., 1., 1.]):
+		self.name = name
+		self.output = output_func
+
 		self.method = method
 		self.ref_data = ref_data
-		self.weight = weight
+		self.weights = weights
 
 		self.training_set, self.test_set, self.validation_set = self.read_sets()
 		
@@ -468,7 +479,7 @@ class Optimizer():
 	def objective_function(self, params):
 		results = self.generate_results(params)
 
-		return results.energy_correlation + results.dipole_correlation + self.weight * results.energy_RMSE
+		return self.weights[0] * results.energy_correlation + self.weights[1] * results.dipole_correlation + self.weights[2] * results.energy_RMSE
 
 
 	def param_string(self, params):
@@ -519,18 +530,12 @@ class Optimizer():
 									fitness=fitness_str,
 									time=time_str)
 
-		print(log_string)
+		self.output(log_string)
 		
 		self.iter += 1
 
 		return 
-
-	def make_objective_function(self):
-		"""
-		lambda wrapper for scipy optimize
-		"""
-		return lambda x : self.objective_function(x)
-		
+	
 
 	def optimize(self):
 		"""
@@ -551,7 +556,7 @@ class Optimizer():
 			self.callback(params=self.initial_guess)
 
 			return minimize(
-			fun=self.make_objective_function(), 
+			fun=self.objective_function, 
 			x0=self.initial_guess, 
 			callback=self.callback,
 			method="SLSQP",
@@ -610,24 +615,24 @@ class Optimizer():
 
 		no_test_set_samples = len(test_results.full.xtb_energies)
 
-		print(f"# of test set samples: {no_test_set_samples}")
+		self.output(f"# of test set samples: {no_test_set_samples}")
 
-		print("training set results:")
+		self.output("training set results:")
 
 		training_fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(train_results.energy_RMSE, 1-train_results.energy_correlation)
 		training_fitness_str += f"R^2(dipole_mags) : {1-train_results.dipole_correlation:3.3f}"
-		print(training_fitness_str)
+		self.output(training_fitness_str)
 
-		print()
+		self.output("")
 
 
-		print("test set results:")
+		self.output("test set results:")
 
 		test_fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(test_results.energy_RMSE, 1-test_results.energy_correlation)
 		test_fitness_str += f"R^2(dipole_mags) : {1-test_results.dipole_correlation:3.3f}"
-		print(test_fitness_str)
+		self.output(test_fitness_str)
 
-		print()
+		self.output("")
 
 		
 		import pickle as pkl
@@ -636,11 +641,26 @@ class Optimizer():
 		#with open("results.tex", 'w') as tex_file:
 		#	print(df.to_latex(index=False), file=tex_file)
 
-		pkl.dump(df, open("test_set_results.pkl", 'wb'))
+		if self.name.endswith(".out"):
+			pkl.dump(df, open(self.name.replace("out", "pkl"), 'wb'))
+		else:
+			pkl.dump(df, open(self.name + ".pkl", 'wb'))
 
+def make_output_func(file_name):
+	if file_name.endswith(".out"):
+		file = (file_name, 'w')
+		return lambda x : print(x, file=file)
+	else:
+		file =  open(file_name+".out", 'w')
+		return lambda x : print(x, file=file)
 
 if __name__ == '__main__':
 	args = CLI.parse_args()
+
+	name = args.name[0]
+
+	output = make_output_func(name)
+
 	try:
 		if args.run_tests:
 			ref_data = make_ref_data(args.ref_data)
@@ -653,74 +673,82 @@ if __name__ == '__main__':
 	except:
 		pass
 	else:
-		print()
-		print("#######################")
-		print("# BChla-xTB optimizer #")
-		print("#######################")
 
-		print()
+		output("""
+#######################
+# BChla-xTB optimizer #
+#######################
+""")
 
 		start = time.time()
-		print("start time: ", time.ctime())
+		output(f"start time: {time.ctime()}")
 
-		print()
+		output("")
 		
 		active_params = args.params
-		print("active parameters from python argument input : ", end="")
-		print(active_params)
-		print()
+		output(f"active parameters from python argument input : {active_params}")
+		output("")
 
 		#construct reference data
 		ref_data = make_ref_data(args.ref_data[0])
-		print("reference data constructed from : \"%s\"" % args.ref_data[0])
-		print()
+		output("reference data constructed from : \"%s\"" % args.ref_data[0])
+		output("")
 
 		#make optimizer
 		method   = args.method[0]
 		max_iter = args.max_iter[0]
-		weight =  args.weight[0]
+		weights =  args.weights
 
-		print("Optimization method : ", method)
-		print("maximum iterations : ", max_iter)
+		output(f"Optimization method : {method}")
+		output(f"maximum iterations : {max_iter}")
 
-		print()
-		print("recreate input with:")
-		print("python optimizer.py", end=" ")
-		print("--params %s" % " ".join(args.params), end=" ")
-		print("--method %s" % method, end=" ")
-		print("--max_iter %i" % max_iter, end=" ")
-		print("--ref_data %s" % args.ref_data[0], end=" ")
-		print("--run_tests %r" % args.run_tests, end=" ")
-		print("--weight %f" % weight)
-		print()
+		output(f"""recreate input with:
+python optimizer.py
+--params {" ".join(args.params)}
+--method {method}
+--max_iter {max_iter}
+--ref_data {args.ref_data[0]}
+--run_tests {args.run_tests}
+--weights {" ".join([str(w) for w in weights])}
+""")
+		output("making optimizer...")
+		optimizer = Optimizer(ref_data=ref_data, 
+							method=method,
+			 				active_params=active_params,
+			  				max_iter=max_iter,
+			   				weights=weights,
+			    			output_func=output,
+			    			name=name
+		)
 
-		print("making optimizer...")
-		optimizer = Optimizer(ref_data=ref_data, method=method, active_params=active_params, max_iter=max_iter, weight=weight)
-		print()
+		output("")
+
+	
 		#run optimization
-		print("running optimization...")
-		print()
+		output("running optimization...")
+		output("")
 		optimizer_result = optimizer.optimize()
 		
-		print()
+		output("")
 		optimized_params = [round(x, 3) for x in optimizer_result.x]
 
 		if method == "test":
 			zipped_params = dict(zip(["x1", "x2", "x3", "x4", "x5"], optimized_params))
-			print("optimized parameters: ", zipped_params)
+			output("optimized parameters: ", zipped_params)
 		else:
 			zipped_params = dict(zip(args.params, optimized_params))
-			print("optimized parameters: ", zipped_params)
-		print()
+			output("optimized parameters: ", zipped_params)
+		output("")
 
 
 		#run validation
-		print("running validation...")
+		output("running validation...")
 		optimizer.test_result(optimized_params)
 
-		print()
-		print(f"wall-clock time : {time.time() - start:6.3f} seconds")
-		print()
-		print("#######################")
+		output(f"""
+wall-clock time : {time.time() - start:6.3f} seconds
+
+#######################
+""")
 
 
