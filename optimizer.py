@@ -138,10 +138,11 @@ def run_qcore(input_tuple):
 	"""
 	runs qcore with the input string
 	"""
-	#qcore_path = "~/qcore/cmake-build-release/bin/qcore"
+	
 	chromophore, chromophore_str = input_tuple
 
-	qcore_path = "~/.local/src/Qcore/release/qcore"
+	#qcore_path = "~/.local/src/Qcore/release/qcore"
+	qcore_path = "~/qcore/cmake-build-release/bin/qcore"
 	json_str = " -n 1 -f json --schema none -s "
 	norm_str = " -n 1 -s "
 
@@ -151,7 +152,19 @@ def run_qcore(input_tuple):
 					executable="/bin/bash",
 					universal_newlines=True)
 
-	json_results = json.loads(json_run.stdout)
+	try:
+		json_results = json.loads(json_run.stdout)
+
+	except:
+		print(qcore_path + norm_str + chromophore_str)
+
+		norm_run = subprocess.run(qcore_path + norm_str + chromophore_str,
+					shell=True,
+					stdout=subprocess.PIPE,
+					executable="/bin/bash",
+					universal_newlines=True)
+
+		print(norm_run.stdout)
 
 	if json_results[chromophore]["excitation_energy"] is None or json_results[chromophore]["transition_dipole"] is None:
 		print(qcore_path + norm_str + chromophore_str)
@@ -163,8 +176,6 @@ def run_qcore(input_tuple):
 					universal_newlines=True)
 
 		print(norm_run.stdout)
-
-		exit()
 
 	return [chromophore, json_results]
 
@@ -408,18 +419,18 @@ class Optimizer():
 		test_set = []
 		validation_set = []
 
-		with open("/home/of15641/chlorophyll_parameterization/training_set.txt") as training_set_file:
-		#with open("training_set.txt") as training_set_file:
+		#with open("/home/of15641/chlorophyll_parameterization/training_set.txt") as training_set_file:
+		with open("training_set.txt") as training_set_file:
 			for line in training_set_file.readlines():
 				training_set.append(line.replace("\n", ""))
 
-		with open("/home/of15641/chlorophyll_parameterization/test_set.txt") as test_set_file:
-		#with open("test_set.txt") as test_set_file:
+		#with open("/home/of15641/chlorophyll_parameterization/test_set.txt") as test_set_file:
+		with open("test_set.txt") as test_set_file:
 			for line in test_set_file.readlines():
 				test_set.append(line.replace("\n", ""))
 
-		with open("/home/of15641/chlorophyll_parameterization/validation_set.txt") as validation_set_file:
-		#with open("validation_set.txt") as validation_set_file:
+		#with open("/home/of15641/chlorophyll_parameterization/validation_set.txt") as validation_set_file:
+		with open("validation_set.txt") as validation_set_file:
 			for line in validation_set_file.readlines():
 				validation_set.append(line.replace("\n", ""))
 
@@ -461,8 +472,8 @@ class Optimizer():
 		"""
 		params_dict = dict(zip(self.active_params, params))
 
-		input_str = "\"{chromophore} := bchla(structure(file = \'/home/of15641/chlorophyll_parameterization/tddft_data/{chromophore}/{chromophore}.xyz\') input_params={params})\""
-		#input_str = "\"{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}.xyz\') input_params={params})\""
+		#input_str = "\"{chromophore} := bchla(structure(file = \'/home/of15641/chlorophyll_parameterization/tddft_data/{chromophore}/{chromophore}.xyz\') input_params={params})\""
+		input_str = "\"{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}/{chromophore}.xyz\') input_params={params})\""
 
 		chromophores = self.training_set
 
@@ -561,7 +572,7 @@ class Optimizer():
 			callback=self.callback,
 			method="SLSQP",
 			bounds=self.bounds,
-			options={"maxiter" : self.max_iter+1, "disp": True}
+			options={"maxiter" : self.max_iter+1}
 			)
 
 		elif self.method == "Bayesian_Gaussian_Process":
@@ -648,7 +659,7 @@ class Optimizer():
 
 def make_output_func(file_name):
 	if file_name.endswith(".out"):
-		file = (file_name, 'w')
+		file = open(file_name, 'w')
 		return lambda x : print(x, file=file)
 	else:
 		file =  open(file_name+".out", 'w')
@@ -702,14 +713,20 @@ if __name__ == '__main__':
 		output(f"Optimization method : {method}")
 		output(f"maximum iterations : {max_iter}")
 
+		output(f"""weights:
+RMSE(energy): {weights[0]}
+R^2 (energy): {weights[1]}
+R^2 (dipole): {weights[2]}
+""")
+
 		output(f"""recreate input with:
-python optimizer.py
---params {" ".join(args.params)}
---method {method}
---max_iter {max_iter}
---ref_data {args.ref_data[0]}
---run_tests {args.run_tests}
---weights {" ".join([str(w) for w in weights])}
+python optimizer.py \
+--params {" ".join(args.params)} \
+--method {method} \
+--max_iter {max_iter} \
+--ref_data {args.ref_data[0]} \
+--run_tests {args.run_tests} \
+--weights {" ".join([str(w) for w in weights])} \
 """)
 		output("making optimizer...")
 		optimizer = Optimizer(ref_data=ref_data, 
@@ -728,16 +745,22 @@ python optimizer.py
 		output("running optimization...")
 		output("")
 		optimizer_result = optimizer.optimize()
-		
-		output("")
+
+		output(f"""
+{optimizer_result.message}
+Current function value: {optimizer_result.fun:3.3f}
+Iterations: {optimizer_result.nit}
+Function evaluations: {optimizer_result.nfev}
+Gradient evaluations: {optimizer_result.njev}
+""")
 		optimized_params = [round(x, 3) for x in optimizer_result.x]
 
 		if method == "test":
 			zipped_params = dict(zip(["x1", "x2", "x3", "x4", "x5"], optimized_params))
-			output("optimized parameters: ", zipped_params)
+			output(f"optimized parameters: {zipped_params}")
 		else:
 			zipped_params = dict(zip(args.params, optimized_params))
-			output("optimized parameters: ", zipped_params)
+			output(f"optimized parameters: {zipped_params}")
 		output("")
 
 
