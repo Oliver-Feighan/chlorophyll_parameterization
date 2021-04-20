@@ -40,33 +40,33 @@ if __name__ == "__main__":
 	all_types_powerset = powerset(list(param_types.keys()))
 
 	script_template = """#!/bin/bash
-#PBS -l walltime=20:00:00
+#PBS -l walltime=1:30:00
 #PBS -l select=1:ncpus=24:mem=10gb
 #PBS -N {name}
 #PBS -j oe
 
-cd ~/chlorophyll_parameterization/fitting_tests/{name}
+cd ~/chlorophyll_parameterization/fitting_tests/{folder}
 
 module load lang/python/anaconda/3.8-2020.07
 
 export OMP_NUM_THREADS=1
 export MKL_THREADING_LAYER=TBB
 
-python ~/chlorophyll_parameterization/optimizer.py --params {params} --ref_data ~/chlorophyll_parameterization/tddft_data/tddft_data.json
-
-	"""
+python ~/chlorophyll_parameterization/optimizer.py --params {params} --ref_data ~/chlorophyll_parameterization/tddft_data/tddft_data.json --name {name} --weights {weights}
+"""
 
 	for combination in all_types_powerset:
-		params_list = make_params_list(combination)
-		name = "_".join(combination)
+		for a in [0., 1.,]:
+			for b in [1.]:
+				for c in [0., 1.]:
+					if a != c:
+						continue
 
-		with open(f"{name}/{name}.sub", 'w') as f:
-			print(script_template.format(name=name, params=" ".join(params_list)), file=f)
+					params = " ".join(make_params_list(combination))
+					folder = "_".join(combination)
+					weights = [str(x) for x in [a, b, c]]
+					weights_str = " ".join(weights)
+					name = folder + "_" + "_".join(f"{x}_{y}" for x,y in zip(["a", "b", "c"], weights))
 
-
-
-
-
-
-
-
+					with open(f"{folder}/{name}.sub", 'w') as f:
+						print(script_template.format(name=name, folder=folder, params=params, weights=weights_str), file=f)

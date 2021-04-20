@@ -490,7 +490,7 @@ class Optimizer():
 	def objective_function(self, params):
 		results = self.generate_results(params)
 
-		return self.weights[0] * results.energy_correlation + self.weights[1] * results.dipole_correlation + self.weights[2] * results.energy_RMSE
+		return self.weights[0] * results.energy_RMSE + self.weights[1] * results.energy_correlation + self.weights[2] * results.dipole_correlation
 
 
 	def param_string(self, params):
@@ -531,7 +531,8 @@ class Optimizer():
 			assert(len(results.full.xtb_energies) == len(self.training_set))
 
 		fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(results.energy_RMSE, 1-results.energy_correlation)
-		fitness_str += f"R^2(dipole_mags) : {1-results.dipole_correlation:3.3f}"
+		fitness_str += f"R^2(dipole_mags) : {1-results.dipole_correlation:3.3f} "
+		fitness_str += f"fitness : {self.weights[0] * results.energy_RMSE + self.weights[1] * results.energy_correlation + self.weights[2] * results.dipole_correlation}"
 
 		time_str = "time/s : {0:3.6f}".format(time.time() - self.time)
 		self.time = time.time()
@@ -632,6 +633,8 @@ class Optimizer():
 
 		training_fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(train_results.energy_RMSE, 1-train_results.energy_correlation)
 		training_fitness_str += f"R^2(dipole_mags) : {1-train_results.dipole_correlation:3.3f}"
+		fitness_str += f"fitness : {self.weights[0] * train_results.energy_RMSE + self.weights[1] * train_results.energy_correlation + self.weights[2] * train_results.dipole_correlation}"
+
 		self.output(training_fitness_str)
 
 		self.output("")
@@ -641,6 +644,8 @@ class Optimizer():
 
 		test_fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(test_results.energy_RMSE, 1-test_results.energy_correlation)
 		test_fitness_str += f"R^2(dipole_mags) : {1-test_results.dipole_correlation:3.3f}"
+		fitness_str += f"fitness : {self.weights[0] * test_results.energy_RMSE + self.weights[1] * test_results.energy_correlation + self.weights[2] * test_results.dipole_correlation}"
+
 		self.output(test_fitness_str)
 
 		self.output("")
