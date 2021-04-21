@@ -1,0 +1,49 @@
+
+#######################
+# BChla-xTB optimizer #
+#######################
+
+start time: Wed Apr 21 13:41:46 2021
+
+active parameters from python argument input : ['k_T']
+
+reference data constructed from : "/home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json"
+
+Optimization method : SLSQP
+maximum iterations : 5000
+weights:
+RMSE(energy): 0.0
+R^2 (energy): 0.0
+R^2 (dipole): 1.0
+
+recreate input with:
+python optimizer.py --params k_T --method SLSQP --max_iter 5000 --ref_data /home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json --run_tests False --weights 0.0 0.0 1.0 
+making optimizer...
+
+running optimization...
+
+iter :    0 k_T : 0.000  RMSE(energy) : 1.261 R^2(energy) : 0.022 R^2(dipole_mags) : 0.195 fitness : 0.8050442905656132 time/s : 3.542531
+iter :    1 k_T : 0.030  RMSE(energy) : 1.183 R^2(energy) : 0.024 R^2(dipole_mags) : 0.195 fitness : 0.8045709554376048 time/s : 14.240325
+iter :    2 k_T : 0.032  RMSE(energy) : 1.180 R^2(energy) : 0.024 R^2(dipole_mags) : 0.195 fitness : 0.8045701050857077 time/s : 13.893746
+
+Optimization terminated successfully.
+Current function value: 0.805
+Iterations: 2
+Function evaluations: 7
+Gradient evaluations: 2
+
+optimized parameters: {'k_T': 0.032}
+
+running validation...
+# of test set samples: 507
+training set results:
+RMSE(energy) : 1.179 R^2(energy) : 0.024 R^2(dipole_mags) : 0.195 fitness : 0.8045701126720548
+
+test set results:
+RMSE(energy) : 1.170 R^2(energy) : 0.051 R^2(dipole_mags) : 0.218 fitness : 0.7819994159123745
+
+
+wall-clock time : 55.746 seconds
+
+#######################
+

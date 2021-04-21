@@ -1,0 +1,52 @@
+
+#######################
+# BChla-xTB optimizer #
+#######################
+
+start time: Wed Apr 21 14:05:57 2021
+
+active parameters from python argument input : ['a_x', 'y_J', 'y_K']
+
+reference data constructed from : "/home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json"
+
+Optimization method : SLSQP
+maximum iterations : 5000
+weights:
+RMSE(energy): 1.0
+R^2 (energy): 1.0
+R^2 (dipole): 1.0
+
+recreate input with:
+python optimizer.py --params a_x y_J y_K --method SLSQP --max_iter 5000 --ref_data /home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json --run_tests False --weights 1.0 1.0 1.0 
+making optimizer...
+
+running optimization...
+
+iter :    0 a_x : 0.500 y_J : 4.000 y_K : 2.000  RMSE(energy) : 1.261 R^2(energy) : 0.022 R^2(dipole_mags) : 0.195 fitness : 1.5221463587657427 time/s : 3.613779
+iter :    1 a_x : 0.000 y_J : 3.448 y_K : 1.883  RMSE(energy) : 0.052 R^2(energy) : 0.469 R^2(dipole_mags) : 0.167 fitness : 2.311527379836634 time/s : 20.867915
+iter :    2 a_x : 0.000 y_J : 3.409 y_K : 1.700  RMSE(energy) : 0.032 R^2(energy) : 0.481 R^2(dipole_mags) : 0.167 fitness : 2.32006325394676 time/s : 20.827070
+iter :    3 a_x : 0.000 y_J : 3.228 y_K : 0.849  RMSE(energy) : 0.198 R^2(energy) : 0.531 R^2(dipole_mags) : 0.194 fitness : 2.0769934514312545 time/s : 20.925960
+iter :    4 a_x : 0.000 y_J : 3.372 y_K : 1.524  RMSE(energy) : 0.028 R^2(energy) : 0.493 R^2(dipole_mags) : 0.167 fitness : 2.312451050333639 time/s : 24.295383
+iter :    5 a_x : 0.000 y_J : 3.372 y_K : 1.524  RMSE(energy) : 0.028 R^2(energy) : 0.493 R^2(dipole_mags) : 0.167 fitness : 2.312451050333639 time/s : 21.087687
+
+Optimization terminated successfully.
+Current function value: 1.368
+Iterations: 5
+Function evaluations: 26
+Gradient evaluations: 5
+
+optimized parameters: {'a_x': 0.0, 'y_J': 3.372, 'y_K': 1.524}
+
+running validation...
+# of test set samples: 507
+training set results:
+RMSE(energy) : 0.028 R^2(energy) : 0.493 R^2(dipole_mags) : 0.167 fitness : 1.3677345902304838
+
+test set results:
+RMSE(energy) : 0.029 R^2(energy) : 0.437 R^2(dipole_mags) : 0.210 fitness : 1.3821976287119768
+
+
+wall-clock time : 132.007 seconds
+
+#######################
+

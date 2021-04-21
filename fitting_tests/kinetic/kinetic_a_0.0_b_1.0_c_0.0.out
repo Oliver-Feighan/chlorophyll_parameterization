@@ -1,0 +1,53 @@
+
+#######################
+# BChla-xTB optimizer #
+#######################
+
+start time: Wed Apr 21 13:42:44 2021
+
+active parameters from python argument input : ['k_T']
+
+reference data constructed from : "/home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json"
+
+Optimization method : SLSQP
+maximum iterations : 5000
+weights:
+RMSE(energy): 0.0
+R^2 (energy): 1.0
+R^2 (dipole): 0.0
+
+recreate input with:
+python optimizer.py --params k_T --method SLSQP --max_iter 5000 --ref_data /home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json --run_tests False --weights 0.0 1.0 0.0 
+making optimizer...
+
+running optimization...
+
+iter :    0 k_T : 0.000  RMSE(energy) : 1.261 R^2(energy) : 0.022 R^2(dipole_mags) : 0.195 fitness : 0.9780466168030014 time/s : 3.488962
+iter :    1 k_T : 0.080  RMSE(energy) : 1.061 R^2(energy) : 0.027 R^2(dipole_mags) : 0.194 fitness : 0.9725326010506339 time/s : 13.863006
+iter :    2 k_T : 0.247  RMSE(energy) : 0.401 R^2(energy) : 0.014 R^2(dipole_mags) : 0.187 fitness : 0.9862588549736578 time/s : 13.893922
+iter :    3 k_T : 0.171  RMSE(energy) : 0.796 R^2(energy) : 0.032 R^2(dipole_mags) : 0.191 fitness : 0.9677658264049126 time/s : 17.518624
+iter :    4 k_T : 0.161  RMSE(energy) : 0.833 R^2(energy) : 0.032 R^2(dipole_mags) : 0.192 fitness : 0.967738675522038 time/s : 13.952467
+iter :    5 k_T : 0.163  RMSE(energy) : 0.825 R^2(energy) : 0.032 R^2(dipole_mags) : 0.192 fitness : 0.9677361604821142 time/s : 14.095441
+iter :    6 k_T : 0.163  RMSE(energy) : 0.825 R^2(energy) : 0.032 R^2(dipole_mags) : 0.192 fitness : 0.9677361604821142 time/s : 13.910424
+
+Optimization terminated successfully.
+Current function value: 0.968
+Iterations: 6
+Function evaluations: 19
+Gradient evaluations: 6
+
+optimized parameters: {'k_T': 0.163}
+
+running validation...
+# of test set samples: 507
+training set results:
+RMSE(energy) : 0.826 R^2(energy) : 0.032 R^2(dipole_mags) : 0.192 fitness : 0.9677361867693658
+
+test set results:
+RMSE(energy) : 0.819 R^2(energy) : 0.065 R^2(dipole_mags) : 0.212 fitness : 0.9352204777973511
+
+
+wall-clock time : 111.265 seconds
+
+#######################
+

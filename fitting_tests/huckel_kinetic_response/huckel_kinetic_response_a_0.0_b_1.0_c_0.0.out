@@ -1,0 +1,83 @@
+
+#######################
+# BChla-xTB optimizer #
+#######################
+
+start time: Wed Apr 21 13:28:20 2021
+
+active parameters from python argument input : ['k_s', 'k_p', 'k_d', 'k_T', 'a_x', 'y_J', 'y_K']
+
+reference data constructed from : "/home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json"
+
+Optimization method : SLSQP
+maximum iterations : 5000
+weights:
+RMSE(energy): 0.0
+R^2 (energy): 1.0
+R^2 (dipole): 0.0
+
+recreate input with:
+python optimizer.py --params k_s k_p k_d k_T a_x y_J y_K --method SLSQP --max_iter 5000 --ref_data /home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json --run_tests False --weights 0.0 1.0 0.0 
+making optimizer...
+
+running optimization...
+
+iter :    0 k_s : 2.000 k_p : 2.480 k_d : 2.270 k_T : 0.000 a_x : 0.500 y_J : 4.000 y_K : 2.000  RMSE(energy) : 1.268 R^2(energy) : 0.022 R^2(dipole_mags) : 0.196 fitness : 0.9782764181876235 time/s : 3.506114
+iter :    1 k_s : 1.986 k_p : 2.513 k_d : 2.316 k_T : 0.078 a_x : 0.068 y_J : 3.998 y_K : 1.998  RMSE(energy) : 0.175 R^2(energy) : 0.524 R^2(dipole_mags) : 0.152 fitness : 0.47573547914596825 time/s : 34.665001
+iter :    2 k_s : 1.962 k_p : 2.722 k_d : 2.366 k_T : 0.326 a_x : 0.000 y_J : 3.995 y_K : 1.982  RMSE(energy) : 1.166 R^2(energy) : 0.026 R^2(dipole_mags) : 0.000 fitness : 0.9742029592898547 time/s : 34.853282
+iter :    3 k_s : 1.911 k_p : 2.981 k_d : 2.480 k_T : 0.617 a_x : 1.079 y_J : 3.980 y_K : 1.938  RMSE(energy) : 865.650 R^2(energy) : 0.000 R^2(dipole_mags) : 0.005 fitness : 0.999966873640956 time/s : 38.425681
+iter :    4 k_s : 1.933 k_p : 2.776 k_d : 2.413 k_T : 0.391 a_x : 0.095 y_J : 3.977 y_K : 1.941  RMSE(energy) : 4.364 R^2(energy) : 0.012 R^2(dipole_mags) : 0.010 fitness : 0.987711230822159 time/s : 41.569654
+iter :    5 k_s : 1.949 k_p : 2.856 k_d : 2.373 k_T : 0.120 a_x : 0.081 y_J : 3.992 y_K : 1.909  RMSE(energy) : 0.432 R^2(energy) : 0.669 R^2(dipole_mags) : 0.121 fitness : 0.33106351744284623 time/s : 48.500555
+iter :    6 k_s : 1.915 k_p : 3.234 k_d : 2.431 k_T : 0.075 a_x : 0.091 y_J : 3.984 y_K : 1.776  RMSE(energy) : 0.623 R^2(energy) : 0.644 R^2(dipole_mags) : 0.049 fitness : 0.3556573878357365 time/s : 35.121123
+iter :    7 k_s : 1.927 k_p : 3.162 k_d : 2.415 k_T : 0.044 a_x : 0.089 y_J : 3.983 y_K : 1.765  RMSE(energy) : 0.547 R^2(energy) : 0.676 R^2(dipole_mags) : 0.073 fitness : 0.3238853749360485 time/s : 38.471304
+iter :    8 k_s : 1.941 k_p : 3.199 k_d : 2.424 k_T : 0.015 a_x : 0.100 y_J : 3.979 y_K : 1.682  RMSE(energy) : 0.543 R^2(energy) : 0.681 R^2(dipole_mags) : 0.068 fitness : 0.31879911647666537 time/s : 41.803750
+iter :    9 k_s : 1.953 k_p : 3.214 k_d : 2.430 k_T : -0.005 a_x : 0.105 y_J : 3.979 y_K : 1.602  RMSE(energy) : 0.527 R^2(energy) : 0.682 R^2(dipole_mags) : 0.066 fitness : 0.3179340257255271 time/s : 45.342198
+iter :   10 k_s : 1.961 k_p : 3.220 k_d : 2.436 k_T : -0.015 a_x : 0.107 y_J : 3.980 y_K : 1.526  RMSE(energy) : 0.511 R^2(energy) : 0.683 R^2(dipole_mags) : 0.066 fitness : 0.31705505460476535 time/s : 48.350150
+iter :   11 k_s : 1.964 k_p : 3.182 k_d : 2.434 k_T : 0.005 a_x : 0.107 y_J : 3.983 y_K : 1.500  RMSE(energy) : 0.500 R^2(energy) : 0.692 R^2(dipole_mags) : 0.073 fitness : 0.30838986274770486 time/s : 38.355341
+iter :   12 k_s : 1.968 k_p : 3.160 k_d : 2.438 k_T : 0.021 a_x : 0.110 y_J : 3.985 y_K : 1.421  RMSE(energy) : 0.489 R^2(energy) : 0.696 R^2(dipole_mags) : 0.077 fitness : 0.3038459248365699 time/s : 34.621250
+iter :   13 k_s : 1.986 k_p : 3.126 k_d : 2.465 k_T : 0.049 a_x : 0.106 y_J : 3.990 y_K : 0.923  RMSE(energy) : 0.361 R^2(energy) : 0.727 R^2(dipole_mags) : 0.082 fitness : 0.27334556255364384 time/s : 34.480472
+iter :   14 k_s : 1.977 k_p : 3.118 k_d : 2.461 k_T : 0.064 a_x : 0.097 y_J : 3.992 y_K : 1.081  RMSE(energy) : 0.408 R^2(energy) : 0.730 R^2(dipole_mags) : 0.081 fitness : 0.26979831486986305 time/s : 34.791376
+iter :   15 k_s : 1.985 k_p : 3.120 k_d : 2.475 k_T : 0.084 a_x : 0.097 y_J : 3.996 y_K : 0.983  RMSE(energy) : 0.399 R^2(energy) : 0.733 R^2(dipole_mags) : 0.077 fitness : 0.2674859927372376 time/s : 34.712300
+iter :   16 k_s : 1.992 k_p : 3.131 k_d : 2.490 k_T : 0.103 a_x : 0.101 y_J : 4.001 y_K : 0.938  RMSE(energy) : 0.413 R^2(energy) : 0.734 R^2(dipole_mags) : 0.070 fitness : 0.2664891557527739 time/s : 35.067655
+iter :   17 k_s : 1.994 k_p : 3.130 k_d : 2.493 k_T : 0.112 a_x : 0.101 y_J : 4.005 y_K : 0.936  RMSE(energy) : 0.420 R^2(energy) : 0.734 R^2(dipole_mags) : 0.067 fitness : 0.26637487703715956 time/s : 34.953741
+iter :   18 k_s : 1.994 k_p : 3.128 k_d : 2.494 k_T : 0.117 a_x : 0.101 y_J : 4.010 y_K : 0.929  RMSE(energy) : 0.421 R^2(energy) : 0.734 R^2(dipole_mags) : 0.066 fitness : 0.2663438040352537 time/s : 34.583970
+iter :   19 k_s : 1.994 k_p : 3.122 k_d : 2.495 k_T : 0.125 a_x : 0.102 y_J : 4.024 y_K : 0.919  RMSE(energy) : 0.421 R^2(energy) : 0.734 R^2(dipole_mags) : 0.064 fitness : 0.266292664479737 time/s : 34.656951
+iter :   20 k_s : 1.993 k_p : 3.113 k_d : 2.492 k_T : 0.137 a_x : 0.102 y_J : 4.051 y_K : 0.906  RMSE(energy) : 0.422 R^2(energy) : 0.734 R^2(dipole_mags) : 0.060 fitness : 0.2662166487487416 time/s : 34.974836
+iter :   21 k_s : 1.980 k_p : 3.077 k_d : 2.477 k_T : 0.188 a_x : 0.104 y_J : 4.169 y_K : 0.846  RMSE(energy) : 0.420 R^2(energy) : 0.726 R^2(dipole_mags) : 0.035 fitness : 0.2736209659515435 time/s : 34.381542
+iter :   22 k_s : 1.831 k_p : 2.730 k_d : 2.320 k_T : 0.697 a_x : 0.124 y_J : 5.348 y_K : 0.234  RMSE(energy) : 166.525 R^2(energy) : 0.003 R^2(dipole_mags) : 0.091 fitness : 0.996932798313353 time/s : 38.319304
+iter :   23 k_s : 1.967 k_p : 3.065 k_d : 2.465 k_T : 0.207 a_x : 0.105 y_J : 4.224 y_K : 0.822  RMSE(energy) : 0.416 R^2(energy) : 0.721 R^2(dipole_mags) : 0.026 fitness : 0.27858911002947817 time/s : 41.465364
+iter :   24 k_s : 1.727 k_p : 2.620 k_d : 2.231 k_T : 0.873 a_x : 0.129 y_J : 5.826 y_K : 0.000  RMSE(energy) : 395.398 R^2(energy) : 0.007 R^2(dipole_mags) : 0.027 fitness : 0.9932940278410096 time/s : 38.584153
+iter :   25 k_s : 1.983 k_p : 3.097 k_d : 2.482 k_T : 0.159 a_x : 0.103 y_J : 4.111 y_K : 0.878  RMSE(energy) : 0.422 R^2(energy) : 0.746 R^2(dipole_mags) : 0.051 fitness : 0.254082380040906 time/s : 41.677279
+iter :   26 k_s : 1.961 k_p : 3.095 k_d : 2.466 k_T : 0.158 a_x : 0.102 y_J : 4.168 y_K : 0.877  RMSE(energy) : 0.420 R^2(energy) : 0.746 R^2(dipole_mags) : 0.051 fitness : 0.25376017455777766 time/s : 34.863936
+iter :   27 k_s : 1.840 k_p : 3.089 k_d : 2.377 k_T : 0.159 a_x : 0.103 y_J : 4.494 y_K : 0.870  RMSE(energy) : 0.417 R^2(energy) : 0.747 R^2(dipole_mags) : 0.035 fitness : 0.25305041755872715 time/s : 34.738605
+iter :   28 k_s : 1.872 k_p : 3.101 k_d : 2.396 k_T : 0.152 a_x : 0.104 y_J : 4.421 y_K : 0.879  RMSE(energy) : 0.423 R^2(energy) : 0.735 R^2(dipole_mags) : 0.039 fitness : 0.26476791759440743 time/s : 34.831033
+iter :   29 k_s : 1.870 k_p : 3.100 k_d : 2.390 k_T : 0.158 a_x : 0.105 y_J : 4.451 y_K : 0.865  RMSE(energy) : 0.422 R^2(energy) : 0.735 R^2(dipole_mags) : 0.034 fitness : 0.2646680445947329 time/s : 38.308587
+iter :   30 k_s : 1.871 k_p : 3.109 k_d : 2.380 k_T : 0.155 a_x : 0.106 y_J : 4.489 y_K : 0.869  RMSE(energy) : 0.429 R^2(energy) : 0.735 R^2(dipole_mags) : 0.034 fitness : 0.26452506958387345 time/s : 38.115610
+iter :   31 k_s : 1.881 k_p : 3.112 k_d : 2.376 k_T : 0.157 a_x : 0.106 y_J : 4.504 y_K : 0.863  RMSE(energy) : 0.431 R^2(energy) : 0.736 R^2(dipole_mags) : 0.033 fitness : 0.26444065094276603 time/s : 38.255736
+iter :   32 k_s : 1.883 k_p : 3.117 k_d : 2.365 k_T : 0.156 a_x : 0.106 y_J : 4.541 y_K : 0.863  RMSE(energy) : 0.434 R^2(energy) : 0.736 R^2(dipole_mags) : 0.032 fitness : 0.26434610855832963 time/s : 38.287360
+iter :   33 k_s : 1.892 k_p : 3.121 k_d : 2.357 k_T : 0.157 a_x : 0.106 y_J : 4.565 y_K : 0.860  RMSE(energy) : 0.436 R^2(energy) : 0.736 R^2(dipole_mags) : 0.032 fitness : 0.2642699673294001 time/s : 38.538105
+iter :   34 k_s : 1.892 k_p : 3.123 k_d : 2.348 k_T : 0.156 a_x : 0.106 y_J : 4.596 y_K : 0.861  RMSE(energy) : 0.437 R^2(energy) : 0.726 R^2(dipole_mags) : 0.034 fitness : 0.27354023266144323 time/s : 42.057723
+iter :   35 k_s : 1.900 k_p : 3.128 k_d : 2.331 k_T : 0.156 a_x : 0.107 y_J : 4.647 y_K : 0.859  RMSE(energy) : 0.441 R^2(energy) : 0.727 R^2(dipole_mags) : 0.033 fitness : 0.2733576285274806 time/s : 41.562622
+iter :   36 k_s : 1.900 k_p : 3.128 k_d : 2.323 k_T : 0.157 a_x : 0.107 y_J : 4.672 y_K : 0.859  RMSE(energy) : 0.442 R^2(energy) : 0.727 R^2(dipole_mags) : 0.033 fitness : 0.2732868834646557 time/s : 41.791838
+
+Optimization terminated successfully.
+Current function value: 0.253
+Iterations: 36
+Function evaluations: 363
+Gradient evaluations: 36
+
+optimized parameters: {'k_s': 1.856, 'k_p': 3.098, 'k_d': 2.377, 'k_T': 0.158, 'a_x': 0.104, 'y_J': 4.495, 'y_K': 0.869}
+
+running validation...
+# of test set samples: 507
+training set results:
+RMSE(energy) : 0.423 R^2(energy) : 0.747 R^2(dipole_mags) : 0.036 fitness : 0.2527768646659524
+
+test set results:
+RMSE(energy) : 0.424 R^2(energy) : 0.685 R^2(dipole_mags) : 0.111 fitness : 0.315449678738295
+
+
+wall-clock time : 1412.031 seconds
+
+#######################
+

@@ -1,0 +1,11 @@
+ 
+ University of Bristol ACRC HPC Bluepebble Service
+ -------------------------------------------------
+ Job huckel_electronegativity_kinetic_a_1.0_b_1.0_c_1.0, jobid 1496540.bp1, username of15641 - started execution at 16:25:40 Tue 20/04/21 on node bp1-compute00154.data.bp.acrc.priv
+ 
+Traceback (most recent call last):
+  File "/home/of15641/chlorophyll_parameterization/optimizer.py", line 774, in <module>
+    optimizer.test_result(optimized_params)
+  File "/home/of15641/chlorophyll_parameterization/optimizer.py", line 636, in test_result
+    fitness_str += f"fitness : {self.weights[0] * train_results.energy_RMSE + self.weights[1] * train_results.energy_correlation + self.weights[2] * train_results.dipole_correlation}"
+UnboundLocalError: local variable 'fitness_str' referenced before assignment

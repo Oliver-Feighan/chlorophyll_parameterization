@@ -57,9 +57,9 @@ python ~/chlorophyll_parameterization/optimizer.py --params {params} --ref_data 
 
 	for combination in all_types_powerset:
 		for a in [0., 1.,]:
-			for b in [1.]:
-				for c in [0., 1.]:
-					if a != c:
+			for b in [0., 1.]:
+				for c in [1.]:
+					if a != b:
 						continue
 
 					params = " ".join(make_params_list(combination))

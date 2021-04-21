@@ -1,0 +1,61 @@
+
+#######################
+# BChla-xTB optimizer #
+#######################
+
+start time: Wed Apr 21 11:02:40 2021
+
+active parameters from python argument input : ['Mg_s', 'Mg_p', 'Mg_d', 'N_s', 'N_p']
+
+reference data constructed from : "/home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json"
+
+Optimization method : SLSQP
+maximum iterations : 5000
+weights:
+RMSE(energy): 0.0
+R^2 (energy): 1.0
+R^2 (dipole): 0.0
+
+recreate input with:
+python optimizer.py --params Mg_s Mg_p Mg_d N_s N_p --method SLSQP --max_iter 5000 --ref_data /home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json --run_tests False --weights 0.0 1.0 0.0 
+making optimizer...
+
+running optimization...
+
+iter :    0 Mg_s : 1.000 Mg_p : 1.000 Mg_d : 1.000 N_s : 1.000 N_p : 1.000  RMSE(energy) : 1.261 R^2(energy) : 0.022 R^2(dipole_mags) : 0.195 fitness : 0.9780466168030014 time/s : 3.591809
+iter :    1 Mg_s : 1.051 Mg_p : 1.141 Mg_d : 1.205 N_s : 1.065 N_p : 0.711  RMSE(energy) : 1.346 R^2(energy) : 0.092 R^2(dipole_mags) : 0.012 fitness : 0.9076169424818941 time/s : 28.009914
+iter :    2 Mg_s : 1.083 Mg_p : 1.225 Mg_d : 1.327 N_s : 1.104 N_p : 0.945  RMSE(energy) : 0.691 R^2(energy) : 0.193 R^2(dipole_mags) : 0.163 fitness : 0.8074301229198487 time/s : 27.706810
+iter :    3 Mg_s : 1.123 Mg_p : 1.353 Mg_d : 1.528 N_s : 1.166 N_p : 0.884  RMSE(energy) : 1.770 R^2(energy) : 0.224 R^2(dipole_mags) : 0.143 fitness : 0.7757553894706731 time/s : 27.818716
+iter :    4 Mg_s : 1.099 Mg_p : 1.290 Mg_d : 1.465 N_s : 1.179 N_p : 0.792  RMSE(energy) : 2.409 R^2(energy) : 0.200 R^2(dipole_mags) : 0.065 fitness : 0.7999586388643201 time/s : 27.808936
+iter :    5 Mg_s : 1.094 Mg_p : 1.263 Mg_d : 1.449 N_s : 1.227 N_p : 0.784  RMSE(energy) : 2.387 R^2(energy) : 0.201 R^2(dipole_mags) : 0.056 fitness : 0.79904866741122 time/s : 31.291731
+iter :    6 Mg_s : 1.091 Mg_p : 1.250 Mg_d : 1.448 N_s : 1.265 N_p : 0.787  RMSE(energy) : 2.301 R^2(energy) : 0.203 R^2(dipole_mags) : 0.060 fitness : 0.7972058516512639 time/s : 34.623655
+iter :    7 Mg_s : 1.087 Mg_p : 1.230 Mg_d : 1.444 N_s : 1.309 N_p : 0.784  RMSE(energy) : 2.266 R^2(energy) : 0.222 R^2(dipole_mags) : 0.057 fitness : 0.7776220999893564 time/s : 34.770334
+iter :    8 Mg_s : 1.081 Mg_p : 1.208 Mg_d : 1.439 N_s : 1.350 N_p : 0.782  RMSE(energy) : 2.210 R^2(energy) : 0.223 R^2(dipole_mags) : 0.054 fitness : 0.7765701560298937 time/s : 38.323137
+iter :    9 Mg_s : 1.077 Mg_p : 1.190 Mg_d : 1.437 N_s : 1.388 N_p : 0.781  RMSE(energy) : 2.170 R^2(energy) : 0.224 R^2(dipole_mags) : 0.053 fitness : 0.7756820419387351 time/s : 38.353177
+iter :   10 Mg_s : 1.074 Mg_p : 1.173 Mg_d : 1.438 N_s : 1.425 N_p : 0.779  RMSE(energy) : 2.134 R^2(energy) : 0.225 R^2(dipole_mags) : 0.052 fitness : 0.7748895363299602 time/s : 38.370216
+iter :   11 Mg_s : 1.071 Mg_p : 1.159 Mg_d : 1.439 N_s : 1.452 N_p : 0.780  RMSE(energy) : 2.089 R^2(energy) : 0.226 R^2(dipole_mags) : 0.053 fitness : 0.7740070198635075 time/s : 38.289422
+iter :   12 Mg_s : 1.067 Mg_p : 1.145 Mg_d : 1.440 N_s : 1.477 N_p : 0.781  RMSE(energy) : 2.039 R^2(energy) : 0.227 R^2(dipole_mags) : 0.053 fitness : 0.7732773739026803 time/s : 38.436145
+iter :   13 Mg_s : 1.052 Mg_p : 1.027 Mg_d : 1.340 N_s : 1.584 N_p : 0.757  RMSE(energy) : 1.321 R^2(energy) : 0.168 R^2(dipole_mags) : 0.056 fitness : 0.8321635148898119 time/s : 45.153258
+iter :   14 Mg_s : 1.121 Mg_p : 0.926 Mg_d : 1.335 N_s : 1.999 N_p : 0.691  RMSE(energy) : 2.008 R^2(energy) : 0.090 R^2(dipole_mags) : 0.006 fitness : 0.909989441787922 time/s : 45.142884
+
+Optimization terminated successfully.
+Current function value: 0.763
+Iterations: 14
+Function evaluations: 136
+Gradient evaluations: 14
+
+optimized parameters: {'Mg_s': 1.113, 'Mg_p': 1.324, 'Mg_d': 1.503, 'N_s': 1.182, 'N_p': 0.849}
+
+running validation...
+# of test set samples: 507
+training set results:
+RMSE(energy) : 1.962 R^2(energy) : 0.226 R^2(dipole_mags) : 0.120 fitness : 0.7744873609822449
+
+test set results:
+RMSE(energy) : 1.959 R^2(energy) : 0.156 R^2(dipole_mags) : 0.128 fitness : 0.8442334241725111
+
+
+wall-clock time : 546.268 seconds
+
+#######################
+

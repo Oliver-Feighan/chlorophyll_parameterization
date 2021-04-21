@@ -1,0 +1,56 @@
+
+#######################
+# BChla-xTB optimizer #
+#######################
+
+start time: Wed Apr 21 13:54:19 2021
+
+active parameters from python argument input : ['k_T', 'Mg_s', 'Mg_p', 'Mg_d', 'N_s', 'N_p', 'a_x', 'y_J', 'y_K']
+
+reference data constructed from : "/home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json"
+
+Optimization method : SLSQP
+maximum iterations : 5000
+weights:
+RMSE(energy): 0.0
+R^2 (energy): 0.0
+R^2 (dipole): 1.0
+
+recreate input with:
+python optimizer.py --params k_T Mg_s Mg_p Mg_d N_s N_p a_x y_J y_K --method SLSQP --max_iter 5000 --ref_data /home/of15641/chlorophyll_parameterization/tddft_data/tddft_data.json --run_tests False --weights 0.0 0.0 1.0 
+making optimizer...
+
+running optimization...
+
+iter :    0 k_T : 0.000 Mg_s : 1.000 Mg_p : 1.000 Mg_d : 1.000 N_s : 1.000 N_p : 1.000 a_x : 0.500 y_J : 4.000 y_K : 2.000  RMSE(energy) : 1.261 R^2(energy) : 0.022 R^2(dipole_mags) : 0.195 fitness : 0.8050442905656132 time/s : 3.322158
+iter :    1 k_T : 0.030 Mg_s : 1.002 Mg_p : 1.018 Mg_d : 1.010 N_s : 1.017 N_p : 0.894 a_x : 0.500 y_J : 4.000 y_K : 2.000  RMSE(energy) : 1.380 R^2(energy) : 0.138 R^2(dipole_mags) : 0.167 fitness : 0.8332264924093469 time/s : 39.685376
+iter :    2 k_T : 0.082 Mg_s : 1.002 Mg_p : 1.022 Mg_d : 1.014 N_s : 1.029 N_p : 0.962 a_x : 0.500 y_J : 4.000 y_K : 2.000  RMSE(energy) : 0.950 R^2(energy) : 0.058 R^2(dipole_mags) : 0.193 fitness : 0.8068814436524274 time/s : 42.809448
+iter :    3 k_T : 0.129 Mg_s : 0.994 Mg_p : 1.035 Mg_d : 1.012 N_s : 1.024 N_p : 0.949 a_x : 0.500 y_J : 4.000 y_K : 2.000  RMSE(energy) : 0.863 R^2(energy) : 0.066 R^2(dipole_mags) : 0.196 fitness : 0.8043992408687024 time/s : 46.536503
+iter :    4 k_T : 0.212 Mg_s : 1.021 Mg_p : 1.071 Mg_d : 1.039 N_s : 1.077 N_p : 0.928 a_x : 0.500 y_J : 4.000 y_K : 2.000  RMSE(energy) : 0.316 R^2(energy) : 0.079 R^2(dipole_mags) : 0.212 fitness : 0.7878986349232698 time/s : 49.723804
+iter :    5 k_T : 3.111 Mg_s : 1.328 Mg_p : 1.952 Mg_d : 1.513 N_s : 1.975 N_p : 0.101 a_x : 0.500 y_J : 4.000 y_K : 2.000  RMSE(energy) : 3750.463 R^2(energy) : 0.036 R^2(dipole_mags) : 0.011 fitness : 0.9893200268037738 time/s : 39.929266
+iter :    6 k_T : 25.408 Mg_s : 3.694 Mg_p : 8.591 Mg_d : 5.098 N_s : 8.792 N_p : -6.180 a_x : 0.500 y_J : 4.000 y_K : 2.000  RMSE(energy) : 3684.857 R^2(energy) : 0.034 R^2(dipole_mags) : 0.000 fitness : 0.9998377403802519 time/s : 49.800202
+iter :    7 k_T : 426.727 Mg_s : 46.277 Mg_p : 128.015 Mg_d : 69.572 N_s : 131.460 N_p : -119.194 a_x : 0.500 y_J : 4.000 y_K : 2.000  RMSE(energy) : 3446.933 R^2(energy) : 0.017 R^2(dipole_mags) : 0.005 fitness : 0.9954851001226341 time/s : 59.292658
+iter :    8 k_T : 158721.895 Mg_s : 16842.951 Mg_p : 47230.567 Mg_d : 25499.684 N_s : 48518.881 N_p : -44701.983 a_x : 0.500 y_J : 4.000 y_K : 2.000  RMSE(energy) : 6340.175 R^2(energy) : 0.010 R^2(dipole_mags) : 0.003 fitness : 0.9967143610353766 time/s : 72.817451
+iter :    9 k_T : 155.499 Mg_s : 17.499 Mg_p : 47.279 Mg_d : 25.986 N_s : 48.545 N_p : -42.807 a_x : 0.500 y_J : 4.000 y_K : 2.000  RMSE(energy) : 3490.099 R^2(energy) : 0.043 R^2(dipole_mags) : 0.003 fitness : 0.9967068257614131 time/s : 72.695124
+
+Optimization terminated successfully.
+Current function value: 0.997
+Iterations: 9
+Function evaluations: 134
+Gradient evaluations: 9
+
+optimized parameters: {'k_T': 155.499, 'Mg_s': 17.499, 'Mg_p': 47.279, 'Mg_d': 25.986, 'N_s': 48.545, 'N_p': -42.807, 'a_x': 0.5, 'y_J': 4.0, 'y_K': 2.0}
+
+running validation...
+# of test set samples: 507
+training set results:
+RMSE(energy) : 3490.098 R^2(energy) : 0.043 R^2(dipole_mags) : 0.003 fitness : 0.9967066496224855
+
+test set results:
+RMSE(energy) : 3478.114 R^2(energy) : 0.000 R^2(dipole_mags) : 0.000 fitness : 0.9996068429804491
+
+
+wall-clock time : 495.682 seconds
+
+#######################
+

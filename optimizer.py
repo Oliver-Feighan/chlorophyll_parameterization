@@ -343,9 +343,9 @@ class Results():
 		_, _, self.energy_r_value, _, _ = linregress(self.clean.tddft_energies, self.clean.xtb_energies)
 		_, _, self.dipole_r_value, _, _ = linregress(self.clean.tddft_dipole_mags, self.clean.xtb_dipole_mags)
 
-		self.energy_correlation = 1 - self.energy_r_value**2
-		self.dipole_correlation = 1 - self.dipole_r_value**2
 		self.energy_RMSE = np.sqrt(np.mean(np.square(self.clean.energy_errors)))
+		self.energy_correlation = self.energy_r_value**2
+		self.dipole_correlation = self.dipole_r_value**2
 		#self.dipole_mag_RMSE = np.sqrt(np.mean(np.square(self.clean.xtb_dipole_mags - self.clean.tddft_dipole_mags)))
 
 
@@ -490,7 +490,7 @@ class Optimizer():
 	def objective_function(self, params):
 		results = self.generate_results(params)
 
-		return self.weights[0] * results.energy_RMSE + self.weights[1] * results.energy_correlation + self.weights[2] * results.dipole_correlation
+		return self.weights[0] * results.energy_RMSE + self.weights[1] * (1 - results.energy_correlation) + self.weights[2] * (1 - results.dipole_correlation)
 
 
 	def param_string(self, params):
@@ -530,9 +530,9 @@ class Optimizer():
 		else:
 			assert(len(results.full.xtb_energies) == len(self.training_set))
 
-		fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(results.energy_RMSE, 1-results.energy_correlation)
-		fitness_str += f"R^2(dipole_mags) : {1-results.dipole_correlation:3.3f} "
-		fitness_str += f"fitness : {self.weights[0] * results.energy_RMSE + self.weights[1] * results.energy_correlation + self.weights[2] * results.dipole_correlation}"
+		fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(results.energy_RMSE, results.energy_correlation)
+		fitness_str += f"R^2(dipole_mags) : {results.dipole_correlation:3.3f} "
+		fitness_str += f"fitness : {self.weights[0] * (1 - results.energy_RMSE) + self.weights[1] * (1 - results.energy_correlation) + self.weights[2] * (1 - results.dipole_correlation)}"
 
 		time_str = "time/s : {0:3.6f}".format(time.time() - self.time)
 		self.time = time.time()
@@ -631,9 +631,9 @@ class Optimizer():
 
 		self.output("training set results:")
 
-		training_fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(train_results.energy_RMSE, 1-train_results.energy_correlation)
-		training_fitness_str += f"R^2(dipole_mags) : {1-train_results.dipole_correlation:3.3f}"
-		fitness_str += f"fitness : {self.weights[0] * train_results.energy_RMSE + self.weights[1] * train_results.energy_correlation + self.weights[2] * train_results.dipole_correlation}"
+		training_fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(train_results.energy_RMSE, train_results.energy_correlation)
+		training_fitness_str += f"R^2(dipole_mags) : {train_results.dipole_correlation:3.3f} "
+		training_fitness_str += f"fitness : {self.weights[0] * train_results.energy_RMSE + self.weights[1] * (1 - train_results.energy_correlation) + self.weights[2] * (1 - train_results.dipole_correlation)}"
 
 		self.output(training_fitness_str)
 
@@ -642,9 +642,9 @@ class Optimizer():
 
 		self.output("test set results:")
 
-		test_fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(test_results.energy_RMSE, 1-test_results.energy_correlation)
-		test_fitness_str += f"R^2(dipole_mags) : {1-test_results.dipole_correlation:3.3f}"
-		fitness_str += f"fitness : {self.weights[0] * test_results.energy_RMSE + self.weights[1] * test_results.energy_correlation + self.weights[2] * test_results.dipole_correlation}"
+		test_fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(test_results.energy_RMSE, test_results.energy_correlation)
+		test_fitness_str += f"R^2(dipole_mags) : {test_results.dipole_correlation:3.3f} "
+		test_fitness_str += f"fitness : {self.weights[0] * test_results.energy_RMSE + self.weights[1] * (1 - test_results.energy_correlation) + self.weights[2] * (1 - test_results.dipole_correlation)}"
 
 		self.output(test_fitness_str)
 
