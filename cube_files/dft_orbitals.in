@@ -1,0 +1,24 @@
+wvfn := dft(
+	structure(file = 'step_1_chromophore_1.xyz')
+	ao = 'Def2-SVP'
+	xc = PBE0	
+)
+
+cube(
+	load = 'wvfn'
+	orbital(
+	file = 'homo.cube'
+	orbitals=homo
+	)
+)
+
+
+cube(
+	load = 'wvfn'
+	orbital(
+	file = 'lumo.cube'
+	orbitals=lumo
+	)
+)
+
+
