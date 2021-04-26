@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -l walltime=5:00:00
+#PBS -l select=1:ncpus=24:mem=170gb
+#PBS -N eigdiff_step_301_chromophore_5
+#PBS -j oe
+
+cd ~/chlorophyll_parameterization/tddft_data/step_301_chromophore_5
+
+export OMP_NUM_THREADS=1
+export MKL_THREADING_LAYER=TBB
+
+~/.local/src/Qcore/release/qcore -n 18 eigdiff_step_301_chromophore_5.in > eigdiff_step_301_chromophore_5.out

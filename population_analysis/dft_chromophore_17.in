@@ -1,0 +1,12 @@
+res := dft(
+	structure(
+		file = 'xyz_files/chromophore_17.xyz'
+	)
+
+	ao = 'Def2-SVP'
+	xc = PBE0
+)
+
+population(
+	load = res
+)

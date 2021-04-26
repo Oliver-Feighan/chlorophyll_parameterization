@@ -1,0 +1,11 @@
+excited_scf(
+	structure(file = 'step_1_chromophore_5.xyz')
+	dft(
+		ao = 'Def2-SVP'
+		xc = PBE0
+		ansatz = u
+		diis = cdiis
+	)
+
+	method='eigenvalue_difference'
+)

@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -l walltime=5:00:00
+#PBS -l select=1:ncpus=12:mem=180gb
+#PBS -N wB97X_step_1701_chromophore_22
+#PBS -j oe
+
+cd ~/chlorophyll_parameterization/tddft_data/step_1701_chromophore_22
+
+export OMP_NUM_THREADS=1
+export MKL_THREADING_LAYER=TBB
+
+~/.local/src/Qcore/release/qcore -n 10 wB97X_step_1701_chromophore_22.in > wB97X_step_1701_chromophore_22.out

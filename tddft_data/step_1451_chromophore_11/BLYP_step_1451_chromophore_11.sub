@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -l walltime=0:30:00
+#PBS -l select=1:ncpus=4:mem=70gb
+#PBS -N BLYP_step_1451_chromophore_11
+#PBS -j oe
+
+cd ~/chlorophyll_parameterization/tddft_data/step_1451_chromophore_11
+
+export OMP_NUM_THREADS=1
+export MKL_THREADING_LAYER=TBB
+
+~/.local/src/Qcore/release/qcore -n 2 BLYP_step_1451_chromophore_11.in > BLYP_step_1451_chromophore_11.out

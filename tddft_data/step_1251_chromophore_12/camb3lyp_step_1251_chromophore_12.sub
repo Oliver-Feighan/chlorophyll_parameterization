@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -l walltime=5:00:00
+#PBS -l select=1:ncpus=12:mem=170gb
+#PBS -N camb3lyp_step_1251_chromophore_12
+#PBS -j oe
+
+cd ~/chlorophyll_parameterization/tddft_data/step_1251_chromophore_12
+
+export OMP_NUM_THREADS=1
+export MKL_THREADING_LAYER=TBB
+
+~/.local/src/Qcore/release/qcore -n 10 camb3lyp_step_1251_chromophore_12.in > camb3lyp_step_1251_chromophore_12.out
