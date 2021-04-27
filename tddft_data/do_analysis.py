@@ -115,26 +115,9 @@ plot_histogram(np.array(angle_errors), "angle error to $Q_y$ axis")
 
 plt.show()
 
-rerun_pile_file = open('rerun_pile.txt', 'w')
-for i in rerun_pile:
-	print(i, file=rerun_pile_file)
+#rerun_pile_file = open('rerun_pile.txt', 'w')
+#for i in rerun_pile:
+#	print(i, file=rerun_pile_file)
 
-with open('tddft_data.json', 'w') as dump_file:
-	json.dump(results, sort_keys=True, indent=4, fp=dump_file)
-
-
-
-
-
-
-
-
-
-
-
-					
-
-
-
-
-
+#with open('tddft_data.json', 'w') as dump_file:
+#	json.dump(results, sort_keys=True, indent=4, fp=dump_file)

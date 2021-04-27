@@ -362,7 +362,7 @@ class Optimizer():
 		['k_s', 'k_p', 'k_d', 'k_EN_s', 'k_EN_p', 'k_EN_d', 'k_T', 'Mg_s', 'Mg_p', 'Mg_d', 'N_s', 'N_p']
 
 		"""
-		all_params = ["k_s", "k_p", "k_d", "k_EN_s", "k_EN_p", "k_EN_d", "k_T", "Mg_s", "Mg_p", "Mg_d", "N_s", "N_p", "a_x", "y_J", "y_K"]
+		all_params = ["k_s", "k_p", "k_d", "k_EN_s", "k_EN_p", "k_EN_d", "k_T", "Mg_s", "Mg_p", "Mg_d", "N_s", "N_p", "a_x", "y_J", "y_K", "E_Mg_s", "E_Mg_p", "E_Mg_d"]
 		if not active_params:
 			return all_params
 		else:
@@ -387,7 +387,10 @@ class Optimizer():
 			"N_p" 		: 1.0, 
 			"a_x"		: 0.5,
 			"y_J"		: 4.0,
-			"y_K"		: 2.0
+			"y_K"		: 2.0,
+			"E_Mg_s"	: 0.0,
+			"E_Mg_p" 	: 0.0,
+			"E_Mg_d"	: 0.0
 		}
 		
 		return [GFN0_defaults[p] for p in self.active_params]
@@ -408,7 +411,10 @@ class Optimizer():
 			"N_p" 		: (None, None), 
 			"a_x"		: (0, None),
 			"y_J"		: (0, None),
-			"y_K"		: (0, None)
+			"y_K"		: (0, None),
+			"E_Mg_s" 	: (None, None),
+			"E_Mg_p" 	: (None, None),
+			"E_Mg_d" 	: (None, None),
 		}
 
 		return [bounds[p] for p in self.active_params]

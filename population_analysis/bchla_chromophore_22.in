@@ -1,0 +1,8 @@
+res := bchla(
+	input_params = {'k_s': 1.85, 'k_p': 2.991, 'k_d': 2.375, 'Mg_s': 1.069, 'Mg_p': 1.319, 'Mg_d': 1.4, 'N_s': 1.108, 'N_p': 0.914, 'a_x': 0.054, 'y_J': 4.097, 'y_K': 0.849}	
+	structure(file = 'xyz_files/chromophore_22.xyz')
+)
+
+population(
+	load = res
+)

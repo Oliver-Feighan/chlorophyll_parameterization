@@ -1,0 +1,22 @@
+res := xtb(
+	model = 'gfn0'
+	structure(
+		file = 'step_1_chromophore_1.xyz'
+	)
+)
+
+cube(
+	load = res
+	orbital(
+		orbitals=homo
+		file = 'xtb_homo.cube'
+	)
+)
+
+cube(
+	load = res
+	orbital(
+		orbitals=lumo
+		file = 'xtb_lumo.cube'
+	)
+)

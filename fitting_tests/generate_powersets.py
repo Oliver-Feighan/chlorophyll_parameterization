@@ -8,6 +8,7 @@ param_types = {
 	"kinetic" : ["k_T"],
 	"global_pair" : ["Mg_s", "Mg_p", "Mg_d", "N_s", "N_p"],
 	"response" : ["a_x", "y_J", "y_K"],
+	"ao_energy_levels" : ["E_Mg_s", "E_Mg_p", "E_Mg_d"]
 }
 
 def powerset(params):
@@ -56,17 +57,19 @@ python ~/chlorophyll_parameterization/optimizer.py --params {params} --ref_data 
 """
 
 	for combination in all_types_powerset:
-		for a in [0., 1.,]:
-			for b in [0., 1.]:
-				for c in [1.]:
-					if a != b:
-						continue
+		#for a in [0., 1.,]:
+			#for b in [0., 1.]:
+				#for c in [1.]:
+					#if a != b:
+					#	continue
 
-					params = " ".join(make_params_list(combination))
-					folder = "_".join(combination)
-					weights = [str(x) for x in [a, b, c]]
-					weights_str = " ".join(weights)
-					name = folder + "_" + "_".join(f"{x}_{y}" for x,y in zip(["a", "b", "c"], weights))
+					#params = " ".join(make_params_list(combination))
+					#folder = "_".join(combination)
+					#weights = [str(x) for x in [a, b, c]]
+					#weights_str = " ".join(weights)
+					#name = folder + "_" + "_".join(f"{x}_{y}" for x,y in zip(["a", "b", "c"], weights))
 
-					with open(f"{folder}/{name}.sub", 'w') as f:
-						print(script_template.format(name=name, folder=folder, params=params, weights=weights_str), file=f)
+					#with open(f"{folder}/{name}.sub", 'w') as f:
+					#	print(script_template.format(name=name, folder=folder, params=params, weights=weights_str), file=f)
+
+		print("_".join(combination))
