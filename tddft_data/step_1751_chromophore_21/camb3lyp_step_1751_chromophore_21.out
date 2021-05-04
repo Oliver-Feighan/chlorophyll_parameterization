@@ -9,24 +9,24 @@
                                                                                 
 ====================================[ Qcore ]===================================
 
- Git hash:   ef61b3294dc41ae233dfc48b71e60cdfa0c81a0e
- Git date:   Tue, 20 Apr 2021 10:53:04 +0100
+ Git hash:   261e2e7cf098e12cfbacedeb2c59cf8ea998b55f
+ Git date:   Mon, 26 Apr 2021 14:17:44 +0100
  Compiler:   GNU 9.1.0
  Build type: Release
  Version:    1.1.0
 
- Start time: Sun Apr 25 07:40:03 2021
+ Start time: Fri Apr 30 02:47:44 2021
 
  Data directory: /home/of15641/.local/src/Qcore/release/share/entos/1.1.0/data
- Number of threads: 10
+ Number of threads: 20
  Number of threads was determined by: command line argument
-  - More threads can be used by running 'qcore -n 24'
+  - More threads can be used by running 'qcore -n 32'
 
  --------------------------------------------------------------------------------
                                    command: td                                   
  --------------------------------------------------------------------------------
- AO basis set:                           6-31+g*
- Number of AO basis functions:        1340
+ AO basis set:                           def2-svp
+ Number of AO basis functions:        1298
 
  Formula:                                C55H74N4O6Mg
  Nuclear charge:                       492.000000000
@@ -47,13 +47,13 @@
  Short range exact exchange:             0.190000000
  Total long range exact exchange:        0.650000000
 
- Method for Coulomb:                     incore_df
- Method for exact exchange:              pre_transformed_df
- Integral threshold:                     1.00e-12
- DF basis set:                           def2-universal-JKFIT
- Number of DF basis functions:        6339
- Schwarz screening threshold:            1.00e-10
- Coulomb fitting method:                 Cholesky
+ Method for Coulomb:                     direct_4idx
+ Method for exact exchange:              direct_4idx
+ Incremental Fock build is turned on.
+ Max incremental Fock build steps:      20
+ Integral threshold (initial):           1.00e-09
+ Integral threshold (final):             1.00e-12
+ Switching threshold (on density):       1.00e-04
  Total number of grid points:       885930
  Method for AO orthogonalization:        symmetric
  Threshold for linear dependence:        1.00e-08
@@ -74,13 +74,13 @@
  Short range exact exchange:             0.190000000
  Total long range exact exchange:        0.650000000
 
- Method for Coulomb:                     incore_df
- Method for exact exchange:              pre_transformed_df
- Integral threshold:                     1.00e-12
- DF basis set:                           def2-universal-JKFIT
- Number of DF basis functions:          75
- Schwarz screening threshold:            1.00e-10
- Coulomb fitting method:                 Cholesky
+ Method for Coulomb:                     direct_4idx
+ Method for exact exchange:              direct_4idx
+ Incremental Fock build is turned on.
+ Max incremental Fock build steps:      20
+ Integral threshold (initial):           1.00e-09
+ Integral threshold (final):             1.00e-12
+ Switching threshold (on density):       1.00e-04
  Total number of grid points:         6800
  Method for AO orthogonalization:        symmetric
  Threshold for linear dependence:        1.00e-08
@@ -92,13 +92,13 @@
  Short range exact exchange:             0.190000000
  Total long range exact exchange:        0.650000000
 
- Method for Coulomb:                     incore_df
- Method for exact exchange:              pre_transformed_df
- Integral threshold:                     1.00e-12
- DF basis set:                           def2-universal-JKFIT
- Number of DF basis functions:          18
- Schwarz screening threshold:            1.00e-10
- Coulomb fitting method:                 Cholesky
+ Method for Coulomb:                     direct_4idx
+ Method for exact exchange:              direct_4idx
+ Incremental Fock build is turned on.
+ Max incremental Fock build steps:      20
+ Integral threshold (initial):           1.00e-09
+ Integral threshold (final):             1.00e-12
+ Switching threshold (on density):       1.00e-04
  Total number of grid points:         5890
  Method for AO orthogonalization:        symmetric
  Threshold for linear dependence:        1.00e-08
@@ -110,13 +110,13 @@
  Short range exact exchange:             0.190000000
  Total long range exact exchange:        0.650000000
 
- Method for Coulomb:                     incore_df
- Method for exact exchange:              pre_transformed_df
- Integral threshold:                     1.00e-12
- DF basis set:                           def2-universal-JKFIT
- Number of DF basis functions:         112
- Schwarz screening threshold:            1.00e-10
- Coulomb fitting method:                 Cholesky
+ Method for Coulomb:                     direct_4idx
+ Method for exact exchange:              direct_4idx
+ Incremental Fock build is turned on.
+ Max incremental Fock build steps:      20
+ Integral threshold (initial):           1.00e-09
+ Integral threshold (final):             1.00e-12
+ Switching threshold (on density):       1.00e-04
  Total number of grid points:         7206
  Method for AO orthogonalization:        symmetric
  Threshold for linear dependence:        1.00e-08
@@ -128,13 +128,13 @@
  Short range exact exchange:             0.190000000
  Total long range exact exchange:        0.650000000
 
- Method for Coulomb:                     incore_df
- Method for exact exchange:              pre_transformed_df
- Integral threshold:                     1.00e-12
- DF basis set:                           def2-universal-JKFIT
- Number of DF basis functions:          77
- Schwarz screening threshold:            1.00e-10
- Coulomb fitting method:                 Cholesky
+ Method for Coulomb:                     direct_4idx
+ Method for exact exchange:              direct_4idx
+ Incremental Fock build is turned on.
+ Max incremental Fock build steps:      20
+ Integral threshold (initial):           1.00e-09
+ Integral threshold (final):             1.00e-12
+ Switching threshold (on density):       1.00e-04
  Total number of grid points:         6800
  Method for AO orthogonalization:        symmetric
  Threshold for linear dependence:        1.00e-08
@@ -146,13 +146,13 @@
  Short range exact exchange:             0.190000000
  Total long range exact exchange:        0.650000000
 
- Method for Coulomb:                     incore_df
- Method for exact exchange:              pre_transformed_df
- Integral threshold:                     1.00e-12
- DF basis set:                           def2-universal-JKFIT
- Number of DF basis functions:          77
- Schwarz screening threshold:            1.00e-10
- Coulomb fitting method:                 Cholesky
+ Method for Coulomb:                     direct_4idx
+ Method for exact exchange:              direct_4idx
+ Incremental Fock build is turned on.
+ Max incremental Fock build steps:      20
+ Integral threshold (initial):           1.00e-09
+ Integral threshold (final):             1.00e-12
+ Switching threshold (on density):       1.00e-04
  Total number of grid points:         6944
  Method for AO orthogonalization:        symmetric
  Threshold for linear dependence:        1.00e-08
@@ -160,36 +160,35 @@
  ---------------------------------------------------------------
                   energy        change          grad        time
  ---------------------------------------------------------------
-   0     -3028.516208469                    2.95e+01       72.82
-   1     -3008.097908009      2.04e+01      2.69e+00       44.65
-   2     -3007.534074361      5.64e-01      4.76e+00       45.81
-   3     -3009.202774985     -1.67e+00      7.91e-01       43.79
-   4     -3009.083848607      1.19e-01      1.60e+00       44.12
-   5     -3009.277357336     -1.94e-01      1.52e-01       42.11
-   6     -3009.275862149      1.50e-03      2.82e-01       44.19
-   7     -3009.282081986     -6.22e-03      5.51e-02       46.91
-   8     -3009.281626747      4.55e-04      9.40e-02       44.39
-   9     -3009.282413323     -7.87e-04      4.15e-03       40.80
-  10     -3009.282415237     -1.91e-06      1.97e-03       43.27
-  11     -3009.282415820     -5.83e-07      9.59e-04       42.28
-  12     -3009.282416063     -2.43e-07      6.31e-04       41.76
-  13     -3009.282416162     -9.82e-08      4.03e-04       41.17
-  14     -3009.282416224     -6.28e-08      1.81e-04       43.09
-  15     -3009.282416234     -9.31e-09      8.27e-05       42.23
-  16     -3009.282416235     -1.80e-09      3.46e-05       43.70
-  17     -3009.282416236     -8.40e-10      1.77e-05       46.36
-  18     -3009.282416235      9.84e-10      1.03e-05       45.58
-  19     -3009.282416234      1.36e-09      4.01e-06       44.36
+   0     -3026.083085937                    2.05e+01       18.04
+   1     -3006.134393316      1.99e+01      2.30e+00       50.85
+   2     -3005.601636139      5.33e-01      3.98e+00       46.65
+   3     -3007.089406220     -1.49e+00      6.06e-01       43.25
+   4     -3007.006806120      8.26e-02      1.22e+00       40.15
+   5     -3007.150198568     -1.43e-01      7.65e-02       36.84
+   6     -3007.150332929     -1.34e-04      1.38e-01       88.32
+   7     -3007.153628051     -3.30e-03      1.65e-02       63.55
+   8     -3007.153652529     -2.45e-05      6.03e-03       53.92
+   9     -3007.153657396     -4.87e-06      3.11e-03       50.68
+  10     -3007.153658656     -1.26e-06      1.36e-03       45.85
+  11     -3007.153659030     -3.73e-07      8.65e-04       42.91
+  12     -3007.153659207     -1.77e-07      4.36e-04       40.86
+  13     -3007.153659277     -7.06e-08      3.19e-04       38.15
+  14     -3007.153659325     -4.78e-08      1.35e-04       38.38
+  15     -3007.153659330     -4.92e-09      5.24e-05       34.52
+  16     -3007.153659330      3.62e-10      3.11e-05       29.37
+  17     -3007.153659330     -3.58e-10      1.04e-05       26.37
+  18     -3007.153659330     -1.62e-10      9.61e-06       23.23
 
- SCF converged in 19 iterations.
+ SCF converged in 18 iterations.
 
- Dipole moment (in Debye):              -7.076918       5.508055       2.088342
+ Dipole moment (in Debye):              -6.726024       5.110166       2.070337
 
  Quadrupole moment (in Debye-Angstrom):
                   1            2            3
- 1      -457.640309    45.632648   -12.619813
- 2        45.632648  -441.246526     0.755091
- 3       -12.619813     0.755091  -380.437301
+ 1      -446.422204    41.054217   -10.415282
+ 2        41.054217  -432.599394     0.203639
+ 3       -10.415282     0.203639  -375.540085
 
  Spin-squared expectation <S^2>:         0.000
  Total spin quantum number S:            0.000
@@ -197,3 +196,123 @@
  --------------------------------------------------
  iter  root      eigenvalue    residual        time
  --------------------------------------------------
+    1    1        0.083429    5.59e-02
+         2        0.097760    6.42e-02
+         3        0.141846    5.96e-02      940.00
+    2    1        0.068614    1.76e-02
+         2        0.085430    1.41e-02
+         3        0.133117    1.48e-02      212.35
+    3    1        0.066249    7.59e-03
+         2        0.083527    7.41e-03
+         3        0.131225    1.10e-02      213.14
+    4    1        0.065912    3.15e-03
+         2        0.083291    2.33e-03
+         3        0.130845    3.78e-03      213.37
+    5    1        0.065860    1.20e-03
+         2        0.083260    1.01e-03
+         3        0.130735    3.47e-03      212.22
+    6    1        0.065852    5.23e-04
+         2        0.083255    5.11e-04
+         3        0.130571    7.42e-03      212.54
+    7    1        0.065850    1.47e-04
+         2        0.083253    1.88e-04
+         3        0.128940    1.64e-02      213.22
+    8    1        0.065850    5.93e-05
+         2        0.083253    8.54e-05
+         3        0.127775    9.14e-03      212.36
+    9    1        0.065850    2.36e-05
+         2        0.083253    3.78e-05
+         3        0.127531    3.89e-03      213.03
+   10    1        0.065850    1.00e-05
+         2        0.083253    1.91e-05
+         3        0.127462    1.99e-03      213.29
+   11    1        0.065850    3.93e-06
+         2        0.083253    1.07e-05
+         3        0.127445    1.42e-03      213.02
+   12    1        0.065850    1.49e-06
+         2        0.083253    6.27e-06
+         3        0.127431    1.72e-03      212.35
+   13    1        0.065850    6.36e-07
+         2        0.083253    3.16e-06
+         3        0.127405    2.43e-03      213.19
+   14    1        0.065850    4.58e-07
+         2        0.083253    1.17e-06
+         3        0.127363    2.04e-03      190.17
+   15    1        0.065850    4.45e-07
+         2        0.083253    4.19e-07
+         3        0.127342    1.21e-03      189.55
+   16    1        0.065850    4.43e-07
+         2        0.083253    3.25e-07
+         3        0.127337    6.70e-04      165.14
+   17    1        0.065850    4.41e-07
+         2        0.083253    3.10e-07
+         3        0.127336    2.92e-04      165.22
+   18    1        0.065850    4.42e-07
+         2        0.083253    3.07e-07
+         3        0.127335    1.44e-04      166.19
+   19    1        0.065850    4.43e-07
+         2        0.083253    3.07e-07
+         3        0.127335    6.92e-05      165.48
+   20    1        0.065850    4.33e-07
+         2        0.083253    3.04e-07
+         3        0.127335    3.79e-05      165.08
+   21    1        0.065850    4.31e-07
+         2        0.083253    2.99e-07
+         3        0.127335    2.08e-05      165.18
+   22    1        0.065850    4.28e-07
+         2        0.083253    2.98e-07
+         3        0.127335    1.11e-05      165.48
+   23    1        0.065850    4.25e-07
+         2        0.083253    2.98e-07
+         3        0.127335    6.21e-06      165.75
+   24    1        0.065850    4.24e-07
+         2        0.083253    2.99e-07
+         3        0.127335    3.58e-06      165.66
+   25    1        0.065850    4.20e-07
+         2        0.083253    2.99e-07
+         3        0.127335    1.85e-06      166.13
+   26    1        0.065850    4.16e-07
+         2        0.083253    2.97e-07
+         3        0.127335    8.54e-07      166.10
+
+ Convergence achieved
+
+ -----------------------------
+  Summary of response results 
+ -----------------------------
+
+ Excited State   1:  0.065850 hartree (    1.7919 eV)   <S^2> =  0.000  Multiplicity =  1.000
+                     MO transition   Coefficient
+                      245 -> 248         0.1852
+                      245 <- 248         0.1031
+                      246 -> 247         0.6829
+
+ Excited State   2:  0.083253 hartree (    2.2654 eV)   <S^2> =  0.000  Multiplicity =  1.000
+                     MO transition   Coefficient
+                      245 -> 247         0.6273
+                      246 -> 248        -0.3124
+
+ Excited State   3:  0.127335 hartree (    3.4650 eV)   <S^2> =  0.000  Multiplicity =  1.000
+                     MO transition   Coefficient
+                      239 -> 247        -0.1607
+                      240 -> 249         0.1021
+                      242 -> 247         0.1339
+                      245 -> 247         0.2736
+                      246 -> 248         0.5735
+ Transition Dipole Moments (a.u.)
+                         X                   Y                   Z
+ 1            -2.679285874         0.883797748        -0.366535487
+ 2             0.023613383         0.077648728        -1.277497325
+ 3             0.207231578        -0.102074954        -2.620080100
+
+ Oscillator Strengths (a.u.):
+                  1
+ 1         0.355328
+ 2         0.090945
+ 3         0.587286
+
+ --------------------------------------------------------------------------------
+
+ End time:                               Fri Apr 30 04:36:38 2021
+ Total wall-clock time:               6533.384 seconds
+==================================================================================

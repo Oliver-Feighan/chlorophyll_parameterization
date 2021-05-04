@@ -2,7 +2,8 @@ td(
 	structure(file = 'step_201_chromophore_27.xyz')
 	n_states = 3
 	dft(
-		ao = '6-31+G*'
+		ao = 'Def2-SVP'
 		xc = camb3lyp
+		eri_method = 'direct_4idx'
 	)
 )

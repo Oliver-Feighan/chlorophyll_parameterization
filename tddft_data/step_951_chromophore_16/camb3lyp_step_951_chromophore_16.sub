@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -l walltime=5:00:00
-#PBS -l select=1:ncpus=12:mem=170gb
+#PBS -l select=1:ncpus=24:mem=185gb
 #PBS -N camb3lyp_step_951_chromophore_16
 #PBS -j oe
 
@@ -9,4 +9,4 @@ cd ~/chlorophyll_parameterization/tddft_data/step_951_chromophore_16
 export OMP_NUM_THREADS=1
 export MKL_THREADING_LAYER=TBB
 
-~/.local/src/Qcore/release/qcore -n 10 camb3lyp_step_951_chromophore_16.in > camb3lyp_step_951_chromophore_16.out
+~/.local/src/Qcore/release/qcore -n 20 camb3lyp_step_951_chromophore_16.in > camb3lyp_step_951_chromophore_16.out
