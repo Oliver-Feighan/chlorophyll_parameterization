@@ -6,3 +6,12 @@ res := bchla(
 population(
 	load = res
 )
+
+cube(
+	load = res
+	
+	orbital(
+	file = 'bchla_orbitals.cube'
+	orbitals = all
+	)	
+)

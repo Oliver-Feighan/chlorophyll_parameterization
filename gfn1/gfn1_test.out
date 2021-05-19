@@ -1,0 +1,26 @@
+
+#######################
+# BChla-xTB optimizer #
+#######################
+
+start time: Wed May 19 10:58:39 2021
+
+active parameters from python argument input : ['k_s', 'k_p']
+
+reference data constructed from : "../tddft_data/tddft_data.json"
+
+Optimization method : SLSQP
+GFN-xTB method : gfn1
+maximum iterations : 5000
+weights:
+RMSE(energy): 1.0
+R^2 (energy): 1.0
+R^2 (dipole): 1.0
+
+recreate input with:
+python optimizer.py --params k_s k_p --method SLSQP --max_iter 5000 --ref_data ../tddft_data/tddft_data.json --run_tests False --weights 1.0 1.0 1.0 
+making optimizer...
+
+running optimization...
+
+iter :    0 k_s : 2.000 k_p : 2.480  RMSE(energy) : 0.654 R^2(energy) : 0.662 R^2(dipole_mags) : 0.206 fitness : 1.4785157867036895 time/s : 231.456257

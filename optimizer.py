@@ -39,6 +39,14 @@ CLI.add_argument(
 )
 
 CLI.add_argument(
+	"--gfn",
+	nargs=1,
+	type=str,
+	default=['gfn0'],
+	help="the gfn theory used. GFN0 will use eigdiff and MNOK correction. GFN1 will use delta-scf."
+)
+
+CLI.add_argument(
 	"--max_iter",
 	nargs=1,
 	type=int,
@@ -141,43 +149,27 @@ def run_qcore(input_tuple):
 	
 	chromophore, chromophore_str = input_tuple
 
-	qcore_path = "~/.local/src/Qcore/release/qcore"
-	#qcore_path = "~/qcore/cmake-build-release/bin/qcore"
+	#qcore_path = "~/.local/src/Qcore/release/qcore"
+	qcore_path = "~/qcore/cmake-build-release/bin/qcore"
 	json_str = " -n 1 -f json --schema none -s "
 	norm_str = " -n 1 -s "
 
-	json_run = subprocess.run(qcore_path + json_str + chromophore_str,
+	try:
+		json_run = subprocess.run(qcore_path + json_str + chromophore_str,
 					shell=True,
 					stdout=subprocess.PIPE,
 					executable="/bin/bash",
 					universal_newlines=True)
 
-	try:
+
 		json_results = json.loads(json_run.stdout)
 
+
+		return [chromophore, json_results, True]
+
 	except:
-		print(qcore_path + norm_str + chromophore_str)
-
-		norm_run = subprocess.run(qcore_path + norm_str + chromophore_str,
-					shell=True,
-					stdout=subprocess.PIPE,
-					executable="/bin/bash",
-					universal_newlines=True)
-
-		print(norm_run.stdout)
-
-	if json_results[chromophore]["excitation_energy"] is None or json_results[chromophore]["transition_dipole"] is None:
-		print(qcore_path + norm_str + chromophore_str)
-
-		norm_run = subprocess.run(qcore_path + norm_str + chromophore_str,
-					shell=True,
-					stdout=subprocess.PIPE,
-					executable="/bin/bash",
-					universal_newlines=True)
-
-		print(norm_run.stdout)
-
-	return [chromophore, json_results]
+		
+		return [chromophore, None, False]	
 
 class Errors():
 	def make_full_error_lists(self, results):
@@ -275,6 +267,9 @@ class Results():
 		chromophores = []
 
 		for i in results:
+			if not i[2]:
+				continue
+
 			c = i[0]
 			xtb = i[1]
 
@@ -372,6 +367,27 @@ class Optimizer():
 			return active_params
 
 	def make_initial_guess(self):
+		GFN1_defaults = {
+			"k_s" 		: 1.85,
+			"k_p" 		: 2.25,
+			"k_d" 		: 2.00,
+			"k_EN_s" 	: 0.006,
+			"k_EN_p" 	: -0.001,
+			"k_EN_d"	: -0.002,
+			"k_T" 		: 0.000,
+			"Mg_s" 		: 1.0,
+			"Mg_p" 		: 1.0,
+			"Mg_d" 		: 1.0,
+			"N_s" 		: 1.0, 
+			"N_p" 		: 1.0, 
+			"a_x"		: 0.5,
+			"y_J"		: 4.0,
+			"y_K"		: 2.0,
+			"E_Mg_s"	: 0.0,
+			"E_Mg_p" 	: 0.0,
+			"E_Mg_d"	: 0.0
+		}
+
 		GFN0_defaults = {
 			"k_s" 		: 2.0,
 			"k_p" 		: 2.48,
@@ -425,18 +441,18 @@ class Optimizer():
 		test_set = []
 		validation_set = []
 
-		with open("/home/of15641/chlorophyll_parameterization/training_set.txt") as training_set_file:
-		#with open("training_set.txt") as training_set_file:
+		#with open("/home/of15641/chlorophyll_parameterization/training_set.txt") as training_set_file:
+		with open("../training_set.txt") as training_set_file:
 			for line in training_set_file.readlines():
 				training_set.append(line.replace("\n", ""))
 
-		with open("/home/of15641/chlorophyll_parameterization/test_set.txt") as test_set_file:
-		#with open("test_set.txt") as test_set_file:
+		#with open("/home/of15641/chlorophyll_parameterization/test_set.txt") as test_set_file:
+		with open("../test_set.txt") as test_set_file:
 			for line in test_set_file.readlines():
 				test_set.append(line.replace("\n", ""))
 
-		with open("/home/of15641/chlorophyll_parameterization/validation_set.txt") as validation_set_file:
-		#with open("validation_set.txt") as validation_set_file:
+		#with open("/home/of15641/chlorophyll_parameterization/validation_set.txt") as validation_set_file:
+		with open("../validation_set.txt") as validation_set_file:
 			for line in validation_set_file.readlines():
 				validation_set.append(line.replace("\n", ""))
 
@@ -451,11 +467,12 @@ class Optimizer():
 		return (training_set, test_set, validation_set)
 		
 
-	def __init__(self, ref_data, method, output_func, name, active_params=[], max_iter=1, weights=[1., 1., 1.]):
+	def __init__(self, ref_data, method, gfn, output_func, name, active_params=[], max_iter=1, weights=[1., 1., 1.]):
 		self.name = name
 		self.output = output_func
 
 		self.method = method
+		self.gfn 	= gfn
 		self.ref_data = ref_data
 		self.weights = weights
 
@@ -478,15 +495,15 @@ class Optimizer():
 		"""
 		params_dict = dict(zip(self.active_params, params))
 
-		input_str = "\"{chromophore} := bchla(structure(file = \'/home/of15641/chlorophyll_parameterization/tddft_data/{chromophore}/{chromophore}.xyz\') input_params={params})\""
-		#input_str = "\"{chromophore} := bchla(structure(file = \'tddft_data/{chromophore}/{chromophore}.xyz\') input_params={params})\""
+		#input_str = "\"{chromophore} := bchla(structure(file = \'/home/of15641/chlorophyll_parameterization/tddft_data/{chromophore}/{chromophore}.xyz\') model='{gfn}' input_params={params})\""
+		input_str = "\"{chromophore} := bchla(structure(file = \'../tddft_data/{chromophore}/{chromophore}.xyz\') model='{gfn}' input_params={params})\""
 
 		chromophores = self.training_set
 
 		if test:
 			chromophores = self.test_set
 
-		input_strs = list(map(lambda x : input_str.format(chromophore=x, params=params_dict), chromophores))
+		input_strs = list(map(lambda x : input_str.format(chromophore=x, gfn=self.gfn, params=params_dict), chromophores))
 
 		with ProcessPoolExecutor(max_workers=20) as pool:
 			xtb_results = list(pool.map(run_qcore, list(zip(chromophores, input_strs))))
@@ -718,10 +735,12 @@ if __name__ == '__main__':
 
 		#make optimizer
 		method   = args.method[0]
+		gfn 	 = args.gfn[0]	
 		max_iter = args.max_iter[0]
-		weights =  args.weights
+		weights  =  args.weights
 
 		output(f"Optimization method : {method}")
+		output(f"GFN-xTB method : {gfn}")
 		output(f"maximum iterations : {max_iter}")
 
 		output(f"""weights:
@@ -742,6 +761,7 @@ python optimizer.py \
 		output("making optimizer...")
 		optimizer = Optimizer(ref_data=ref_data, 
 							method=method,
+							gfn=gfn,
 			 				active_params=active_params,
 			  				max_iter=max_iter,
 			   				weights=weights,
