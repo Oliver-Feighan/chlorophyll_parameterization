@@ -1,0 +1,14 @@
+#!/bin/bash
+#PBS -l walltime=2:30:00
+#PBS -l select=1:ncpus=32:mem=25gb
+#PBS -N gfn1_eigdiff
+#PBS -j oe
+
+cd ~/chlorophyll_parameterization/gfn1/
+
+module load lang/python/anaconda/3.8-2020.07
+
+export OMP_NUM_THREADS=1
+export MKL_THREADING_LAYER=TBB
+
+python ~/chlorophyll_parameterization/optimizer.py --params k_s k_p Mg_s Mg_p N_s N_p a_x y_K y_J --ref_data ~/chlorophyll_parameterization/tddft_data/tddft_data.json --name gfn1_eigdiff_test_no_RMSE --gfn gfn1 --weights 0.0 1.0 0.0

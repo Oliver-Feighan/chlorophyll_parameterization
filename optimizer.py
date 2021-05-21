@@ -149,8 +149,8 @@ def run_qcore(input_tuple):
 	
 	chromophore, chromophore_str = input_tuple
 
-	#qcore_path = "~/.local/src/Qcore/release/qcore"
-	qcore_path = "~/qcore/cmake-build-release/bin/qcore"
+	qcore_path = "~/.local/src/Qcore/release/qcore"
+	#qcore_path = "~/qcore/cmake-build-release/bin/qcore"
 	json_str = " -n 1 -f json --schema none -s "
 	norm_str = " -n 1 -s "
 
@@ -328,13 +328,19 @@ class Results():
 		self.training_set = training_set
 		self.chromophores, self.results = self.sanitize_results(_results)
 
+		if len(self.chromophores) == 0 or len(list(self.results.keys())) == 0:
+			self.energy_RMSE = 1
+			self.energy_correlation = 0
+			self.dipole_correlation = 0
+			return
+
 		self.full = Errors(results=self.results, with_outliers=True)
 
 		self.energy_mean = np.mean(self.full.energy_errors)
 		self.energy_stddev = np.std(self.full.energy_errors)
 
 		self.clean = Errors(full_errors=self.full, mean=self.energy_mean, stddev=self.energy_stddev, with_outliers=False)
-
+ 
 		_, _, self.energy_r_value, _, _ = linregress(self.clean.tddft_energies, self.clean.xtb_energies)
 		_, _, self.dipole_r_value, _, _ = linregress(self.clean.tddft_dipole_mags, self.clean.xtb_dipole_mags)
 
@@ -441,18 +447,18 @@ class Optimizer():
 		test_set = []
 		validation_set = []
 
-		#with open("/home/of15641/chlorophyll_parameterization/training_set.txt") as training_set_file:
-		with open("../training_set.txt") as training_set_file:
+		with open("/home/of15641/chlorophyll_parameterization/training_set.txt") as training_set_file:
+		#with open("../training_set.txt") as training_set_file:
 			for line in training_set_file.readlines():
 				training_set.append(line.replace("\n", ""))
 
-		#with open("/home/of15641/chlorophyll_parameterization/test_set.txt") as test_set_file:
-		with open("../test_set.txt") as test_set_file:
+		with open("/home/of15641/chlorophyll_parameterization/test_set.txt") as test_set_file:
+		#with open("../test_set.txt") as test_set_file:
 			for line in test_set_file.readlines():
 				test_set.append(line.replace("\n", ""))
 
-		#with open("/home/of15641/chlorophyll_parameterization/validation_set.txt") as validation_set_file:
-		with open("../validation_set.txt") as validation_set_file:
+		with open("/home/of15641/chlorophyll_parameterization/validation_set.txt") as validation_set_file:
+		#with open("../validation_set.txt") as validation_set_file:
 			for line in validation_set_file.readlines():
 				validation_set.append(line.replace("\n", ""))
 
@@ -495,8 +501,8 @@ class Optimizer():
 		"""
 		params_dict = dict(zip(self.active_params, params))
 
-		#input_str = "\"{chromophore} := bchla(structure(file = \'/home/of15641/chlorophyll_parameterization/tddft_data/{chromophore}/{chromophore}.xyz\') model='{gfn}' input_params={params})\""
-		input_str = "\"{chromophore} := bchla(structure(file = \'../tddft_data/{chromophore}/{chromophore}.xyz\') model='{gfn}' input_params={params})\""
+		input_str = "\"{chromophore} := bchla(structure(file = \'/home/of15641/chlorophyll_parameterization/tddft_data/{chromophore}/{chromophore}.xyz\') model='{gfn}' input_params={params})\""
+		#input_str = "\"{chromophore} := bchla(structure(file = \'../tddft_data/{chromophore}/{chromophore}.xyz\') model='{gfn}' input_params={params})\""
 
 		chromophores = self.training_set
 
@@ -548,10 +554,10 @@ class Optimizer():
 
 		results = self.generate_results(params, test)
 
-		if test:
-			assert(len(results.full.xtb_energies) == len(self.test_set))
-		else:
-			assert(len(results.full.xtb_energies) == len(self.training_set))
+		#if test:
+			#assert(len(results.full.xtb_energies) == len(self.test_set))
+		#else:
+			#assert(len(results.full.xtb_energies) == len(self.training_set))
 
 		fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(results.energy_RMSE, results.energy_correlation)
 		fitness_str += f"R^2(dipole_mags) : {results.dipole_correlation:3.3f} "
@@ -804,5 +810,4 @@ wall-clock time : {time.time() - start:6.3f} seconds
 
 #######################
 """)
-
 

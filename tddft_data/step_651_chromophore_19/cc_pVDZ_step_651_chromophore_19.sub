@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -l walltime=5:00:00
+#PBS -l select=1:ncpus=24:mem=185gb
+#PBS -N cc_pVDZ_step_651_chromophore_19
+#PBS -j oe
+
+cd ~/chlorophyll_parameterization/tddft_data/step_651_chromophore_19
+
+export OMP_NUM_THREADS=1
+export MKL_THREADING_LAYER=TBB
+
+~/.local/src/Qcore/release/qcore -n 20 cc_pVDZ_step_651_chromophore_19.in > cc_pVDZ_step_651_chromophore_19.out
