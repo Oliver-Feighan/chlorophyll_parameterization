@@ -42,8 +42,8 @@ CLI.add_argument(
 	"--gfn",
 	nargs=1,
 	type=str,
-	default=['gfn0'],
-	help="the gfn theory used. GFN0 will use eigdiff and MNOK correction. GFN1 will use delta-scf."
+	default=['gfn1'],
+	help="the gfn theory used. Both will use eigdiff and MNOK correction."
 )
 
 CLI.add_argument(
@@ -345,10 +345,9 @@ class Results():
 		_, _, self.dipole_r_value, _, _ = linregress(self.clean.tddft_dipole_mags, self.clean.xtb_dipole_mags)
 
 		self.energy_RMSE = np.sqrt(np.mean(np.square(self.clean.energy_errors)))
+		self.dipole_mag_RMSE = np.sqrt(np.mean(np.square(self.clean.xtb_dipole_mags - self.clean.tddft_dipole_mags)))
 		self.energy_correlation = self.energy_r_value**2
 		self.dipole_correlation = self.dipole_r_value**2
-		#self.dipole_mag_RMSE = np.sqrt(np.mean(np.square(self.clean.xtb_dipole_mags - self.clean.tddft_dipole_mags)))
-
 
 
 class Optimizer():
@@ -363,8 +362,8 @@ class Optimizer():
 		['k_s', 'k_p', 'k_d', 'k_EN_s', 'k_EN_p', 'k_EN_d', 'k_T', 'Mg_s', 'Mg_p', 'Mg_d', 'N_s', 'N_p']
 
 		"""
-		all_params = ["k_s", "k_p", "k_d", "k_EN_s", "k_EN_p", "k_EN_d", "k_T", "Mg_s", "Mg_p", "Mg_d", "N_s", "N_p", "a_x", "y_J", "y_K", "E_Mg_s", "E_Mg_p", "E_Mg_d"]
-		if not active_params:
+		all_params = ["k_s", "k_p", "k_d", "k_EN_s", "k_EN_p", "k_EN_d", "k_T", "Mg_s", "Mg_p", "Mg_d", "N_s", "N_p", "Mgs_Ns", "Mgs_Np", "Mgp_Ns", "Mgp_Np",  "a_x", "y_J", "y_K", "E_Mg_s", "E_Mg_p", "E_Mg_d", "level_shift"]
+		if empty(active_params):
 			return all_params
 		else:
 			assert(set(active_params).issubset(set(all_params)))
@@ -383,15 +382,22 @@ class Optimizer():
 			"k_T" 		: 0.000,
 			"Mg_s" 		: 1.0,
 			"Mg_p" 		: 1.0,
-			"Mg_d" 		: 1.0,
 			"N_s" 		: 1.0, 
 			"N_p" 		: 1.0, 
+			
+			"Mgs_Ns"	: 1.0,
+			"Mgs_Np"	: 1.0,
+			"Mgp_Ns"	: 1.0, 
+			"Mgp_Np"	: 1.0, 
+			
 			"a_x"		: 0.5,
 			"y_J"		: 4.0,
 			"y_K"		: 2.0,
 			"E_Mg_s"	: 0.0,
 			"E_Mg_p" 	: 0.0,
-			"E_Mg_d"	: 0.0
+			"E_Mg_d"	: 0.0,
+			"level_shift"	: 0.0,
+			"D_scl"		: 1.0
 		}
 
 		GFN0_defaults = {
@@ -414,8 +420,11 @@ class Optimizer():
 			"E_Mg_p" 	: 0.0,
 			"E_Mg_d"	: 0.0
 		}
-		
-		return [GFN0_defaults[p] for p in self.active_params]
+	
+		if self.gfn == "gfn0":	
+			return [GFN0_defaults[p] for p in self.active_params]
+		elif self.gfn == "gfn1":
+			return [GFN1_defaults[p] for p in self.active_params]
 
 	def make_bounds(self):
 		bounds = {
@@ -437,6 +446,7 @@ class Optimizer():
 			"E_Mg_s" 	: (None, None),
 			"E_Mg_p" 	: (None, None),
 			"E_Mg_d" 	: (None, None),
+			"level_shift" 	: (0, None)
 		}
 
 		return [bounds[p] for p in self.active_params]
@@ -500,16 +510,21 @@ class Optimizer():
 		runs xtb for each chlorophyll molecule
 		"""
 		params_dict = dict(zip(self.active_params, params))
+		
+		level_shift = 0.
+		
+		if "level_shift" in self.active_params:
+			level_shift = params_dict["level_shift"]
+			del params_dict["level_shift"] 
 
-		input_str = "\"{chromophore} := bchla(structure(file = \'/home/of15641/chlorophyll_parameterization/tddft_data/{chromophore}/{chromophore}.xyz\') model='{gfn}' input_params={params})\""
-		#input_str = "\"{chromophore} := bchla(structure(file = \'../tddft_data/{chromophore}/{chromophore}.xyz\') model='{gfn}' input_params={params})\""
+		input_str = "\"{chromophore} := xtb(structure(file = \'/home/of15641/chlorophyll_parameterization/tddft_data/{chromophore}/{chromophore}.xyz\') level_shift={level_shift} model='chlorophyll' input_params={params})\""
 
 		chromophores = self.training_set
 
 		if test:
 			chromophores = self.test_set
 
-		input_strs = list(map(lambda x : input_str.format(chromophore=x, gfn=self.gfn, params=params_dict), chromophores))
+		input_strs = list(map(lambda x : input_str.format(chromophore=x, gfn=self.gfn, level_shift=level_shift, params=params_dict), chromophores))
 
 		with ProcessPoolExecutor(max_workers=20) as pool:
 			xtb_results = list(pool.map(run_qcore, list(zip(chromophores, input_strs))))
@@ -519,7 +534,7 @@ class Optimizer():
 	def objective_function(self, params):
 		results = self.generate_results(params)
 
-		return self.weights[0] * results.energy_RMSE + self.weights[1] * (1 - results.energy_correlation) + self.weights[2] * (1 - results.dipole_correlation)
+		return self.weights[0] * results.energy_RMSE + self.weights[1] * (1 - results.energy_correlation) + self.weights[2] * result.dipole_mags_RMSE + self.weights[3] * (1 - results.dipole_correlation)
 
 
 	def param_string(self, params):
@@ -560,8 +575,8 @@ class Optimizer():
 			#assert(len(results.full.xtb_energies) == len(self.training_set))
 
 		fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(results.energy_RMSE, results.energy_correlation)
-		fitness_str += f"R^2(dipole_mags) : {results.dipole_correlation:3.3f} "
-		fitness_str += f"fitness : {self.weights[0] * (1 - results.energy_RMSE) + self.weights[1] * (1 - results.energy_correlation) + self.weights[2] * (1 - results.dipole_correlation)}"
+		fitness_str += f"RMSE(dipole_mags) : {result.dipole_mags_RMSE:3.3f} R^2(dipole_mags) : {results.dipole_correlation:3.3f} "
+		fitness_str += f"fitness : {self.weights[0] * (1 - results.energy_RMSE) + self.weights[1] * (1 - results.energy_correlation) + self.weights * result_dipole_mags_RMSE + self.weights[3] * (1 - results.dipole_correlation)}"
 
 		time_str = "time/s : {0:3.6f}".format(time.time() - self.time)
 		self.time = time.time()
@@ -661,8 +676,8 @@ class Optimizer():
 		self.output("training set results:")
 
 		training_fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(train_results.energy_RMSE, train_results.energy_correlation)
-		training_fitness_str += f"R^2(dipole_mags) : {train_results.dipole_correlation:3.3f} "
-		training_fitness_str += f"fitness : {self.weights[0] * train_results.energy_RMSE + self.weights[1] * (1 - train_results.energy_correlation) + self.weights[2] * (1 - train_results.dipole_correlation)}"
+		training_fitness_str += f"RMSE(dipole mags) : {train_result.dipole_mags_RMSE:3.3f} R^2(dipole_mags) : {train_results.dipole_correlation:3.3f} "
+		training_fitness_str += f"fitness : {self.weights[0] * train_results.energy_RMSE + self.weights[1] * (1 - train_results.energy_correlation) + self.weights[2] * train_results.dipole_mags_RMSE + self.weights[3] * (1 - train_results.dipole_correlation)}"
 
 		self.output(training_fitness_str)
 
@@ -672,8 +687,8 @@ class Optimizer():
 		self.output("test set results:")
 
 		test_fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(test_results.energy_RMSE, test_results.energy_correlation)
-		test_fitness_str += f"R^2(dipole_mags) : {test_results.dipole_correlation:3.3f} "
-		test_fitness_str += f"fitness : {self.weights[0] * test_results.energy_RMSE + self.weights[1] * (1 - test_results.energy_correlation) + self.weights[2] * (1 - test_results.dipole_correlation)}"
+		test_fitness_str += f"RMSE(dipole_mags) : {test_result.dipole_mags_RMSE:3.3f} R^2(dipole_mags) : {test_results.dipole_correlation:3.3f} "
+		test_fitness_str += f"fitness : {self.weights[0] * test_results.energy_RMSE + self.weights[1] * (1 - test_results.energy_correlation) + self.weights[2] * test_results.dipole_mags_RMSE + self.weights[3] * (1 - test_results.dipole_correlation)}"
 
 		self.output(test_fitness_str)
 
