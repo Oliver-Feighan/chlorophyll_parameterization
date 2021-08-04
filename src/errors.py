@@ -1,4 +1,5 @@
-
+from utils import calc_angle_error, calc_dipole_error
+import numpy as np
 
 class Errors():
 	def make_full_error_lists(self, results):
