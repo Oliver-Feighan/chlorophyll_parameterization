@@ -1,0 +1,21 @@
+ 
+ University of Bristol ACRC HPC Bluepebble Service
+ -------------------------------------------------
+ Job huckel, jobid 3502800.bp1, username of15641 - started execution at 10:41:41 Wed 04/08/21 on node bp1-compute00086.data.bp.acrc.priv
+ 
+../tddft_data/tddft_data.json
+../training_set.txt
+../test_set.txt
+../validation_set.txt
+Traceback (most recent call last):
+  File "/home/of15641/chlorophyll_parameterization/src/main.py", line 110, in <module>
+    optimizer_result = optimizer.optimize()
+  File "/home/of15641/chlorophyll_parameterization/src/optimizer.py", line 206, in optimize
+    self.callback(params=self.initial_guess)
+  File "/home/of15641/chlorophyll_parameterization/src/optimizer.py", line 164, in callback
+    results = self.generate_results(params, test)
+  File "/home/of15641/chlorophyll_parameterization/src/optimizer.py", line 126, in generate_results
+    return Results(xtb_results, ref_data=self.ref_data, training_set=self.training_set)
+  File "/home/of15641/chlorophyll_parameterization/src/results.py", line 91, in __init__
+    self.dipole_mag_RMSE = np.sqrt(np.mean(np.square(self.clean.xtb_dipole_mags - self.clean.tddft_dipole_mags)))
+TypeError: unsupported operand type(s) for -: 'list' and 'list'

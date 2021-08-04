@@ -1,0 +1,19 @@
+ 
+ University of Bristol ACRC HPC Bluepebble Service
+ -------------------------------------------------
+ Job huckel, jobid 3503017.bp1, username of15641 - started execution at 12:09:01 Wed 04/08/21 on node bp1-compute00198.data.bp.acrc.priv
+ 
+../tddft_data/tddft_data.json
+../training_set.txt
+../test_set.txt
+../validation_set.txt
+Traceback (most recent call last):
+  File "/home/of15641/chlorophyll_parameterization/src/main.py", line 92, in <module>
+    optimizer = Optimizer(ref_data=ref_data,
+  File "/home/of15641/chlorophyll_parameterization/src/optimizer.py", line 95, in __init__
+    self.bounds = self.make_bounds()
+  File "/home/of15641/chlorophyll_parameterization/src/optimizer.py", line 45, in make_bounds
+    return [bounds[p] for p in self.active_params]
+  File "/home/of15641/chlorophyll_parameterization/src/optimizer.py", line 45, in <listcomp>
+    return [bounds[p] for p in self.active_params]
+KeyError: 'Mgs_Ns'

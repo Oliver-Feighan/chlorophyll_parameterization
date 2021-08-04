@@ -1,0 +1,15 @@
+#!/bin/bash
+#PBS -l walltime=1:30:00
+#PBS -l select=1:ncpus=24:mem=25gb
+#PBS -N huckel
+#PBS -j oe
+
+cd ~/chlorophyll_parameterization/test/
+
+module load lang/python/anaconda/3.8-2020.07
+
+export QCORE_PATH=~/.local/src/Qcore/release/bin/qcore
+export OMP_NUM_THREADS=1
+export MKL_THREADING_LAYER=TBB
+
+python ~/chlorophyll_parameterization/src/main.py --params D_scl --name gfn1_test --gfn gfn1	

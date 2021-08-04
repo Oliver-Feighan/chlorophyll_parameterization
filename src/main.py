@@ -103,7 +103,6 @@ python optimizer.py \
                               )
 
         output("")
-
         # run optimization
         output("running optimization...")
         output("")

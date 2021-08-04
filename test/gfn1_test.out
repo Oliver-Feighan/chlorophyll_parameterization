@@ -1,0 +1,67 @@
+
+#######################
+# BChla-xTB optimizer #
+#######################
+
+start time: Wed Aug  4 11:37:42 2021
+
+active parameters from python argument input : ['D_scl']
+
+reference data constructed from : "../tddft_data/tddft_data.json"
+training set data file : ../training_set.txt
+testing set data file : ../test_set.txt
+validation set data file : ../validation_set.txt
+
+Optimization method : SLSQP
+GFN-xTB method : gfn1
+maximum iterations : 5000
+weights:
+RMSE(energy): 1.0
+RMSE(dipole): 1.0
+R^2 (energy): 1.0
+R^2 (dipole): 1.0
+
+recreate input with:
+python optimizer.py --params D_scl --method SLSQP --max_iter 5000 --ref_data ../tddft_data/tddft_data.json --run_tests False --weights 1.0 1.0 1.0 1.0 
+making optimizer...
+
+running optimization...
+
+iter :    0 D_scl : 1.000  RMSE(energy) : 0.363 R^2(energy) : 0.009 RMSE(dipole_mags) : 1.727 R^2(dipole_mags) : 0.006 fitness : 4.34923555194538 time/s : 13.445547
+iter :    1 D_scl : 1.443  RMSE(energy) : 0.425 R^2(energy) : 0.012 RMSE(dipole_mags) : 1.612 R^2(dipole_mags) : 0.013 fitness : 4.161965791449017 time/s : 49.715175
+iter :    2 D_scl : 1.260  RMSE(energy) : 0.391 R^2(energy) : 0.009 RMSE(dipole_mags) : 1.638 R^2(dipole_mags) : 0.006 fitness : 4.231461799301018 time/s : 50.960581
+iter :    3 D_scl : 1.306  RMSE(energy) : 0.402 R^2(energy) : 0.010 RMSE(dipole_mags) : 1.630 R^2(dipole_mags) : 0.006 fitness : 4.211297413108292 time/s : 76.883056
+iter :    4 D_scl : 1.306  RMSE(energy) : 0.402 R^2(energy) : 0.010 RMSE(dipole_mags) : 1.630 R^2(dipole_mags) : 0.006 fitness : 4.211308411917921 time/s : 88.377738
+iter :    5 D_scl : 1.305  RMSE(energy) : 0.402 R^2(energy) : 0.010 RMSE(dipole_mags) : 1.630 R^2(dipole_mags) : 0.006 fitness : 4.211312038116575 time/s : 90.491963
+iter :    6 D_scl : 1.305  RMSE(energy) : 0.402 R^2(energy) : 0.010 RMSE(dipole_mags) : 1.630 R^2(dipole_mags) : 0.006 fitness : 4.211311222885005 time/s : 85.884558
+iter :    7 D_scl : 1.305  RMSE(energy) : 0.402 R^2(energy) : 0.010 RMSE(dipole_mags) : 1.630 R^2(dipole_mags) : 0.006 fitness : 4.2113408171717435 time/s : 101.905994
+iter :    8 D_scl : 1.306  RMSE(energy) : 0.402 R^2(energy) : 0.010 RMSE(dipole_mags) : 1.630 R^2(dipole_mags) : 0.006 fitness : 4.211288259315638 time/s : 102.061524
+iter :    9 D_scl : 1.306  RMSE(energy) : 0.402 R^2(energy) : 0.010 RMSE(dipole_mags) : 1.630 R^2(dipole_mags) : 0.006 fitness : 4.211304284259306 time/s : 106.403149
+iter :   10 D_scl : 1.305  RMSE(energy) : 0.402 R^2(energy) : 0.010 RMSE(dipole_mags) : 1.630 R^2(dipole_mags) : 0.006 fitness : 4.211349933236249 time/s : 103.161078
+iter :   11 D_scl : 1.306  RMSE(energy) : 0.402 R^2(energy) : 0.010 RMSE(dipole_mags) : 1.630 R^2(dipole_mags) : 0.006 fitness : 4.211293957336747 time/s : 98.971534
+iter :   12 D_scl : 1.305  RMSE(energy) : 0.402 R^2(energy) : 0.010 RMSE(dipole_mags) : 1.630 R^2(dipole_mags) : 0.006 fitness : 4.211329118812175 time/s : 103.555652
+iter :   13 D_scl : 1.305  RMSE(energy) : 0.402 R^2(energy) : 0.010 RMSE(dipole_mags) : 1.630 R^2(dipole_mags) : 0.006 fitness : 4.211324441720677 time/s : 100.814299
+iter :   14 D_scl : 1.306  RMSE(energy) : 0.402 R^2(energy) : 0.010 RMSE(dipole_mags) : 1.630 R^2(dipole_mags) : 0.006 fitness : 4.211301960302092 time/s : 100.865294
+iter :   15 D_scl : 1.306  RMSE(energy) : 0.402 R^2(energy) : 0.010 RMSE(dipole_mags) : 1.630 R^2(dipole_mags) : 0.006 fitness : 4.211306971422635 time/s : 102.578740
+
+Optimization terminated successfully.
+Current function value: 4.002
+Iterations: 15
+Function evaluations: 98
+Gradient evaluations: 15
+
+optimized parameters: {'D_scl': 1.411}
+
+running validation...
+# of test set samples: 507
+training set results:
+RMSE(energy) : 0.415 R^2(energy) : 0.011 RMSE(dipole mags) : 1.612 R^2(dipole_mags) : 0.013 fitness : 4.002290364415436
+
+test set results:
+RMSE(energy) : 0.463 R^2(energy) : 0.007 RMSE(dipole_mags) : 1.676 R^2(dipole_mags) : 0.009 fitness : 4.1240723299074
+
+
+wall-clock time : 1542.115 seconds
+
+#######################
+

@@ -163,11 +163,6 @@ class Optimizer():
 
 		results = self.generate_results(params, test)
 
-		#if test:
-			#assert(len(results.full.xtb_energies) == len(self.test_set))
-		#else:
-			#assert(len(results.full.xtb_energies) == len(self.training_set))
-
 		fitness_str = "RMSE(energy) : {0:3.3f} R^2(energy) : {1:3.3f} ".format(results.energy_RMSE, results.energy_correlation)
 		fitness_str += f"RMSE(dipole_mags) : {results.dipole_mag_RMSE:3.3f} R^2(dipole_mags) : {results.dipole_correlation:3.3f} "
 		fitness_str += f"fitness : {self.weights[0] * (1 - results.energy_RMSE) + self.weights[1] * (1 - results.energy_correlation) + self.weights[2] * results.dipole_mag_RMSE + self.weights[3] * (1 - results.dipole_correlation)}"

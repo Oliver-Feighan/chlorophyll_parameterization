@@ -1,0 +1,15 @@
+#!/bin/bash
+#PBS -l walltime=2:30:00
+#PBS -l select=1:ncpus=32:mem=25gb
+#PBS -N dipole_mags
+#PBS -j oe
+
+cd ~/chlorophyll_parameterization/dipole_mags/
+
+module load lang/python/anaconda/3.8-2020.07
+
+export QCORE_PATH=~/.local/src/Qcore/release/bin/qcore
+export OMP_NUM_THREADS=1
+export MKL_THREADING_LAYER=TBB
+
+python ~/chlorophyll_parameterization/src/main.py --params D_scl k_s k_p Mg_s Mg_p N_s N_p Mgs_Ns Mgs_Np Mgp_Ns Mgp_Np a_x y_J y_K --name dipole_mags --gfn gfn1	

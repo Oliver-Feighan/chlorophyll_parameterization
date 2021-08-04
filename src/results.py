@@ -21,9 +21,9 @@ class Results():
             package = {
                 "Na_Nc": ref_data[c]["Na_Nc"],
                 "tddft_energy": ref_data[c]["energy"],
-                "xtb_energy": xtb[c]["excitation_energy"],
+                "xtb_energy": xtb[c]["excitation_1_energy"],
                 "tddft_dipole": ref_data[c]["transition_dipole"],
-                "xtb_dipole": xtb[c]["transition_dipole"]
+                "xtb_dipole": xtb[c]["excitation_1_transition_dipole"]
             }
 
             for key, value in package.items():
