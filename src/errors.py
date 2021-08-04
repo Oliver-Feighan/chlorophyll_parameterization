@@ -53,6 +53,8 @@ class Errors():
 
 		self.tddft_energies 	= np.array(self.tddft_energies)
 		self.xtb_energies 		= np.array(self.xtb_energies)
+		self.tddft_dipole_mags 	= np.array(self.tddft_dipole_mags)
+		self.xtb_dipole_mags	= np.array(self.xtb_dipole_mags)
 		self.energy_errors 		= np.array(self.energy_errors)
 		self.dipole_errors 		= np.array(self.dipole_errors)
 		self.tddft_angle_errors = np.array(self.tddft_angle_errors)
