@@ -1,0 +1,41 @@
+#!/bin/bash
+#PBS -N gaussian_NAME
+#PBS -l walltime=2:00:00
+#PBS -j oe
+#PBS select=1:ncpus=24:mem=180gb
+#PBS -M of15641@bristol.ac.uk
+
+TMP_RESULT_DIR="${TMPDIR}"
+RESULT_DIR="${PBS_O_WORKDIR}"
+
+# Job information
+echo "Host:    $(hostname)"
+echo "Time:    $(date)"
+echo "Dir:     $(pwd)"
+echo "Job ID:  ${PBS_JOBID}"
+echo "Nodelist:"
+echo "  $(cat "${PBS_NODEFILE}" | uniq)"
+
+echo "Result dir: ${RESULT_DIR}"
+
+echo "running gaussian jobs"
+
+module load apps/gaussian/16
+
+echo "Running CAMB3LYP"
+CAMB3LYP
+
+echo "Running PBE0"
+PBE0
+
+echo "Running wB97XD"
+wB97XD
+
+echo "Running BLYP"
+BLYP
+
+echo "Running ZINDO"
+ZINDO
+
+echo -e "Copying job script results to ${RESULT_DIR}\n"
+cp -v ${TMP_RESULT_DIR}/* ${RESULT_DIR}/

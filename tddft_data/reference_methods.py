@@ -13,7 +13,8 @@ def angle_error(vec1, vec2):
     return np.rad2deg(np.arccos(numerator/denominator))
 
 def angle_error_with_phase(vec1, vec2):
-    return min(angle_error(vec1, vec2), angle_error(-vec1, vec2))
+    result = min(angle_error(vec1, vec2), angle_error(-vec1, vec2))
+    return result
 
 def get_Na_Nc_vec(xyz_file):
     coords = list(open(xyz_file))
@@ -24,7 +25,7 @@ def get_Na_Nc_vec(xyz_file):
     Na = np.array([float(x) for x in re.findall(r'-?\d+\.\d+', coords[Na_line])])
     Nc = np.array([float(x) for x in re.findall(r'-?\d+\.\d+', coords[Nc_line])])
 
-    return(Na-Nc)
+    return Na-Nc
 
 def read_td_result(chromophore_name, method, root):
 
@@ -103,7 +104,7 @@ def read_excited_scf_result(chromophore_name, method, root):
 
     lines = list(open(f'{file_name}'))
             
-    energy = None
+    energy_hr = None
     transition_dipole = None
             
     for line in lines:
@@ -112,12 +113,14 @@ def read_excited_scf_result(chromophore_name, method, root):
                     
         if "Transition dipole" in line:
             transition_dipole = np.array([float(x) for x in re.findall(r'-?\d+\.\d+', line)])
-
+                        
+    if energy_hr is None or transition_dipole is None:
+        return None, None, None
+                
     Na_Nc_vec = get_Na_Nc_vec(f'{root}/{chromophore_name}/{chromophore_name}.xyz')
     magnitude = np.linalg.norm(transition_dipole)
     angle_error = angle_error_with_phase(Na_Nc_vec, transition_dipole)
-
-    return energy, transition_dipole, angle_error 
+    return energy_hr, transition_dipole, angle_error 
     
 def read_excited_scf_method(method, root="."):    
     results = {
@@ -136,23 +139,18 @@ def read_excited_scf_method(method, root="."):
         for chromophore in chromophores:
             chromophore_name = f"step_{step}_chromophore_{chromophore}"
 
-            try:
-                energy, transition_dipole, angle_error = read_excited_scf_result(chromophore_name, method, root)
-            
-                if energy == None or transition_dipole == None:
-                    raise
-            
-                results["chromophore"].append(chromophore)
-                results[f"{method} excitation energy (hr)"].append(energy)
-                results[f"{method} excitation energy (eV)"].append(energy * 27.2114)
-                results[f"{method} transition dipole"].append(transition_dipole)
-                results[f"{method} transition dipole magnitude"].append(np.linalg.norm(transition_dipole))
-                results[f"{method} angle to Na_Nc"].append(angle_error)
-
-            except:
+            energy, transition_dipole, angle_error = read_excited_scf_result(chromophore_name, method, root)
+    
+            if energy is None or transition_dipole is None:
                 continue
-                
-            
+
+            results["chromophore"].append(chromophore_name)
+            results[f"{method} excitation energy (hr)"].append(energy)
+            results[f"{method} excitation energy (eV)"].append(energy * 27.2114)
+            results[f"{method} transition dipole"].append(transition_dipole)
+            results[f"{method} transition dipole magnitude"].append(np.linalg.norm(transition_dipole))
+            results[f"{method} angle to Na_Nc"].append(angle_error)                
+           
     df_result = pd.DataFrame.from_dict(results)
     return df_result.set_index("chromophore")
 
