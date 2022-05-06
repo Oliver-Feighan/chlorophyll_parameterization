@@ -1,22 +1,20 @@
 #!/bin/bash
-#PBS -N gaussian_NAME
-#PBS -l walltime=2:00:00
-#PBS -j oe
-#PBS select=1:ncpus=24:mem=180gb
-#PBS -M of15641@bristol.ac.uk
-
-TMP_RESULT_DIR="${TMPDIR}"
-RESULT_DIR="${PBS_O_WORKDIR}"
+#SBATCH --job-name=gaussian_NAME
+#SBATCH --time=0-04:00:00
+#SBATCH --output=gaussian_NAME.out
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=24
+#SBATCH --mem=80G
 
 # Job information
 echo "Host:    $(hostname)"
 echo "Time:    $(date)"
 echo "Dir:     $(pwd)"
-echo "Job ID:  ${PBS_JOBID}"
+echo "Job ID:  ${SLURM_JOB_ID}"
 echo "Nodelist:"
-echo "  $(cat "${PBS_NODEFILE}" | uniq)"
+echo "  $(cat "${SLURM_JOB_NODELIST}" | uniq)"
 
-echo "Result dir: ${RESULT_DIR}"
+echo "Result dir: ${SLURM_SUBMIT_DIR}"
 
 echo "running gaussian jobs"
 
@@ -37,5 +35,3 @@ BLYP
 echo "Running ZINDO"
 ZINDO
 
-echo -e "Copying job script results to ${RESULT_DIR}\n"
-cp -v ${TMP_RESULT_DIR}/* ${RESULT_DIR}/
