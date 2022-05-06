@@ -1,0 +1,37 @@
+#!/bin/bash
+#SBATCH --job-name=gaussian_step_1101_chromophore_17
+#SBATCH --time=0-04:00:00
+#SBATCH --output=gaussian_step_1101_chromophore_17.out
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=24
+#SBATCH --mem=80G
+
+# Job information
+echo "Host:    $(hostname)"
+echo "Time:    $(date)"
+echo "Dir:     $(pwd)"
+echo "Job ID:  ${SLURM_JOB_ID}"
+echo "Nodelist:"
+echo "  $(cat "${SLURM_JOB_NODELIST}" | uniq)"
+
+echo "Result dir: ${SLURM_SUBMIT_DIR}"
+
+echo "running gaussian jobs"
+
+module load apps/gaussian/16
+
+echo "Running time g16 < CAMB3LYP_step_1101_chromophore_17.com > CAMB3LYP_step_1101_chromophore_17.log"
+time g16 < CAMB3LYP_step_1101_chromophore_17.com > CAMB3LYP_step_1101_chromophore_17.log
+
+echo "Running time g16 < PBE0_step_1101_chromophore_17.com > PBE0_step_1101_chromophore_17.log"
+time g16 < PBE0_step_1101_chromophore_17.com > PBE0_step_1101_chromophore_17.log
+
+echo "Running time g16 < wB97XD_step_1101_chromophore_17.com > wB97XD_step_1101_chromophore_17.log"
+time g16 < wB97XD_step_1101_chromophore_17.com > wB97XD_step_1101_chromophore_17.log
+
+echo "Running time g16 < BLYP_step_1101_chromophore_17.com > BLYP_step_1101_chromophore_17.log"
+time g16 < BLYP_step_1101_chromophore_17.com > BLYP_step_1101_chromophore_17.log
+
+echo "Running time g16 < ZINDO_step_1101_chromophore_17.com > ZINDO_step_1101_chromophore_17.log"
+time g16 < ZINDO_step_1101_chromophore_17.com > ZINDO_step_1101_chromophore_17.log
+
